@@ -43,7 +43,7 @@ try {
   }
 
   setMessages((prev) => [...prev.slice(0, -1), aiReply])
-} catch (error) {
+} catch {
   setMessages((prev) => [
     ...prev.slice(0, -1),
     { role: "ai", text: "Error connecting to Gemini." },
