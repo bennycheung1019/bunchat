@@ -9,9 +9,12 @@ export const authConfig: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, token }) {
+  async session({ session, token }) {
+    if (session.user) {
       session.user.id = token.sub
-      return session
-    },
+    }
+    return session
   },
+},
+
 }
