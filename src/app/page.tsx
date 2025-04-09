@@ -20,36 +20,35 @@ export default function Home() {
   const handleSend = async () => {
     if (!input.trim()) return
 
-    // Add user message
-    const userMessage = { role: "user", text: input }
+    const userMessage: Message = { role: "user", text: input }
     setMessages((prev) => [...prev, userMessage])
     setInput("")
 
     // Add 'Thinking...' placeholder
-    setMessages((prev) => [...prev, { role: "ai", text: "Thinking..." }])
+    setMessages((prev) => [...prev, { role: "ai", text: "Thinking..." } as Message])
 
-try {
-  const res = await fetch("/api/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message: input }),
-  })
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input }),
+      })
 
-  const data = await res.json()
+      const data = await res.json()
 
-  const aiReply = {
-    role: "ai",
-    text: data.reply || "No response from Gemini.",
-  }
+      const aiReply: Message = {
+        role: "ai",
+        text: data.reply || "No response from GPT-4o-mini.",
+      }
 
-  setMessages((prev) => [...prev.slice(0, -1), aiReply])
-} catch {
-  setMessages((prev) => [
-    ...prev.slice(0, -1),
-    { role: "ai", text: "Error connecting to Gemini." },
-  ])
-}
-
+      setMessages((prev) => [...prev.slice(0, -1), aiReply])
+    } catch {
+      const errorReply: Message = {
+        role: "ai",
+        text: "Error connecting to GPT-4o-mini.",
+      }
+      setMessages((prev) => [...prev.slice(0, -1), errorReply])
+    }
   }
 
   const handleNewChat = () => {
@@ -60,7 +59,10 @@ try {
   }
 
   const scrollToBottom = () => {
-    messagesRef.current?.scrollTo({ top: messagesRef.current.scrollHeight, behavior: "smooth" })
+    messagesRef.current?.scrollTo({
+      top: messagesRef.current.scrollHeight,
+      behavior: "smooth",
+    })
   }
 
   useEffect(() => {
@@ -68,20 +70,19 @@ try {
   }, [messages])
 
   if (!session) {
-  return (
-    <main className="h-screen flex flex-col items-center justify-center bg-gray-100 text-center px-4">
-      <h1 className="text-2xl font-semibold mb-4">Welcome to the AI Chatbot</h1>
-      <p className="mb-6 text-gray-600">Sign in with Google to start chatting</p>
-      <button
-        onClick={() => signIn("google")}
-        className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
-      >
-        Sign in with Google
-      </button>
-    </main>
-  )
-}
-
+    return (
+      <main className="h-screen flex flex-col items-center justify-center bg-gray-100 text-center px-4">
+        <h1 className="text-2xl font-semibold mb-4">Welcome to the AI Chatbot</h1>
+        <p className="mb-6 text-gray-600">Sign in with Google to start chatting</p>
+        <button
+          onClick={() => signIn("google")}
+          className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
+        >
+          Sign in with Google
+        </button>
+      </main>
+    )
+  }
 
   return (
     <div className="app-layout">
@@ -97,7 +98,7 @@ try {
               className={index === activeChat ? "active-chat" : ""}
               onClick={() => {
                 setActiveChat(index)
-                setMessages([]) // for now, messages are not stored per chat
+                setMessages([]) // TODO: load messages from Firestore per session
               }}
             >
               {title}
