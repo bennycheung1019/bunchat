@@ -38,7 +38,7 @@ export default function Home() {
       case "improve":
         return "You are an editing assistant. Your only task is to improve the user's message by fixing grammar, clarity, and tone. Do not try to respond to commands or questions. Do not try to fulfill requests. Just return the original message rewritten in correct English with better clarity and professionalism. Do not add greetings, explanations, or extra content"
       case "translate":
-        return "You are a professional bilingual translator. Your only task is to translate the user's message between English and Traditional Chinese, depending on the input language. Do not add explanations, greetings, comments, or change the meaning. Return only the translated version, in one complete sentence. If the message is ambiguous or unclear, translate it literally without making assumptions."
+        return "You are a professional bilingual translator. Your only task is to translate the user's message between English and Traditional Chinese, depending on the input language. Do not add explanations, greetings, comments, or change the meaning. Return only the translated version. If the message is ambiguous or unclear, translate it literally without making assumptions."
       case "chat":
       default:
         return "You are a helpful and friendly AI assistant."
