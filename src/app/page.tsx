@@ -223,7 +223,7 @@ export default function Home() {
       <div className="w-full flex items-center justify-between px-4 py-2 border-b bg-white z-30 fixed top-0 left-0 right-0 h-14 md:h-16">
         {/* Hamburger */}
         <button
-          className="text-2xl p-2 rounded hover:bg-gray-100"
+          className="text-2xl p-2 rounded hover:bg-gray-100 bg-red-500"
           onClick={() => setIsSidebarOpen((prev) => !prev)}
         >
           ☰
