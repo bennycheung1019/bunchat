@@ -194,7 +194,107 @@ export default function Home() {
 
   return (
     <div className="app-layout">
-      {/* chat library here */}
+      <div id="chat-library">
+        <h2>Chat Library</h2>
+        <button id="new-chat-button" onClick={handleNewChat}>
+          New Chat +
+        </button>
+        <ul id="chat-list">
+          {chatSessions.map((title, index) => (
+            <li
+              key={index}
+              className={index === activeChat ? "active-chat" : ""}
+              onClick={async () => {
+                if (menuOpenIndex !== null) return
+                setActiveChat(index)
+
+                const userId = session?.user?.id
+                const sessionId = `session-${index}`
+
+                if (userId) {
+                  const history = await loadMessages(userId, sessionId)
+                  setMessages(history)
+                } else {
+                  setMessages([])
+                }
+              }}
+            >
+              <div className="flex items-center justify-between w-full">
+                {renamingIndex === index ? (
+                  <input
+                    autoFocus
+                    value={chatSessions[index]}
+                    onChange={(e) => {
+                      const newTitle = e.target.value
+                      setChatSessions((prev) => {
+                        const copy = [...prev]
+                        copy[index] = newTitle
+                        return copy
+                      })
+                    }}
+                    onBlur={() => {
+                      const userId = session?.user?.id
+                      if (userId) {
+                        const sessionId = `session-${index}`
+                        setDoc(doc(db, "users", userId, "chats", sessionId), {
+                          title: chatSessions[index]
+                        }, { merge: true })
+                      }
+                      setRenamingIndex(null)
+                    }}
+                    className="bg-white px-1 border rounded text-sm w-full"
+                  />
+                ) : (
+                  <span className="text-sm truncate">{chatSessions[index]}</span>
+                )}
+
+                <div className="relative">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setMenuOpenIndex(menuOpenIndex === index ? null : index)
+                    }}
+                    className="ml-2 text-gray-500 hover:text-black"
+                  >
+                    ⋯
+                  </button>
+
+                  {menuOpenIndex === index && (
+                    <div
+                      ref={menuRef}
+                      className="absolute right-0 top-full mt-1 bg-white border rounded shadow text-sm z-10"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <button
+                        className="block w-full px-4 py-2 hover:bg-gray-100 text-left"
+                        onClick={() => {
+                          setRenamingIndex(index)
+                          setMenuOpenIndex(null)
+                        }}
+                      >
+                        Rename
+                      </button>
+                      <button
+                        className="block w-full px-4 py-2 hover:bg-red-100 text-left text-red-600"
+                        onClick={() => {
+                          handleDeleteChat(index)
+                          setMenuOpenIndex(null)
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <div className="ai-profile">
+          <img src="/cat.jpg" alt="AI Profile Picture" />
+        </div>
+      </div>
 
       <div className="chat-container">
         <div id="mode-selector">
