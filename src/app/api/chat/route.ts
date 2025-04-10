@@ -13,8 +13,8 @@ export async function POST(req: Request) {
       model: "gpt-4o-mini", // Use OpenAI's new GPT-4o model
       messages: [
         { role: "system", content: systemPrompt || "You are a helpful assistant." },
-        ...(history || []).map((m: any) => ({
-          role: m.role,
+        ...(history || []).map((m: { role: "user" | "ai"; text: string }) => ({
+          role: m.role === "ai" ? "assistant" : "user", // convert role to OpenAI format
           content: m.text,
         })),
         { role: "user", content: message },
