@@ -200,7 +200,7 @@ export default function Home() {
   return (
     <div className="app-layout">
       <div id="chat-library">
-        <h2>Chat Library</h2>
+        <h2>BunChat</h2>
         <button id="new-chat-button" onClick={handleNewChat}>
           New Chat +
         </button>
@@ -267,7 +267,7 @@ export default function Home() {
                   {menuOpenIndex === index && (
                     <div
                       ref={menuRef}
-                      className="absolute right-0 top-full mt-1 bg-white border rounded shadow text-sm z-10"
+                      className="absolute right-0 top-full mt-1 w-40 bg-white border rounded shadow text-sm z-10"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <button
