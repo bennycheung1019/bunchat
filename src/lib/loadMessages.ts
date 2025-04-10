@@ -7,10 +7,10 @@ export async function loadMessages(userId: string, sessionId: string) {
   const snapshot = await getDocs(q)
 
   return snapshot.docs.flatMap((doc) => {
-  const data = doc.data()
-  return [
-    { role: "user" as const, text: data.message },
-    { role: "ai" as const, text: data.response },
-  ]
-})
-
+    const data = doc.data()
+    return [
+      { role: "user" as const, text: data.message },
+      { role: "ai" as const, text: data.response },
+    ]
+  }) 
+}
