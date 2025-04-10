@@ -2,6 +2,7 @@
 
 import { signIn, useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from "react"
+import { saveMessage } from "@/lib/saveMessage"
 import "@/app/globals.css"
 
 interface Message {
@@ -17,39 +18,52 @@ export default function Home() {
   const [activeChat, setActiveChat] = useState(0)
   const messagesRef = useRef<HTMLDivElement>(null)
 
-  const handleSend = async () => {
-    if (!input.trim()) return
+const handleSend = async () => {
+  if (!input.trim()) return
 
-    const userMessage: Message = { role: "user", text: input }
-    setMessages((prev) => [...prev, userMessage])
-    setInput("")
+  const userMessage: Message = { role: "user", text: input }
+  setMessages((prev) => [...prev, userMessage])
+  setInput("")
 
-    // Add 'Thinking...' placeholder
-    setMessages((prev) => [...prev, { role: "ai", text: "Thinking..." } as Message])
+  // Add 'Thinking...' placeholder
+  setMessages((prev) => [...prev, { role: "ai", text: "Thinking..." } as Message])
 
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input }),
-      })
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: input }),
+    })
 
-      const data = await res.json()
+    const data = await res.json()
 
-      const aiReply: Message = {
-        role: "ai",
-        text: data.reply || "No response from GPT-4o-mini.",
-      }
-
-      setMessages((prev) => [...prev.slice(0, -1), aiReply])
-    } catch {
-      const errorReply: Message = {
-        role: "ai",
-        text: "Error connecting to GPT-4o-mini.",
-      }
-      setMessages((prev) => [...prev.slice(0, -1), errorReply])
+    const aiReply: Message = {
+      role: "ai",
+      text: data.reply || "No response from GPT-4o-mini.",
     }
+
+    setMessages((prev) => [...prev.slice(0, -1), aiReply])
+
+    // 🔥 Save to Firestore
+    const userId = session?.user?.id || "anonymous"
+    const sessionId = `session-${activeChat}`
+
+    await saveMessage({
+      userId,
+      message: input,
+      response: data.reply || "",
+      sessionId,
+    })
+
+  } catch {
+    const errorReply: Message = {
+      role: "ai",
+      text: "Error connecting to GPT-4o-mini.",
+    }
+    setMessages((prev) => [...prev.slice(0, -1), errorReply])
   }
+}
+
 
   const handleNewChat = () => {
     const newTitle = `Chat ${chatSessions.length + 1}`

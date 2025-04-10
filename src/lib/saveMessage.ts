@@ -1,16 +1,24 @@
 import { db } from "./firebase"
 import { collection, addDoc, serverTimestamp } from "firebase/firestore"
 
-export const saveMessage = async (userId: string, message: string, response: string) => {
+export async function saveMessage({
+  userId,
+  message,
+  response,
+  sessionId,
+}: {
+  userId: string
+  message: string
+  response: string
+  sessionId: string
+}) {
   try {
-    const docRef = await addDoc(collection(db, "messages"), {
-      userId,
+    await addDoc(collection(db, "users", userId, "chats", sessionId, "messages"), {
       message,
       response,
       createdAt: serverTimestamp(),
     })
-    console.log("Message saved:", docRef.id)
   } catch (error) {
-    console.error("Error saving message:", error)
+    console.error("Failed to save message to Firestore:", error)
   }
 }
