@@ -3,7 +3,6 @@
 import { signIn, useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from "react"
 import { saveMessage } from "@/lib/saveMessage"
-import { loadMessages } from "@/lib/loadMessages"
 import { doc, setDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { collection, getDocs } from "firebase/firestore"
@@ -85,14 +84,6 @@ export default function Home() {
         title: newTitle
       }, { merge: true })
     }
-  }
-
-
-  const scrollToBottom = () => {
-    messagesRef.current?.scrollTo({
-      top: messagesRef.current.scrollHeight,
-      behavior: "smooth",
-    })
   }
 
   useEffect(() => {
