@@ -15,11 +15,6 @@ import {
 
 import "@/app/globals.css"
 
-const [menuOpenIndex, setMenuOpenIndex] = useState<number | null>(null)
-const [renamingIndex, setRenamingIndex] = useState<number | null>(null)
-const menuRef = useRef<HTMLDivElement | null>(null)
-
-
 interface Message {
   role: "user" | "ai"
   text: string
@@ -32,6 +27,9 @@ export default function Home() {
   const [chatSessions, setChatSessions] = useState<string[]>(["Chat 1"])
   const [activeChat, setActiveChat] = useState(0)
   const messagesRef = useRef<HTMLDivElement>(null)
+  const [menuOpenIndex, setMenuOpenIndex] = useState<number | null>(null)
+  const [renamingIndex, setRenamingIndex] = useState<number | null>(null)
+  const menuRef = useRef<HTMLDivElement | null>(null)
 
   const handleSend = async () => {
     if (!input.trim()) return
