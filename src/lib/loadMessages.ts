@@ -6,11 +6,11 @@ export async function loadMessages(userId: string, sessionId: string) {
   const q = query(messagesRef, orderBy("createdAt", "asc"))
   const snapshot = await getDocs(q)
 
-  return snapshot.docs.map((doc) => {
-    const data = doc.data()
-    return [
-      { role: "user", text: data.message },
-      { role: "ai", text: data.response },
-    ]
-  }).flat() // Flatten so messages are ordered in 1 array
-}
+  return snapshot.docs.flatMap((doc) => {
+  const data = doc.data()
+  return [
+    { role: "user" as const, text: data.message },
+    { role: "ai" as const, text: data.response },
+  ]
+})
+
