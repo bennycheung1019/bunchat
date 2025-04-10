@@ -184,6 +184,23 @@ export default function Home() {
     }
   }, [messages])
 
+  useEffect(() => {
+    const handleCloseSidebar = (e: MouseEvent) => {
+      const sidebar = document.getElementById("chat-library")
+      if (
+        sidebar &&
+        !sidebar.contains(e.target as Node) &&
+        window.innerWidth < 768 // mobile only
+      ) {
+        setIsSidebarOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleCloseSidebar)
+    return () => document.removeEventListener("mousedown", handleCloseSidebar)
+  }, [])
+
+
   if (!session) {
     return (
       <main className="h-screen flex flex-col items-center justify-center bg-gray-100 text-center px-4">
@@ -200,19 +217,30 @@ export default function Home() {
   }
 
   return (
-    <div className="app-layout flex flex-col md:flex-row h-screen">
+    <div className="app-layout pt-14 md:pt-16 flex flex-col md:flex-row h-screen overflow-hidden">
 
-      <button
-        className="absolute top-4 left-4 z-50 p-2 bg-white border rounded shadow"
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-      >
-        ☰
-      </button>
+
+      <div className="w-full flex items-center justify-between px-4 py-2 border-b bg-white z-30 fixed top-0 left-0 right-0 h-14 md:h-16">
+        {/* Hamburger */}
+        <button
+          className="md:hidden text-2xl"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        >
+          ☰
+        </button>
+
+        <h1 className="text-lg font-semibold">BunChat</h1>
+
+        {/* User avatar or settings can go here later */}
+        <div className="w-8 h-8 rounded-full bg-gray-300" />
+      </div>
+
 
       <div
         id="chat-library"
         className={`bg-white border-r p-4 transition-transform duration-300 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } absolute md:relative md:translate-x-0 md:w-64 w-3/4 h-full z-40`}
+          } fixed md:relative md:translate-x-0 md:w-64 w-3/4 h-full z-40 top-14 md:top-0`}
+
       >
         <h2>BunChat</h2>
         <button id="new-chat-button" onClick={handleNewChat}>
