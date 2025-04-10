@@ -5,8 +5,13 @@ import { useEffect, useRef, useState } from "react"
 import { saveMessage } from "@/lib/saveMessage"
 import { loadMessages } from "@/lib/loadMessages"
 import { db } from "@/lib/firebase"
-import { deleteDoc, collection, getDocs, doc, setDoc } from "firebase/firestore"
-
+import {
+  deleteDoc,
+  collection,
+  getDocs,
+  doc,
+  setDoc
+} from "firebase/firestore"
 
 import "@/app/globals.css"
 
@@ -49,7 +54,6 @@ export default function Home() {
 
       setMessages((prev) => [...prev.slice(0, -1), aiReply])
 
-      // 🔥 Save to Firestore
       const userId = session?.user?.id || "anonymous"
       const sessionId = `session-${activeChat}`
 
@@ -59,7 +63,6 @@ export default function Home() {
         response: data.reply || "",
         sessionId,
       })
-
     } catch {
       const errorReply: Message = {
         role: "ai",
@@ -68,7 +71,6 @@ export default function Home() {
       setMessages((prev) => [...prev.slice(0, -1), errorReply])
     }
   }
-
 
   const handleNewChat = () => {
     const newTitle = `Chat ${chatSessions.length + 1}`
@@ -91,22 +93,16 @@ export default function Home() {
     if (!userId) return
 
     const sessionId = `session-${index}`
-
-    // Step 1: Delete all messages under the chat
     const messagesRef = collection(db, "users", userId, "chats", sessionId, "messages")
     const snapshot = await getDocs(messagesRef)
     const deletions = snapshot.docs.map((docSnap) => deleteDoc(docSnap.ref))
     await Promise.all(deletions)
-
-    // Step 2: Delete the chat document
     await deleteDoc(doc(db, "users", userId, "chats", sessionId))
 
-    // Step 3: Update local state
     const updatedChats = [...chatSessions]
     updatedChats.splice(index, 1)
     setChatSessions(updatedChats)
 
-    // Reset active chat if deleted one was selected
     if (index === activeChat) {
       setMessages([])
       setActiveChat(0)
@@ -132,6 +128,21 @@ export default function Home() {
 
     fetchTitles()
   }, [session])
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const userId = session?.user?.id
+      if (!userId || chatSessions.length === 0) return
+
+      const sessionId = `session-${activeChat}`
+      const history = await loadMessages(userId, sessionId)
+      setMessages(history)
+    }
+
+    if (session && chatSessions.length > 0) {
+      fetchMessages()
+    }
+  }, [session, activeChat])
 
   if (!session) {
     return (
@@ -179,7 +190,7 @@ export default function Home() {
               >
                 <input
                   value={chatSessions[index]}
-                  onClick={(e) => e.stopPropagation()} // prevent chat loading when editing
+                  onClick={(e) => e.stopPropagation()}
                   onChange={(e) => {
                     const newTitle = e.target.value
                     setChatSessions((prev) => {
@@ -200,7 +211,7 @@ export default function Home() {
                 />
                 <button
                   onClick={(e) => {
-                    e.stopPropagation() // prevent loading chat when deleting
+                    e.stopPropagation()
                     handleDeleteChat(index)
                   }}
                   className="text-red-500 text-xs hover:underline"
@@ -210,9 +221,6 @@ export default function Home() {
                 </button>
               </div>
             </li>
-
-
-
           ))}
         </ul>
         <div className="ai-profile">
