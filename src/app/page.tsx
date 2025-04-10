@@ -223,7 +223,7 @@ export default function Home() {
       <div className="w-full flex items-center justify-between px-4 py-2 border-b bg-white z-30 fixed top-0 left-0 right-0 h-14 md:h-16">
         {/* Hamburger */}
         <button
-          className="text-2xl p-2 rounded hover:bg-gray-100 bg-red-500"
+          className="text-2xl p-2 rounded hover:bg-gray-100"
           onClick={() => setIsSidebarOpen((prev) => !prev)}
         >
           ☰
@@ -380,7 +380,8 @@ export default function Home() {
           </label>
         </div>
 
-        <div className="input-area flex flex-col sm:flex-row gap-2 p-4 border-t bg-white">
+        <div className="input-area flex items-center gap-2 p-4 border-t bg-white sticky bottom-0 z-30">
+
 
           <textarea
             id="user-input"
@@ -394,7 +395,7 @@ export default function Home() {
             }}
             placeholder="Type your message..."
             className="flex-1 resize-none h-24 px-3 py-2 border rounded"
-          />
+          ></textarea>
           <button id="send-button" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onClick={handleSend} disabled={!input.trim()}>Send</button>
         </div>
       </div>
