@@ -36,9 +36,9 @@ export default function Home() {
   const getSystemPrompt = () => {
     switch (chatMode) {
       case "improve":
-        return "You are a writing assistant. Your only task is to take the user's input and return an improved version of the same content, rewritten with better grammar, clarity, and professionalism. Do not respond with explanations or greetings — only return the improved version of the input."
+        return "You are a writing assistant. Your only job is to take the user's message and rewrite it to be clearer, more concise, grammatically correct, and professional. Return only the improved version of the user's input without adding extra commentary, explanations, greetings, or notes. Do not change the meaning of the message."
       case "translate":
-        return "You are a translator. If input is in English, translate it to Traditional Chinese. If input is in Traditional Chinese, translate it to English."
+        return "You are a professional bilingual translator. Translate the user's input from English to Traditional Chinese, or from Traditional Chinese to English, depending on the language used. Keep the translation accurate and natural. Do not explain, comment, or greet — just return the translated sentence only."
       case "chat":
       default:
         return "You are a helpful and friendly AI assistant."
