@@ -4,6 +4,10 @@ import { signIn, useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from "react"
 import { saveMessage } from "@/lib/saveMessage"
 import { loadMessages } from "@/lib/loadMessages"
+import { doc, setDoc } from "firebase/firestore"
+import { db } from "@/lib/firebase"
+import { collection, getDocs } from "firebase/firestore"
+
 
 import "@/app/globals.css"
 
@@ -20,51 +24,51 @@ export default function Home() {
   const [activeChat, setActiveChat] = useState(0)
   const messagesRef = useRef<HTMLDivElement>(null)
 
-const handleSend = async () => {
-  if (!input.trim()) return
+  const handleSend = async () => {
+    if (!input.trim()) return
 
-  const userMessage: Message = { role: "user", text: input }
-  setMessages((prev) => [...prev, userMessage])
-  setInput("")
+    const userMessage: Message = { role: "user", text: input }
+    setMessages((prev) => [...prev, userMessage])
+    setInput("")
 
-  // Add 'Thinking...' placeholder
-  setMessages((prev) => [...prev, { role: "ai", text: "Thinking..." } as Message])
+    // Add 'Thinking...' placeholder
+    setMessages((prev) => [...prev, { role: "ai", text: "Thinking..." } as Message])
 
-  try {
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: input }),
-    })
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input }),
+      })
 
-    const data = await res.json()
+      const data = await res.json()
 
-    const aiReply: Message = {
-      role: "ai",
-      text: data.reply || "No response from GPT-4o-mini.",
+      const aiReply: Message = {
+        role: "ai",
+        text: data.reply || "No response from GPT-4o-mini.",
+      }
+
+      setMessages((prev) => [...prev.slice(0, -1), aiReply])
+
+      // 🔥 Save to Firestore
+      const userId = session?.user?.id || "anonymous"
+      const sessionId = `session-${activeChat}`
+
+      await saveMessage({
+        userId,
+        message: input,
+        response: data.reply || "",
+        sessionId,
+      })
+
+    } catch {
+      const errorReply: Message = {
+        role: "ai",
+        text: "Error connecting to GPT-4o-mini.",
+      }
+      setMessages((prev) => [...prev.slice(0, -1), errorReply])
     }
-
-    setMessages((prev) => [...prev.slice(0, -1), aiReply])
-
-    // 🔥 Save to Firestore
-    const userId = session?.user?.id || "anonymous"
-    const sessionId = `session-${activeChat}`
-
-    await saveMessage({
-      userId,
-      message: input,
-      response: data.reply || "",
-      sessionId,
-    })
-
-  } catch {
-    const errorReply: Message = {
-      role: "ai",
-      text: "Error connecting to GPT-4o-mini.",
-    }
-    setMessages((prev) => [...prev.slice(0, -1), errorReply])
   }
-}
 
 
   const handleNewChat = () => {
@@ -72,7 +76,17 @@ const handleSend = async () => {
     setChatSessions([...chatSessions, newTitle])
     setMessages([])
     setActiveChat(chatSessions.length)
+
+    const userId = session?.user?.id
+    const sessionId = `session-${chatSessions.length}`
+
+    if (userId) {
+      setDoc(doc(db, "users", userId, "chats", sessionId), {
+        title: newTitle
+      }, { merge: true })
+    }
   }
+
 
   const scrollToBottom = () => {
     messagesRef.current?.scrollTo({
@@ -82,8 +96,22 @@ const handleSend = async () => {
   }
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+    const fetchTitles = async () => {
+      const userId = session?.user?.id
+      if (!userId) return
+
+      const snapshot = await getDocs(collection(db, "users", userId, "chats"))
+      const titles: string[] = []
+
+      snapshot.forEach((doc) => {
+        titles.push(doc.data().title || "Untitled Chat")
+      })
+
+      setChatSessions(titles)
+    }
+
+    fetchTitles()
+  }, [session])
 
   if (!session) {
     return (
@@ -109,25 +137,29 @@ const handleSend = async () => {
         </button>
         <ul id="chat-list">
           {chatSessions.map((title, index) => (
-            <li
-              key={index}
-              className={index === activeChat ? "active-chat" : ""}
-              onClick={async () => {
-                setActiveChat(index)
-
-                const userId = session?.user?.id
-                const sessionId = `session-${index}`
-
-                if (userId) {
-                const history = await loadMessages(userId, sessionId)
-                setMessages(history)
-                } else {
-                setMessages([])
-                }
-              }}
-            >
-              {title}
+            <li key={index} className={index === activeChat ? "active-chat" : ""}>
+              <input
+                value={chatSessions[index]}
+                onChange={(e) => {
+                  const newTitle = e.target.value
+                  setChatSessions((prev) => {
+                    const copy = [...prev]
+                    copy[index] = newTitle
+                    return copy
+                  })
+                  // Optional: Save new title to Firestore
+                  const userId = session?.user?.id
+                  if (userId) {
+                    const sessionId = `session-${index}`
+                    setDoc(doc(db, "users", userId, "chats", sessionId), {
+                      title: newTitle
+                    }, { merge: true })
+                  }
+                }}
+                className="bg-transparent border-none focus:outline-none text-sm"
+              />
             </li>
+
           ))}
         </ul>
         <div className="ai-profile">
