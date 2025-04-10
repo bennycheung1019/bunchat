@@ -55,12 +55,17 @@ export default function Home() {
     setMessages((prev) => [...prev, { role: "ai", text: "Thinking..." } as Message])
 
     try {
+      const importantMessages = messages
+        .filter((msg) => msg.role === "user" || msg.role === "ai")
+        .slice(-8) // last 4 user+ai = 8 messages total
+
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: chatMode === "chat" ? input : `"${input}"`,
-          systemPrompt: getSystemPrompt()
+          systemPrompt: getSystemPrompt(),
+          history: importantMessages,
         }),
       })
 

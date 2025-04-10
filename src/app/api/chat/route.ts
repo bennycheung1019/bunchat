@@ -6,14 +6,18 @@ const openai = new OpenAI({
 })
 
 export async function POST(req: Request) {
-  const { message, systemPrompt } = await req.json()
+  const { message, systemPrompt, history } = await req.json()
 
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini", // Use OpenAI's new GPT-4o model
       messages: [
         { role: "system", content: systemPrompt || "You are a helpful assistant." },
-        { role: "user", content: message }
+        ...(history || []).map((m: any) => ({
+          role: m.role,
+          content: m.text,
+        })),
+        { role: "user", content: message },
       ],
       temperature: 0.7,
     })
