@@ -302,17 +302,7 @@ export default function Home() {
       </div>
 
       <div className="chat-container flex-1 flex flex-col overflow-hidden">
-        <div id="mode-selector">
-          <label>
-            <input type="radio" name="chat-mode" value="chat" checked={chatMode === "chat"} onChange={() => setChatMode("chat")} /> Chat
-          </label>
-          <label>
-            <input type="radio" name="chat-mode" value="improve" checked={chatMode === "improve"} onChange={() => setChatMode("improve")} /> Improve Writing
-          </label>
-          <label>
-            <input type="radio" name="chat-mode" value="translate" checked={chatMode === "translate"} onChange={() => setChatMode("translate")} /> English ↔ 中文 (Trad)
-          </label>
-        </div>
+
 
         <div id="chat-messages" ref={messagesRef} className="flex-1 overflow-y-auto p-4 space-y-2">
           {messages.map((msg, i) => (
@@ -335,6 +325,18 @@ export default function Home() {
               Copied!
             </div>
           )}
+        </div>
+
+        <div id="mode-selector">
+          <label>
+            <input type="radio" name="chat-mode" value="chat" checked={chatMode === "chat"} onChange={() => setChatMode("chat")} /> Chat
+          </label>
+          <label>
+            <input type="radio" name="chat-mode" value="improve" checked={chatMode === "improve"} onChange={() => setChatMode("improve")} /> Improve Writing
+          </label>
+          <label>
+            <input type="radio" name="chat-mode" value="translate" checked={chatMode === "translate"} onChange={() => setChatMode("translate")} /> English ↔ 中文 (Trad)
+          </label>
         </div>
 
         <div className="input-area flex flex-col sm:flex-row gap-2 p-4 border-t">
