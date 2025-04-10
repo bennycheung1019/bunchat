@@ -32,8 +32,8 @@ export default function Home() {
   const [menuOpenIndex, setMenuOpenIndex] = useState<number | null>(null)
   const [renamingIndex, setRenamingIndex] = useState<number | null>(null)
   const [showCopied, setShowCopied] = useState(false)
-  const menuRef = useRef<HTMLDivElement | null>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const sidebarRef = useRef<HTMLDivElement | null>(null)
   const buttonRef = useRef<HTMLButtonElement | null>(null)
 
 
@@ -169,17 +169,17 @@ export default function Home() {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      // Use timeout to allow button click to finish first
       setTimeout(() => {
         if (
-          menuRef.current &&
-          !menuRef.current.contains(e.target as Node) &&
+          sidebarRef.current &&
+          !sidebarRef.current.contains(e.target as Node) &&
           buttonRef.current &&
           !buttonRef.current.contains(e.target as Node)
         ) {
           setIsSidebarOpen(false)
           setMenuOpenIndex(null)
         }
+
       }, 0)
     }
 
@@ -189,28 +189,12 @@ export default function Home() {
 
 
 
+
   useEffect(() => {
     if (messagesRef.current) {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight
     }
   }, [messages])
-
-  useEffect(() => {
-    const handleCloseSidebar = (e: MouseEvent) => {
-      const sidebar = document.getElementById("chat-library")
-      if (
-        sidebar &&
-        !sidebar.contains(e.target as Node) &&
-        window.innerWidth < 768 // mobile only
-      ) {
-        setIsSidebarOpen(false)
-      }
-    }
-
-    document.addEventListener("mousedown", handleCloseSidebar)
-    return () => document.removeEventListener("mousedown", handleCloseSidebar)
-  }, [])
-
 
   if (!session) {
     return (
@@ -236,11 +220,12 @@ export default function Home() {
         {/* Hamburger */}
         <button
           ref={buttonRef}
-          className="absolute top-0 left-0 z-50 w-12 h-12 flex items-center justify-center bg-white rounded-br shadow hover:bg-gray-100 transition focus:outline-none"
-          onClick={() => setIsSidebarOpen((prev) => !prev)}
+          className="w-12 h-12 flex items-center justify-center bg-white hover:bg-gray-100 transition rounded shadow z-50"
+          onClick={() => setIsSidebarOpen(prev => !prev)}
         >
           <span className="text-xl">☰</span>
         </button>
+
 
 
 
@@ -254,7 +239,7 @@ export default function Home() {
 
 
       <div
-        id="chat-library"
+        id="chat-library" ref={sidebarRef}
         className={`bg-white border-r p-4 transition-transform duration-300 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } fixed md:relative md:translate-x-0 md:w-64 w-3/4 h-full z-40 top-14 md:top-0`}
       >
@@ -363,67 +348,67 @@ export default function Home() {
 
 
 
-        <div
-          id="chat-messages"
-          ref={messagesRef}
-          className="flex-1 overflow-y-auto p-4 space-y-2"
-          style={{ minHeight: 0 }}
-        >
+        <div className="pt-14 md:pt-16 flex-1 overflow-y-auto">
+          <div
+            id="chat-messages"
+            ref={messagesRef}
+            className="p-4 space-y-2"
+          >
 
 
-          {messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`message ${msg.role === "user" ? "user-message" : "bot-message"} hover:bg-gray-100 cursor-pointer transition`}
-              onClick={() => {
-                navigator.clipboard.writeText(msg.text)
-                setShowCopied(true)
-                setTimeout(() => setShowCopied(false), 1500)
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                className={`message ${msg.role === "user" ? "user-message" : "bot-message"} hover:bg-gray-100 cursor-pointer transition`}
+                onClick={() => {
+                  navigator.clipboard.writeText(msg.text)
+                  setShowCopied(true)
+                  setTimeout(() => setShowCopied(false), 1500)
+                }}
+                title="Click to copy"
+              >
+                {msg.text}
+              </div>
+            ))}
+
+            {showCopied && (
+              <div className="absolute left-1/2 -translate-x-1/2 bottom-28 bg-black text-white text-xs px-3 py-1 rounded shadow z-50">
+                Copied!
+              </div>
+            )}
+          </div>
+
+          <div id="mode-selector">
+            <label>
+              <input type="radio" name="chat-mode" value="chat" checked={chatMode === "chat"} onChange={() => setChatMode("chat")} /> Chat
+            </label>
+            <label>
+              <input type="radio" name="chat-mode" value="improve" checked={chatMode === "improve"} onChange={() => setChatMode("improve")} /> Improve Writing
+            </label>
+            <label>
+              <input type="radio" name="chat-mode" value="translate" checked={chatMode === "translate"} onChange={() => setChatMode("translate")} /> English ↔ 中文 (Trad)
+            </label>
+          </div>
+
+          <div className="input-area flex items-center gap-2 p-4 border-t bg-white sticky bottom-0 z-30">
+
+
+            <textarea
+              id="user-input"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault()
+                  handleSend()
+                }
               }}
-              title="Click to copy"
-            >
-              {msg.text}
-            </div>
-          ))}
-
-          {showCopied && (
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-28 bg-black text-white text-xs px-3 py-1 rounded shadow z-50">
-              Copied!
-            </div>
-          )}
-        </div>
-
-        <div id="mode-selector">
-          <label>
-            <input type="radio" name="chat-mode" value="chat" checked={chatMode === "chat"} onChange={() => setChatMode("chat")} /> Chat
-          </label>
-          <label>
-            <input type="radio" name="chat-mode" value="improve" checked={chatMode === "improve"} onChange={() => setChatMode("improve")} /> Improve Writing
-          </label>
-          <label>
-            <input type="radio" name="chat-mode" value="translate" checked={chatMode === "translate"} onChange={() => setChatMode("translate")} /> English ↔ 中文 (Trad)
-          </label>
-        </div>
-
-        <div className="input-area flex items-center gap-2 p-4 border-t bg-white sticky bottom-0 z-30">
-
-
-          <textarea
-            id="user-input"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault()
-                handleSend()
-              }
-            }}
-            placeholder="Type your message..."
-            className="flex-1 resize-none h-24 px-3 py-2 border rounded"
-          ></textarea>
-          <button id="send-button" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onClick={handleSend} disabled={!input.trim()}>Send</button>
+              placeholder="Type your message..."
+              className="flex-1 resize-none h-24 px-3 py-2 border rounded"
+            ></textarea>
+            <button id="send-button" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onClick={handleSend} disabled={!input.trim()}>Send</button>
+          </div>
         </div>
       </div>
-    </div>
-  )
+      )
 }
