@@ -26,10 +26,24 @@ export default function Home() {
   const [input, setInput] = useState("")
   const [chatSessions, setChatSessions] = useState<string[]>(["Chat 1"])
   const [activeChat, setActiveChat] = useState(0)
+  const [chatMode, setChatMode] = useState<"chat" | "improve" | "translate">("chat")
   const messagesRef = useRef<HTMLDivElement>(null)
   const [menuOpenIndex, setMenuOpenIndex] = useState<number | null>(null)
   const [renamingIndex, setRenamingIndex] = useState<number | null>(null)
   const menuRef = useRef<HTMLDivElement | null>(null)
+
+
+  const getSystemPrompt = () => {
+    switch (chatMode) {
+      case "improve":
+        return "You are a professional writing assistant. Improve the user's text to be clear and professional."
+      case "translate":
+        return "You are a translator. If input is in English, translate it to Traditional Chinese. If input is in Traditional Chinese, translate it to English."
+      case "chat":
+      default:
+        return "You are a helpful and friendly AI assistant."
+    }
+  }
 
   const handleSend = async () => {
     if (!input.trim()) return
@@ -45,8 +59,12 @@ export default function Home() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({
+          message: input,
+          systemPrompt: getSystemPrompt(), // 🔥 send mode-specific system prompt
+        }),
       })
+
 
       const data = await res.json()
 
@@ -282,17 +300,36 @@ export default function Home() {
       </div>
 
       <div className="chat-container">
-        <div id="mode-selector">
+        <div id="mode-selector" className="flex gap-4 mb-4">
           <label>
-            <input type="radio" name="chat-mode" value="chat" defaultChecked /> Chat
+            <input
+              type="radio"
+              name="chat-mode"
+              value="chat"
+              checked={chatMode === "chat"}
+              onChange={() => setChatMode("chat")}
+            /> Chat
           </label>
           <label>
-            <input type="radio" name="chat-mode" value="improve" /> Improve Writing
+            <input
+              type="radio"
+              name="chat-mode"
+              value="improve"
+              checked={chatMode === "improve"}
+              onChange={() => setChatMode("improve")}
+            /> Improve Writing
           </label>
           <label>
-            <input type="radio" name="chat-mode" value="translate" /> English ↔ 中文 (Trad)
+            <input
+              type="radio"
+              name="chat-mode"
+              value="translate"
+              checked={chatMode === "translate"}
+              onChange={() => setChatMode("translate")}
+            /> English ↔ 中文 (Trad)
           </label>
         </div>
+
 
         <div id="chat-messages" ref={messagesRef}>
           {messages.map((msg, i) => (

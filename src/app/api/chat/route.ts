@@ -15,6 +15,7 @@ export async function POST(req: Request) {
         { role: "system", content: "You are a helpful assistant." },
         { role: "user", content: message },
       ],
+      temperature: 0.7,
     })
 
     const reply = response.choices[0].message?.content || "No reply from GPT-4o"
