@@ -3,6 +3,7 @@
 import { signIn, useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from "react"
 import { saveMessage } from "@/lib/saveMessage"
+import { loadMessages } from "@/lib/loadMessages"
 import { doc, setDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { collection, getDocs } from "firebase/firestore"
@@ -128,7 +129,23 @@ export default function Home() {
         </button>
         <ul id="chat-list">
           {chatSessions.map((title, index) => (
-            <li key={index} className={index === activeChat ? "active-chat" : ""}>
+            <li
+              key={index}
+              className={index === activeChat ? "active-chat" : ""}
+              onClick={async () => {
+                setActiveChat(index)
+
+                const userId = session?.user?.id
+                const sessionId = `session-${index}`
+
+                if (userId) {
+                  const history = await loadMessages(userId, sessionId)
+                  setMessages(history)
+                } else {
+                  setMessages([])
+                }
+              }}
+            >
               <input
                 value={chatSessions[index]}
                 onChange={(e) => {
@@ -138,18 +155,19 @@ export default function Home() {
                     copy[index] = newTitle
                     return copy
                   })
-                  // Optional: Save new title to Firestore
+
                   const userId = session?.user?.id
                   if (userId) {
                     const sessionId = `session-${index}`
                     setDoc(doc(db, "users", userId, "chats", sessionId), {
-                      title: newTitle
+                      title: newTitle,
                     }, { merge: true })
                   }
                 }}
                 className="bg-transparent border-none focus:outline-none text-sm"
               />
             </li>
+
 
           ))}
         </ul>
