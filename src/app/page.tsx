@@ -4,9 +4,8 @@ import { signIn, useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from "react"
 import { saveMessage } from "@/lib/saveMessage"
 import { loadMessages } from "@/lib/loadMessages"
-import { doc, setDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import { collection, getDocs } from "firebase/firestore"
+import { deleteDoc, collection, getDocs, doc, setDoc } from "firebase/firestore"
 
 
 import "@/app/globals.css"
@@ -87,6 +86,35 @@ export default function Home() {
     }
   }
 
+  const handleDeleteChat = async (index: number) => {
+    const userId = session?.user?.id
+    if (!userId) return
+
+    const sessionId = `session-${index}`
+
+    // Step 1: Delete all messages under the chat
+    const messagesRef = collection(db, "users", userId, "chats", sessionId, "messages")
+    const snapshot = await getDocs(messagesRef)
+    const deletions = snapshot.docs.map((docSnap) => deleteDoc(docSnap.ref))
+    await Promise.all(deletions)
+
+    // Step 2: Delete the chat document
+    await deleteDoc(doc(db, "users", userId, "chats", sessionId))
+
+    // Step 3: Update local state
+    const updatedChats = [...chatSessions]
+    updatedChats.splice(index, 1)
+    setChatSessions(updatedChats)
+
+    // Reset active chat if deleted one was selected
+    if (index === activeChat) {
+      setMessages([])
+      setActiveChat(0)
+    } else if (index < activeChat) {
+      setActiveChat((prev) => prev - 1)
+    }
+  }
+
   useEffect(() => {
     const fetchTitles = async () => {
       const userId = session?.user?.id
@@ -132,41 +160,57 @@ export default function Home() {
             <li
               key={index}
               className={index === activeChat ? "active-chat" : ""}
-              onClick={async () => {
-                setActiveChat(index)
-
-                const userId = session?.user?.id
-                const sessionId = `session-${index}`
-
-                if (userId) {
-                  const history = await loadMessages(userId, sessionId)
-                  setMessages(history)
-                } else {
-                  setMessages([])
-                }
-              }}
             >
-              <input
-                value={chatSessions[index]}
-                onChange={(e) => {
-                  const newTitle = e.target.value
-                  setChatSessions((prev) => {
-                    const copy = [...prev]
-                    copy[index] = newTitle
-                    return copy
-                  })
+              <div
+                className="flex items-center gap-2 w-full cursor-pointer"
+                onClick={async () => {
+                  setActiveChat(index)
 
                   const userId = session?.user?.id
+                  const sessionId = `session-${index}`
+
                   if (userId) {
-                    const sessionId = `session-${index}`
-                    setDoc(doc(db, "users", userId, "chats", sessionId), {
-                      title: newTitle,
-                    }, { merge: true })
+                    const history = await loadMessages(userId, sessionId)
+                    setMessages(history)
+                  } else {
+                    setMessages([])
                   }
                 }}
-                className="bg-transparent border-none focus:outline-none text-sm"
-              />
+              >
+                <input
+                  value={chatSessions[index]}
+                  onClick={(e) => e.stopPropagation()} // prevent chat loading when editing
+                  onChange={(e) => {
+                    const newTitle = e.target.value
+                    setChatSessions((prev) => {
+                      const copy = [...prev]
+                      copy[index] = newTitle
+                      return copy
+                    })
+
+                    const userId = session?.user?.id
+                    if (userId) {
+                      const sessionId = `session-${index}`
+                      setDoc(doc(db, "users", userId, "chats", sessionId), {
+                        title: newTitle,
+                      }, { merge: true })
+                    }
+                  }}
+                  className="bg-transparent border-none focus:outline-none text-sm w-full"
+                />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation() // prevent loading chat when deleting
+                    handleDeleteChat(index)
+                  }}
+                  className="text-red-500 text-xs hover:underline"
+                  title="Delete chat"
+                >
+                  🗑
+                </button>
+              </div>
             </li>
+
 
 
           ))}
