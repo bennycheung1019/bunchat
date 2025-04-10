@@ -160,12 +160,7 @@ export default function Home() {
     }
   }, [])
 
-  // 👇 your return() starts here
-  return (
-    <div className="app-layout">
-      ...
-    </div>
-  )
+
 
   if (!session) {
     return (
