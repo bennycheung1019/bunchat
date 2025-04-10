@@ -3,6 +3,8 @@
 import { signIn, useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from "react"
 import { saveMessage } from "@/lib/saveMessage"
+import { loadMessages } from "@/lib/loadMessages"
+
 import "@/app/globals.css"
 
 interface Message {
@@ -110,9 +112,18 @@ const handleSend = async () => {
             <li
               key={index}
               className={index === activeChat ? "active-chat" : ""}
-              onClick={() => {
+              onClick={async () => {
                 setActiveChat(index)
-                setMessages([]) // TODO: load messages from Firestore per session
+
+                const userId = session?.user?.id
+                const sessionId = `session-${index}`
+
+                if (userId) {
+                const history = await loadMessages(userId, sessionId)
+                setMessages(history)
+                } else {
+                setMessages([])
+                }
               }}
             >
               {title}
