@@ -169,20 +169,24 @@ export default function Home() {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(e.target as Node) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(e.target as Node)
-      ) {
-        setIsSidebarOpen(false)
-        setMenuOpenIndex(null)
-      }
+      // Use timeout to allow button click to finish first
+      setTimeout(() => {
+        if (
+          menuRef.current &&
+          !menuRef.current.contains(e.target as Node) &&
+          buttonRef.current &&
+          !buttonRef.current.contains(e.target as Node)
+        ) {
+          setIsSidebarOpen(false)
+          setMenuOpenIndex(null)
+        }
+      }, 0)
     }
 
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
+
 
 
   useEffect(() => {
