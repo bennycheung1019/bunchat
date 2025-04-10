@@ -198,8 +198,8 @@ export default function Home() {
   }
 
   return (
-    <div className="app-layout">
-      <div id="chat-library">
+    <div className="app-layout flex flex-col md:flex-row h-screen">
+      <div id="chat-library" className="bg-white border-r md:w-64 w-full md:h-full h-48 overflow-y-auto p-4">
         <h2>BunChat</h2>
         <button id="new-chat-button" onClick={handleNewChat}>
           New Chat +
@@ -301,7 +301,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="chat-container">
+      <div className="chat-container flex-1 flex flex-col overflow-hidden">
         <div id="mode-selector">
           <label>
             <input type="radio" name="chat-mode" value="chat" checked={chatMode === "chat"} onChange={() => setChatMode("chat")} /> Chat
@@ -314,7 +314,7 @@ export default function Home() {
           </label>
         </div>
 
-        <div id="chat-messages" ref={messagesRef} className="relative overflow-y-auto flex-1">
+        <div id="chat-messages" ref={messagesRef} className="flex-1 overflow-y-auto p-4 space-y-2">
           {messages.map((msg, i) => (
             <div
               key={i}
@@ -337,7 +337,7 @@ export default function Home() {
           )}
         </div>
 
-        <div className="input-area">
+        <div className="input-area flex flex-col sm:flex-row gap-2 p-4 border-t">
           <textarea
             id="user-input"
             value={input}
@@ -349,9 +349,9 @@ export default function Home() {
               }
             }}
             placeholder="Type your message..."
-            className="resize-none h-24"
+            className="flex-1 resize-none h-24 px-3 py-2 border rounded"
           />
-          <button id="send-button" onClick={handleSend} disabled={!input.trim()}>Send</button>
+          <button id="send-button" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onClick={handleSend} disabled={!input.trim()}>Send</button>
         </div>
       </div>
     </div>
