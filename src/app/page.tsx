@@ -224,15 +224,12 @@ export default function Home() {
       <div className="w-full flex items-center justify-between px-4 py-2 border-b bg-white z-30 fixed top-0 left-0 right-0 h-14 md:h-16">
         {/* Hamburger */}
         <button
-          className="absolute top-0 left-0 z-50 w-12 h-12 flex items-center justify-center bg-white border-r border-b rounded-br shadow hover:bg-gray-100 transition"
-          onClick={() => setIsSidebarOpen((prev) => !prev)}
+          className="absolute top-0 left-0 z-50 w-12 h-12 flex items-center justify-center bg-white rounded-br shadow hover:bg-gray-100 transition focus:outline-none"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         >
           <span className="text-xl">☰</span>
         </button>
 
-
-
-        <h1 className="text-lg font-semibold">BunChat</h1>
 
         {/* User avatar or settings can go here later */}
         <div className="w-8 h-8 rounded-full bg-gray-300" />
