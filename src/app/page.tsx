@@ -223,11 +223,12 @@ export default function Home() {
       <div className="w-full flex items-center justify-between px-4 py-2 border-b bg-white z-30 fixed top-0 left-0 right-0 h-14 md:h-16">
         {/* Hamburger */}
         <button
-          className="md:hidden text-2xl"
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="text-2xl p-2 rounded hover:bg-gray-100"
+          onClick={() => setIsSidebarOpen((prev) => !prev)}
         >
           ☰
         </button>
+
 
         <h1 className="text-lg font-semibold">BunChat</h1>
 
@@ -240,7 +241,6 @@ export default function Home() {
         id="chat-library"
         className={`bg-white border-r p-4 transition-transform duration-300 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } fixed md:relative md:translate-x-0 md:w-64 w-3/4 h-full z-40 top-14 md:top-0`}
-
       >
         <h2>BunChat</h2>
         <button id="new-chat-button" onClick={handleNewChat}>
@@ -343,7 +343,8 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="chat-container flex flex-col flex-1 h-full overflow-hidden">
+      <div className="chat-container flex flex-col flex-1 overflow-hidden pt-14 md:pt-16">
+
         <div id="chat-messages" ref={messagesRef} className="flex-1 overflow-y-auto p-4 space-y-2">
           {messages.map((msg, i) => (
             <div
@@ -379,7 +380,8 @@ export default function Home() {
           </label>
         </div>
 
-        <div className="input-area flex flex-col sm:flex-row gap-2 p-4 border-t">
+        <div className="input-area flex flex-col sm:flex-row gap-2 p-4 border-t bg-white">
+
           <textarea
             id="user-input"
             value={input}
