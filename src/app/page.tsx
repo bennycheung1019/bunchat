@@ -247,7 +247,7 @@ export default function Home() {
                   {menuOpenIndex === index && (
                     <div
                       ref={menuRef}
-                      className="absolute right-0 top-full mt-1 bg-white border rounded shadow text-sm z-10"
+                      className="absolute right-0 top-full mt-1 w-40 bg-white border rounded shadow text-sm z-10"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <button
