@@ -31,14 +31,16 @@ export default function Home() {
   const [menuOpenIndex, setMenuOpenIndex] = useState<number | null>(null)
   const [renamingIndex, setRenamingIndex] = useState<number | null>(null)
   const menuRef = useRef<HTMLDivElement | null>(null)
+  const [showCopied, setShowCopied] = useState(false)
+
 
 
   const getSystemPrompt = () => {
     switch (chatMode) {
       case "improve":
-        return "You are a writing assistant. The user's message will always be inside quotation marks. Rewrite only the quoted text to be clearer, more concise, and professional. Do not add anything beyond the improved version of the quote. Never answer or respond — only rewrite."
+        return "You are a writing assistant. The user's message will always be inside quotation marks. Rewrite only the quoted text to be clearer, more concise, and professional (without the quotation mark). Do not add anything beyond the improved version of the quote. Never answer or respond — only rewrite."
       case "translate":
-        return "You are a bilingual translator. The user's message will always be in quotation marks. Translate the quoted text between English and Traditional Chinese, depending on the language. Return only the translated version. Do not explain or reply — only translate."
+        return "You are a bilingual translator. The user's message will always be in quotation marks. Translate the quoted text between English and Traditional Chinese, depending on the language. Return only the translated version (without the quotation mark). Do not explain or reply — only translate."
       case "chat":
       default:
         return "You are a helpful and friendly AI assistant."
@@ -301,60 +303,62 @@ export default function Home() {
       </div>
 
       <div className="chat-container">
-        <div id="mode-selector" className="flex gap-4 mb-4">
+        <div id="mode-selector">
           <label>
-            <input
-              type="radio"
-              name="chat-mode"
-              value="chat"
-              checked={chatMode === "chat"}
-              onChange={() => setChatMode("chat")}
-            /> Chat
+            <input type="radio" name="chat-mode" value="chat" defaultChecked /> Chat
           </label>
           <label>
-            <input
-              type="radio"
-              name="chat-mode"
-              value="improve"
-              checked={chatMode === "improve"}
-              onChange={() => setChatMode("improve")}
-            /> Improve Writing
+            <input type="radio" name="chat-mode" value="improve" /> Improve Writing
           </label>
           <label>
-            <input
-              type="radio"
-              name="chat-mode"
-              value="translate"
-              checked={chatMode === "translate"}
-              onChange={() => setChatMode("translate")}
-            /> English ↔ 中文 (Trad)
+            <input type="radio" name="chat-mode" value="translate" /> English ↔ 中文 (Trad)
           </label>
         </div>
 
-
-        <div id="chat-messages" ref={messagesRef}>
+        <div id="chat-messages" ref={messagesRef} className="relative">
           {messages.map((msg, i) => (
             <div
               key={i}
-              className={`message ${msg.role === "user" ? "user-message" : "bot-message"}`}
+              className={`message ${msg.role === "user" ? "user-message" : "bot-message"} hover:bg-gray-100 cursor-pointer transition`}
+              onClick={() => {
+                navigator.clipboard.writeText(msg.text)
+                setShowCopied(true)
+                setTimeout(() => setShowCopied(false), 1500)
+              }}
+              title="Click to copy"
             >
               {msg.text}
             </div>
           ))}
+
+          {/* Copied Toast */}
+          {showCopied && (
+            <div className="absolute bottom-2 right-2 bg-black text-white text-xs px-3 py-1 rounded shadow">
+              Copied!
+            </div>
+          )}
         </div>
 
         <div className="input-area">
-          <input
+          <textarea
             id="user-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault()
+                handleSend()
+              }
+            }}
             placeholder="Type your message..."
+            className="resize-none h-24"
           />
           <button id="send-button" onClick={handleSend} disabled={!input.trim()}>
             Send
           </button>
         </div>
       </div>
+
     </div>
   )
 }
