@@ -343,9 +343,15 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="chat-container flex flex-col flex-1 overflow-hidden pt-14 md:pt-16">
+      <div className="chat-container flex flex-col flex-1 max-h-screen overflow-hidden md:ml-64">
 
-        <div id="chat-messages" ref={messagesRef} className="flex-1 overflow-y-auto p-4 space-y-2">
+        <div
+          id="chat-messages"
+          ref={messagesRef}
+          className="flex-1 overflow-y-auto p-4 space-y-2"
+          style={{ minHeight: 0 }}
+        >
+
           {messages.map((msg, i) => (
             <div
               key={i}
@@ -381,6 +387,7 @@ export default function Home() {
         </div>
 
         <div className="input-area flex items-center gap-2 p-4 border-t bg-white sticky bottom-0 z-30">
+
 
 
           <textarea
