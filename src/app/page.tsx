@@ -33,6 +33,8 @@ export default function Home() {
   const [renamingIndex, setRenamingIndex] = useState<number | null>(null)
   const [showCopied, setShowCopied] = useState(false)
   const menuRef = useRef<HTMLDivElement | null>(null)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+
 
   const getSystemPrompt = () => {
     switch (chatMode) {
@@ -199,7 +201,11 @@ export default function Home() {
 
   return (
     <div className="app-layout flex flex-col md:flex-row h-screen">
-      <div id="chat-library" className="bg-white border-r md:w-64 w-full md:h-full h-48 overflow-y-auto p-4">
+      <div
+        id="chat-library"
+        className={`bg-white border-r p-4 transition-transform duration-300 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } absolute md:relative md:translate-x-0 md:w-64 w-3/4 h-full z-40`}
+      >
         <h2>BunChat</h2>
         <button id="new-chat-button" onClick={handleNewChat}>
           New Chat +
@@ -301,9 +307,14 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="chat-container flex-1 flex flex-col overflow-hidden">
+      <button
+        className="absolute top-4 left-4 z-50 p-2 bg-white border rounded shadow"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      >
+        ☰
+      </button>
 
-
+      <div className="chat-container flex flex-col flex-1 h-screen overflow-hidden md:ml-64">
         <div id="chat-messages" ref={messagesRef} className="flex-1 overflow-y-auto p-4 space-y-2">
           {messages.map((msg, i) => (
             <div
