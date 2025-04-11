@@ -27,5 +27,5 @@ body {
 }
 
 .safe-top-padding {
-  padding-top: calc(3.5rem + env(safe-area-inset-top, 0px));
+  padding-top: calc(3.5rem + env(safe-area-inset-top, 500px));
 }
