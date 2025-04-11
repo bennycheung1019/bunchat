@@ -344,7 +344,7 @@ export default function Home() {
       </div>
 
       {/* chat-container(include chat window+radio selector+input section) */}
-      <div className="chat-container relative flex flex-col" style={{ height: "calc(100vh - 144px)" }}>
+      <div className="chat-container relative flex flex-col" style={{ height: "calc(100vh - 200px)" }}>
 
 
         {/* Topbar */}
