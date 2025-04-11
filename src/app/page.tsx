@@ -344,7 +344,8 @@ export default function Home() {
       </div>
 
       {/* chat-container(include chat window+radio selector+input section) */}
-      <div className="chat-container relative flex flex-col flex-1 min-h-0">
+      <div className="chat-container relative flex flex-col" style={{ height: "calc(100vh - 144px)" }}>
+
 
         {/* Topbar */}
         <div className="w-full z-30 bg-white border-b" style={{ height: "56px" }}>
@@ -364,9 +365,10 @@ export default function Home() {
         {/* chat-messages */}
         <div
           id="chat-messages"
-          className="flex-1 overflow-y-auto pt-14 md:pt-16 pb-120"
+          className="flex-1 overflow-y-auto pt-14 md:pt-16 pb-40 md:pb-0"
           ref={messagesRef}
         >
+
 
 
 
