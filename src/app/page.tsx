@@ -188,8 +188,6 @@ export default function Home() {
   }, [])
 
 
-
-
   useEffect(() => {
     if (messagesRef.current) {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight
