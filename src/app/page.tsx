@@ -365,7 +365,12 @@ export default function Home() {
 
 
         <div className="pt-14 md:pt-16 flex-1 overflow-y-auto">
-          <div id="chat-messages" ref={messagesRef} className="p-4 space-y-2">
+          <div
+            id="chat-messages"
+            ref={messagesRef}
+            className="p-4 pb-48 space-y-2"
+          >
+
 
             {chatMode === "replyEmail" && (
               <div className="space-y-4 p-4">
