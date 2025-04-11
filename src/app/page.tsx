@@ -35,6 +35,8 @@ export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const sidebarRef = useRef<HTMLDivElement | null>(null)
   const buttonRef = useRef<HTMLButtonElement | null>(null)
+  const menuRef = useRef<HTMLDivElement | null>(null)
+
 
 
 
