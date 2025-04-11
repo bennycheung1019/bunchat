@@ -228,10 +228,9 @@ export default function Home() {
   }
 
   return (
-    <div className="app-layout flex flex-col md:flex-row h-screen">
+    <div className="app-layout flex flex-col md:flex-row h-screen overflow-hidden">
 
-
-
+      {/* Topbar */}
       <div className="w-full flex items-center justify-between px-4 py-2 border-b bg-white z-30 fixed top-0 left-0 right-0 h-14 md:h-16">
         {/* Hamburger */}
         <button
@@ -242,23 +241,28 @@ export default function Home() {
           <span className="text-xl">☰</span>
         </button>
 
-
-
-
-
-
         <h1 className="text-lg font-semibold">BunChat</h1>
 
         {/* User avatar or settings can go here later */}
         <div className="w-8 h-8 rounded-full bg-gray-300" />
       </div>
 
-
+      {/* Sidebar */}
       <div
-        id="chat-library" ref={sidebarRef}
-        className={`bg-white border-r p-4 transition-transform duration-300 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } fixed md:relative md:translate-x-0 md:w-64 w-3/4 h-full z-40 top-14 md:top-0`}
+        id="chat-library"
+        ref={sidebarRef}
+        className={`bg-white border-r p-4 md:overflow-y-auto
+      transform transition-transform duration-300
+      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
+      fixed md:static
+      w-3/4 md:w-64
+      h-[calc(100%-3.5rem)] md:h-auto
+      top-14 md:top-0
+      z-40`}
       >
+
+
+
         <h2>BunChat</h2>
         <button id="new-chat-button" onClick={handleNewChat}>
           New Chat +
@@ -354,15 +358,12 @@ export default function Home() {
             </li>
           ))}
         </ul>
-
-        <div className="ai-profile">
-          <img src="/cat.jpg" alt="AI Profile Picture" />
-        </div>
       </div>
 
-      <div className="chat-container relative flex flex-col flex-1 max-h-screen overflow-y-auto">
+      {/* chat-container(include chat window+radio selector+input section) */}
+      <div className="chat-container relative flex flex-col flex-1 min-h-0">
 
-        <div className="flex-1 overflow-y-auto pt-14 md:pt-16 pb-48" ref={messagesRef}>
+        <div className="flex-1 overflow-y-auto pt-14 md:pt-16 pb-40" ref={messagesRef}>
           <div id="chat-messages" className="p-4 space-y-2 min-h-full">
 
 
@@ -443,7 +444,11 @@ export default function Home() {
             paddingBottom: "env(safe-area-inset-bottom)",
           }}
         >
-          <div id="mode-selector" className="p-2 flex justify-around border-b text-sm">
+          {/* mode-selector */}
+          <div
+            id="mode-selector"
+            className="p-2 flex justify-around border-b text-sm md:ml-64"
+          >
             <label>
               <input
                 type="radio"
@@ -483,7 +488,8 @@ export default function Home() {
           </div>
 
 
-          <div className="input-area flex items-center gap-2 p-4">
+          <div className="input-area flex items-center gap-2 p-4 md:ml-64">
+
             <textarea
               id="user-input"
               value={input}
