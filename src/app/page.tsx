@@ -501,7 +501,7 @@ export default function Home() {
                 }
               }}
               placeholder="Type your message..."
-              className="flex-1 resize-none h-24 px-3 py-2 border rounded"
+              className="flex-1 resize-none h-16 px-3 py-2 border rounded"
             ></textarea>
             <button
               id="send-button"
