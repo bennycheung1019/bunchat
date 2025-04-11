@@ -364,7 +364,7 @@ export default function Home() {
         {/* chat-messages */}
         <div
           id="chat-messages"
-          className="flex-1 overflow-y-auto pt-14 md:pt-16 pb-40"
+          className="flex-1 overflow-y-auto pt-14 md:pt-16 pb-120"
           ref={messagesRef}
         >
 
