@@ -363,7 +363,7 @@ export default function Home() {
       {/* chat-container(include chat window+radio selector+input section) */}
       <div className="chat-container relative flex flex-col flex-1 min-h-0">
 
-        <div className="pt-[calc(3.5rem+env(safe-area-inset-top))]">
+        <div className="pt-[calc(8rem+env(safe-area-inset-top))]">
 
           {/* chat-messages */}
           <div id="chat-messages" className="p-4 space-y-2 min-h-full">
