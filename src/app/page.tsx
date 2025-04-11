@@ -53,6 +53,8 @@ export default function Home() {
         return "You are a writing assistant. The user's message will always be inside quotation marks. Rewrite only the quoted text to be clearer, more concise, and professional, but reply without that quotation mark. Do not add anything beyond the improved version of the quote. Never answer or respond — only rewrite."
       case "translate":
         return "You are a bilingual translator. The user's message will always be in quotation marks. Translate the quoted text between English and Traditional Chinese, depending on the language. Return only the translated version without that quotation mark. Do not explain or reply — only translate."
+      case "replyEmail":
+        return "You are a bilingual translator. The user's message will always be in quotation marks. Translate the quoted text between English and Traditional Chinese, depending on the language. Return only the translated version without that quotation mark. Do not explain or reply — only translate."
       default:
         return "You are a helpful and friendly AI assistant."
     }
@@ -432,18 +434,49 @@ export default function Home() {
 
         </div>
         {chatMode !== "replyEmail" && (
-          <div className="sticky bottom-0 w-full bg-white border-t z-30">
-            <div id="mode-selector" className="p-2 flex justify-around border-b">
+          <div
+            className="sticky bottom-0 w-full bg-white border-t z-30"
+            style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+          >
+            <div id="mode-selector" className="p-2 flex justify-around border-b text-sm">
               <label>
-                <input type="radio" name="chat-mode" value="chat" checked={chatMode === "chat"} onChange={() => setChatMode("chat")} /> Chat
+                <input
+                  type="radio"
+                  name="chat-mode"
+                  value="chat"
+                  checked={chatMode === "chat"}
+                  onChange={() => setChatMode("chat")}
+                /> Chat
               </label>
               <label>
-                <input type="radio" name="chat-mode" value="improve" checked={chatMode === "improve"} onChange={() => setChatMode("improve")} /> Improve
+                <input
+                  type="radio"
+                  name="chat-mode"
+                  value="improve"
+                  checked={chatMode === "improve"}
+                  onChange={() => setChatMode("improve")}
+                /> Improve
               </label>
               <label>
-                <input type="radio" name="chat-mode" value="translate" checked={chatMode === "translate"} onChange={() => setChatMode("translate")} /> Translate
+                <input
+                  type="radio"
+                  name="chat-mode"
+                  value="translate"
+                  checked={chatMode === "translate"}
+                  onChange={() => setChatMode("translate")}
+                /> Translate
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="chat-mode"
+                  value="replyEmail"
+                  checked={chatMode === "replyEmail"}
+                  onChange={() => setChatMode("replyEmail")}
+                /> Reply Email
               </label>
             </div>
+
 
             <div className="input-area flex items-center gap-2 p-4">
               <textarea
