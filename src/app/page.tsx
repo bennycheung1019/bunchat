@@ -228,7 +228,7 @@ export default function Home() {
   }
 
   return (
-    <div className="app-layout flex flex-col md:flex-row h-screen overflow-hidden">
+    <div className="app-layout flex flex-col md:flex-row h-screen">
 
 
 
@@ -367,7 +367,7 @@ export default function Home() {
         </div>
 
         {/* chat-messages */}
-        <div id="chat-messages" className="p-4 space-y-2 min-h-full">
+        <div id="chat-messages" className="flex-1 overflow-y-auto pt-14 md:pt-16" ref={messagesRef}>
 
           {chatMode === "replyEmail" && (
             <div className="space-y-4 p-4">
