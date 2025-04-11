@@ -433,7 +433,7 @@ export default function Home() {
 
 
         </div>
-        {chatMode !== "replyEmail" && (
+        {["chat", "improve", "translate"].includes(chatMode) && (
           <div
             className="sticky bottom-0 w-full bg-white border-t z-30"
             style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
