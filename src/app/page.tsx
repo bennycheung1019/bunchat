@@ -435,8 +435,14 @@ export default function Home() {
         </div>
 
         <div
-          className="sticky bottom-0 w-full bg-white border-t z-30"
-          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+          className="bg-white border-t z-30"
+          style={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            paddingBottom: "env(safe-area-inset-bottom)",
+          }}
         >
           <div id="mode-selector" className="p-2 flex justify-around border-b text-sm">
             <label>
