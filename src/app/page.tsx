@@ -362,7 +362,7 @@ export default function Home() {
 
       <div className="chat-container relative flex flex-col flex-1 max-h-screen overflow-y-auto">
 
-        <div className="flex-1 overflow-y-auto pt-14 md:pt-16 pb-24" ref={messagesRef}>
+        <div className="flex-1 overflow-y-auto pt-14 md:pt-16 pb-48" ref={messagesRef}>
           <div id="chat-messages" className="p-4 space-y-2 min-h-full">
 
 
