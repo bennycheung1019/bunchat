@@ -363,12 +363,7 @@ export default function Home() {
       {/* chat-container(include chat window+radio selector+input section) */}
       <div className="chat-container relative flex flex-col flex-1 min-h-0">
 
-        <div
-          className="pt-14"
-          style={{
-            paddingTop: `calc(3.5rem + env(safe-area-inset-top, 300px))`
-          }}
-        >
+        <div className="safe-top-padding md:pt-14 lg:pt-12">
 
 
           {/* chat-messages */}
