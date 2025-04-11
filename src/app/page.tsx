@@ -368,7 +368,7 @@ export default function Home() {
           <div
             id="chat-messages"
             ref={messagesRef}
-            className="p-4 pb-48 space-y-2"
+            className="p-4 pb-60 space-y-2"
           >
 
 
