@@ -228,7 +228,7 @@ export default function Home() {
   }
 
   return (
-    <div className="app-layout flex flex-col md:flex-row h-screen">
+    <div className="app-layout flex">
 
 
 
@@ -346,10 +346,10 @@ export default function Home() {
       </div>
 
       {/* chat-container(include chat window+radio selector+input section) */}
-      <div className="chat-container">
+      <div className="chat-container relative flex flex-col flex-1 min-h-0">
 
         {/* Topbar */}
-        <div className="w-full">
+        <div className="w-full z-30 bg-white border-b" style={{ height: "56px" }}>
           <div className="flex items-center justify-between px-4 py-2 h-full">
             <button
               ref={buttonRef}
