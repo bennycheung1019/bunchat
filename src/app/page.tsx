@@ -32,10 +32,15 @@ export default function Home() {
   const [menuOpenIndex, setMenuOpenIndex] = useState<number | null>(null)
   const [renamingIndex, setRenamingIndex] = useState<number | null>(null)
   const [showCopied, setShowCopied] = useState(false)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const sidebarRef = useRef<HTMLDivElement | null>(null)
   const buttonRef = useRef<HTMLButtonElement | null>(null)
   const menuRef = useRef<HTMLDivElement | null>(null)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth >= 768 // Open by default on desktop, closed on mobile
+    }
+    return true // fallback SSR
+  })
 
 
 
@@ -195,6 +200,13 @@ export default function Home() {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight
     }
   }, [messages])
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setIsSidebarOpen(false)
+    }
+  }, [])
+
 
   if (!session) {
     return (
