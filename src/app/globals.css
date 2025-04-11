@@ -25,7 +25,3 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-
-.safe-top-padding {
-  padding-top: calc(3.5rem + env(safe-area-inset-top, 500px));
-}

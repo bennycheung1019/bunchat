@@ -230,22 +230,7 @@ export default function Home() {
   return (
     <div className="app-layout flex flex-col md:flex-row h-screen overflow-hidden">
 
-      {/* Topbar */}
-      <div className="w-full flex items-center justify-between px-4 py-2 border-b bg-white z-30 fixed top-0 left-0 right-0 h-14 md:h-16">
-        {/* Hamburger */}
-        <button
-          ref={buttonRef}
-          className="w-12 h-12 flex items-center justify-center bg-white hover:bg-gray-100 transition rounded shadow z-50"
-          onClick={() => setIsSidebarOpen(prev => !prev)}
-        >
-          <span className="text-xl">☰</span>
-        </button>
 
-        <h1 className="text-lg font-semibold">BunChat</h1>
-
-        {/* User avatar or settings can go here later */}
-        <div className="w-8 h-8 rounded-full bg-gray-300" />
-      </div>
 
       {/* Sidebar */}
       <div
@@ -363,78 +348,92 @@ export default function Home() {
       {/* chat-container(include chat window+radio selector+input section) */}
       <div className="chat-container relative flex flex-col flex-1 min-h-0">
 
-        <div className="safe-top-padding md:pt-14 lg:pt-12">
+        {/* Topbar */}
+        <div className="w-full flex items-center justify-between px-4 py-2 border-b bg-white z-30 top-0 left-0 right-0 h-14 md:h-16">
+          {/* Hamburger */}
+          <button
+            ref={buttonRef}
+            className="w-12 h-12 flex items-center justify-center bg-white hover:bg-gray-100 transition rounded shadow z-50"
+            onClick={() => setIsSidebarOpen(prev => !prev)}
+          >
+            <span className="text-xl">☰</span>
+          </button>
 
+          <h1 className="text-lg font-semibold">BunChat</h1>
 
-          {/* chat-messages */}
-          <div id="chat-messages" className="p-4 space-y-2 min-h-full">
-
-            {chatMode === "replyEmail" && (
-              <div className="space-y-4 p-4">
-                <div className="flex gap-2">
-                  <textarea
-                    placeholder="Paste the email you want to reply to"
-                    className="w-full p-2 border rounded"
-                    value={originalEmail}
-                    onChange={(e) => setOriginalEmail(e.target.value)}
-                  />
-                  <button
-                    className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    onClick={async () => {
-                      const text = await navigator.clipboard.readText()
-                      setOriginalEmail(text)
-                    }}
-                  >
-                    Paste
-                  </button>
-                </div>
-
-                <textarea placeholder="Summarize what you want to say" className="w-full p-2 border rounded" />
-                <div className="flex gap-4">
-                  <label><input type="radio" name="tone" value="formal" /> Formal</label>
-                  <label><input type="radio" name="tone" value="friendly" /> Friendly</label>
-                  <label><input type="radio" name="tone" value="friendly" /> Angry</label>
-                </div>
-                <div
-                  className="p-4 bg-gray-100 border rounded cursor-pointer hover:bg-gray-200"
-                  onClick={() => {
-                    navigator.clipboard.writeText("Generated email text...")
-                    setShowCopied(true)
-                    setTimeout(() => setShowCopied(false), 1500)
-                  }}
-                >
-                  Generated email will appear here.
-                </div>
-              </div>
-            )}
-
-            {chatMode !== "replyEmail" &&
-              messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`message ${msg.role === "user" ? "user-message" : "bot-message"} hover:bg-gray-100 cursor-pointer transition`}
-                  onClick={() => {
-                    navigator.clipboard.writeText(msg.text)
-                    setShowCopied(true)
-                    setTimeout(() => setShowCopied(false), 1500)
-                  }}
-                  title="Click to copy"
-                >
-                  {msg.text}
-                </div>
-              ))
-            }
-
-
-            {showCopied && (
-              <div className="absolute left-1/2 -translate-x-1/2 bottom-28 bg-black text-white text-xs px-3 py-1 rounded shadow z-50">
-                Copied!
-              </div>
-            )}
-          </div>
-
-
+          {/* User avatar or settings can go here later */}
+          <div className="w-8 h-8 rounded-full bg-gray-300" />
         </div>
+
+        {/* chat-messages */}
+        <div id="chat-messages" className="p-4 space-y-2 min-h-full">
+
+          {chatMode === "replyEmail" && (
+            <div className="space-y-4 p-4">
+              <div className="flex gap-2">
+                <textarea
+                  placeholder="Paste the email you want to reply to"
+                  className="w-full p-2 border rounded"
+                  value={originalEmail}
+                  onChange={(e) => setOriginalEmail(e.target.value)}
+                />
+                <button
+                  className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  onClick={async () => {
+                    const text = await navigator.clipboard.readText()
+                    setOriginalEmail(text)
+                  }}
+                >
+                  Paste
+                </button>
+              </div>
+
+              <textarea placeholder="Summarize what you want to say" className="w-full p-2 border rounded" />
+              <div className="flex gap-4">
+                <label><input type="radio" name="tone" value="formal" /> Formal</label>
+                <label><input type="radio" name="tone" value="friendly" /> Friendly</label>
+                <label><input type="radio" name="tone" value="friendly" /> Angry</label>
+              </div>
+              <div
+                className="p-4 bg-gray-100 border rounded cursor-pointer hover:bg-gray-200"
+                onClick={() => {
+                  navigator.clipboard.writeText("Generated email text...")
+                  setShowCopied(true)
+                  setTimeout(() => setShowCopied(false), 1500)
+                }}
+              >
+                Generated email will appear here.
+              </div>
+            </div>
+          )}
+
+          {chatMode !== "replyEmail" &&
+            messages.map((msg, i) => (
+              <div
+                key={i}
+                className={`message ${msg.role === "user" ? "user-message" : "bot-message"} hover:bg-gray-100 cursor-pointer transition`}
+                onClick={() => {
+                  navigator.clipboard.writeText(msg.text)
+                  setShowCopied(true)
+                  setTimeout(() => setShowCopied(false), 1500)
+                }}
+                title="Click to copy"
+              >
+                {msg.text}
+              </div>
+            ))
+          }
+
+
+          {showCopied && (
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-28 bg-black text-white text-xs px-3 py-1 rounded shadow z-50">
+              Copied!
+            </div>
+          )}
+        </div>
+
+
+
 
         <div
           className="bg-white border-t z-30"
