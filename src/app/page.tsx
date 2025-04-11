@@ -349,22 +349,18 @@ export default function Home() {
       <div className="chat-container relative flex flex-col flex-1 min-h-0">
 
         {/* Topbar */}
-        <div className="w-full sticky top-0 flex items-center justify-between px-4 py-2 border-b bg-white z-30 h-[200px]">
-
-
-          {/* Hamburger */}
-          <button
-            ref={buttonRef}
-            className="w-12 h-12 flex items-center justify-center bg-white hover:bg-gray-100 transition rounded shadow z-50"
-            onClick={() => setIsSidebarOpen(prev => !prev)}
-          >
-            <span className="text-xl">☰</span>
-          </button>
-
-          <h1 className="text-lg font-semibold">BunChat</h1>
-
-          {/* User avatar or settings can go here later */}
-          <div className="w-8 h-8 rounded-full bg-gray-300" />
+        <div className="w-full z-30 bg-white border-b" style={{ height: "56px" }}>
+          <div className="flex items-center justify-between px-4 py-2 h-full">
+            <button
+              ref={buttonRef}
+              className="w-12 h-12 flex items-center justify-center bg-white hover:bg-gray-100 transition rounded shadow z-50"
+              onClick={() => setIsSidebarOpen(prev => !prev)}
+            >
+              <span className="text-xl">☰</span>
+            </button>
+            <h1 className="text-lg font-semibold">BunChat</h1>
+            <div className="w-8 h-8 rounded-full bg-gray-300" />
+          </div>
         </div>
 
         {/* chat-messages */}
