@@ -35,6 +35,8 @@ export default function Home() {
   const sidebarRef = useRef<HTMLDivElement | null>(null)
   const buttonRef = useRef<HTMLButtonElement | null>(null)
   const menuRef = useRef<HTMLDivElement | null>(null)
+  const [originalEmail, setOriginalEmail] = useState("")
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
     if (typeof window !== "undefined") {
       return window.innerWidth >= 768 // Open by default on desktop, closed on mobile
@@ -365,12 +367,29 @@ export default function Home() {
 
             {chatMode === "replyEmail" && (
               <div className="space-y-4 p-4">
-                <textarea placeholder="Paste the email you want to reply to" className="w-full p-2 border rounded" />
+                <div className="flex gap-2">
+                  <textarea
+                    placeholder="Paste the email you want to reply to"
+                    className="w-full p-2 border rounded"
+                    value={originalEmail}
+                    onChange={(e) => setOriginalEmail(e.target.value)}
+                  />
+                  <button
+                    className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    onClick={async () => {
+                      const text = await navigator.clipboard.readText()
+                      setOriginalEmail(text)
+                    }}
+                  >
+                    Paste
+                  </button>
+                </div>
+
                 <textarea placeholder="Summarize what you want to say" className="w-full p-2 border rounded" />
                 <div className="flex gap-4">
                   <label><input type="radio" name="tone" value="formal" /> Formal</label>
                   <label><input type="radio" name="tone" value="friendly" /> Friendly</label>
-                  <label><input type="radio" name="tone" value="confident" /> Confident</label>
+                  <label><input type="radio" name="tone" value="friendly" /> Angry</label>
                 </div>
                 <div
                   className="p-4 bg-gray-100 border rounded cursor-pointer hover:bg-gray-200"
@@ -385,20 +404,23 @@ export default function Home() {
               </div>
             )}
 
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`message ${msg.role === "user" ? "user-message" : "bot-message"} hover:bg-gray-100 cursor-pointer transition`}
-                onClick={() => {
-                  navigator.clipboard.writeText(msg.text)
-                  setShowCopied(true)
-                  setTimeout(() => setShowCopied(false), 1500)
-                }}
-                title="Click to copy"
-              >
-                {msg.text}
-              </div>
-            ))}
+            {chatMode !== "replyEmail" &&
+              messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`message ${msg.role === "user" ? "user-message" : "bot-message"} hover:bg-gray-100 cursor-pointer transition`}
+                  onClick={() => {
+                    navigator.clipboard.writeText(msg.text)
+                    setShowCopied(true)
+                    setTimeout(() => setShowCopied(false), 1500)
+                  }}
+                  title="Click to copy"
+                >
+                  {msg.text}
+                </div>
+              ))
+            }
+
 
             {showCopied && (
               <div className="absolute left-1/2 -translate-x-1/2 bottom-28 bg-black text-white text-xs px-3 py-1 rounded shadow z-50">
@@ -432,24 +454,32 @@ export default function Home() {
 
         </div>
 
-        <div className="input-area flex items-center gap-2 p-4 border-t bg-white sticky bottom-0 z-30">
+        {chatMode !== "replyEmail" && (
+          <div className="input-area flex items-center gap-2 p-4 border-t bg-white sticky bottom-0 z-30">
+            <textarea
+              id="user-input"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault()
+                  handleSend()
+                }
+              }}
+              placeholder="Type your message..."
+              className="flex-1 resize-none h-24 px-3 py-2 border rounded"
+            />
+            <button
+              id="send-button"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              onClick={handleSend}
+              disabled={!input.trim()}
+            >
+              Send
+            </button>
+          </div>
+        )}
 
-
-          <textarea
-            id="user-input"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault()
-                handleSend()
-              }
-            }}
-            placeholder="Type your message..."
-            className="flex-1 resize-none h-24 px-3 py-2 border rounded"
-          ></textarea>
-          <button id="send-button" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onClick={handleSend} disabled={!input.trim()}>Send</button>
-        </div>
       </div>
     </div>
   )
