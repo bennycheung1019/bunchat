@@ -367,7 +367,8 @@ export default function Home() {
         </div>
 
         {/* chat-messages */}
-        <div id="chat-messages" className="flex-1 overflow-y-auto pt-14 md:pt-16" ref={messagesRef}>
+        <div id="chat-messages" className="flex-1 overflow-y-auto" ref={messagesRef}>
+
 
           {chatMode === "replyEmail" && (
             <div className="space-y-4 p-4">
