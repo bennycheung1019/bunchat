@@ -27,7 +27,7 @@ export default function Home() {
   const [input, setInput] = useState("")
   const [chatSessions, setChatSessions] = useState<string[]>(["Chat 1"])
   const [activeChat, setActiveChat] = useState(0)
-  const [chatMode, setChatMode] = useState<"chat" | "improve" | "translate">("chat")
+  const [chatMode, setChatMode] = useState<"chat" | "improve" | "translate" | "replyEmail">("chat")
   const messagesRef = useRef<HTMLDivElement>(null)
   const [menuOpenIndex, setMenuOpenIndex] = useState<number | null>(null)
   const [renamingIndex, setRenamingIndex] = useState<number | null>(null)
@@ -361,12 +361,29 @@ export default function Home() {
 
 
         <div className="pt-14 md:pt-16 flex-1 overflow-y-auto">
-          <div
-            id="chat-messages"
-            ref={messagesRef}
-            className="p-4 space-y-2"
-          >
+          <div id="chat-messages" ref={messagesRef} className="p-4 space-y-2">
 
+            {chatMode === "replyEmail" && (
+              <div className="space-y-4 p-4">
+                <textarea placeholder="Paste the email you want to reply to" className="w-full p-2 border rounded" />
+                <textarea placeholder="Summarize what you want to say" className="w-full p-2 border rounded" />
+                <div className="flex gap-4">
+                  <label><input type="radio" name="tone" value="formal" /> Formal</label>
+                  <label><input type="radio" name="tone" value="friendly" /> Friendly</label>
+                  <label><input type="radio" name="tone" value="confident" /> Confident</label>
+                </div>
+                <div
+                  className="p-4 bg-gray-100 border rounded cursor-pointer hover:bg-gray-200"
+                  onClick={() => {
+                    navigator.clipboard.writeText("Generated email text...")
+                    setShowCopied(true)
+                    setTimeout(() => setShowCopied(false), 1500)
+                  }}
+                >
+                  Generated email will appear here.
+                </div>
+              </div>
+            )}
 
             {messages.map((msg, i) => (
               <div
@@ -402,6 +419,17 @@ export default function Home() {
           <label>
             <input type="radio" name="chat-mode" value="translate" checked={chatMode === "translate"} onChange={() => setChatMode("translate")} /> English ↔ 中文 (Trad)
           </label>
+          <label>
+            <input
+              type="radio"
+              name="chat-mode"
+              value="replyEmail"
+              checked={chatMode === "replyEmail"}
+              onChange={() => setChatMode("replyEmail")}
+            />
+            Reply Email
+          </label>
+
         </div>
 
         <div className="input-area flex items-center gap-2 p-4 border-t bg-white sticky bottom-0 z-30">
