@@ -346,7 +346,7 @@ export default function Home() {
       </div>
 
       {/* chat-container(include chat window+radio selector+input section) */}
-      <div className="chat-container relative flex flex-col flex-1 min-h-0">
+      <div className="chat-container">
 
         {/* Topbar */}
         <div className="w-full">
