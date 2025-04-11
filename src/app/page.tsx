@@ -366,7 +366,7 @@ export default function Home() {
         <div
           className="pt-14"
           style={{
-            paddingTop: `calc(3.5rem + env(safe-area-inset-top, 60px))`
+            paddingTop: `calc(3.5rem + env(safe-area-inset-top, 300px))`
           }}
         >
 
