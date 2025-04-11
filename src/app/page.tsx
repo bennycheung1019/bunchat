@@ -230,8 +230,6 @@ export default function Home() {
   return (
     <div className="app-layout flex">
 
-
-
       {/* Sidebar */}
       <div
         id="chat-library"
@@ -366,13 +364,10 @@ export default function Home() {
         {/* chat-messages */}
         <div
           id="chat-messages"
-          className="flex-1 overflow-y-auto"
+          className="flex-1 overflow-y-auto pt-14 md:pt-16 pb-40"
           ref={messagesRef}
-          style={{
-            paddingTop: '3.5rem',       // matches topbar height
-            paddingBottom: '9rem'       // enough to clear sticky bottom (mode-selector + input)
-          }}
         >
+
 
 
 
