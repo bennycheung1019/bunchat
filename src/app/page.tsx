@@ -431,54 +431,46 @@ export default function Home() {
 
 
         </div>
-        <div id="mode-selector">
-          <label>
-            <input type="radio" name="chat-mode" value="chat" checked={chatMode === "chat"} onChange={() => setChatMode("chat")} /> Chat
-          </label>
-          <label>
-            <input type="radio" name="chat-mode" value="improve" checked={chatMode === "improve"} onChange={() => setChatMode("improve")} /> Improve Writing
-          </label>
-          <label>
-            <input type="radio" name="chat-mode" value="translate" checked={chatMode === "translate"} onChange={() => setChatMode("translate")} /> English ↔ 中文 (Trad)
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="chat-mode"
-              value="replyEmail"
-              checked={chatMode === "replyEmail"}
-              onChange={() => setChatMode("replyEmail")}
-            />
-            Reply Email
-          </label>
-
-        </div>
-
         {chatMode !== "replyEmail" && (
-          <div className="input-area flex items-center gap-2 p-4 border-t bg-white sticky bottom-0 z-30">
-            <textarea
-              id="user-input"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault()
-                  handleSend()
-                }
-              }}
-              placeholder="Type your message..."
-              className="flex-1 resize-none h-24 px-3 py-2 border rounded"
-            />
-            <button
-              id="send-button"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-              onClick={handleSend}
-              disabled={!input.trim()}
-            >
-              Send
-            </button>
+          <div className="sticky bottom-0 w-full bg-white border-t z-30">
+            <div id="mode-selector" className="p-2 flex justify-around border-b">
+              <label>
+                <input type="radio" name="chat-mode" value="chat" checked={chatMode === "chat"} onChange={() => setChatMode("chat")} /> Chat
+              </label>
+              <label>
+                <input type="radio" name="chat-mode" value="improve" checked={chatMode === "improve"} onChange={() => setChatMode("improve")} /> Improve
+              </label>
+              <label>
+                <input type="radio" name="chat-mode" value="translate" checked={chatMode === "translate"} onChange={() => setChatMode("translate")} /> Translate
+              </label>
+            </div>
+
+            <div className="input-area flex items-center gap-2 p-4">
+              <textarea
+                id="user-input"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault()
+                    handleSend()
+                  }
+                }}
+                placeholder="Type your message..."
+                className="flex-1 resize-none h-24 px-3 py-2 border rounded"
+              ></textarea>
+              <button
+                id="send-button"
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                onClick={handleSend}
+                disabled={!input.trim()}
+              >
+                Send
+              </button>
+            </div>
           </div>
         )}
+
 
       </div>
     </div>
