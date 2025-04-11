@@ -363,11 +363,10 @@ export default function Home() {
       {/* chat-container(include chat window+radio selector+input section) */}
       <div className="chat-container relative flex flex-col flex-1 min-h-0">
 
-        <div className="flex-1 overflow-y-auto" ref={messagesRef}>
-          {/* Spacer to push content below fixed top bar */}
-          <div className="h-14 md:h-16 shrink-0" />
-          <div id="chat-messages" className="p-4 space-y-2 min-h-full">
+        <div className="pt-[calc(3.5rem+env(safe-area-inset-top))]">
 
+          {/* chat-messages */}
+          <div id="chat-messages" className="p-4 space-y-2 min-h-full">
 
             {chatMode === "replyEmail" && (
               <div className="space-y-4 p-4">
