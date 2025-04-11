@@ -349,7 +349,8 @@ export default function Home() {
       <div className="chat-container relative flex flex-col flex-1 min-h-0">
 
         {/* Topbar */}
-        <div className="w-full flex items-center justify-between px-4 py-2 border-b bg-white z-30 top-0 left-0 right-0 h-14 md:h-16">
+        <div className="w-full sticky top-0 flex items-center justify-between px-4 py-2 border-b bg-white z-30 h-14 md:h-16">
+
           {/* Hamburger */}
           <button
             ref={buttonRef}
@@ -432,9 +433,7 @@ export default function Home() {
           )}
         </div>
 
-
-
-
+        {/* bottom sticky section */}
         <div
           className="bg-white border-t z-30"
           style={{
