@@ -228,7 +228,7 @@ export default function Home() {
   }
 
   return (
-    <div className="app-layout flex flex-col md:flex-row h-screen">
+    <div className="app-layout flex ">
 
 
 
@@ -367,7 +367,16 @@ export default function Home() {
         </div>
 
         {/* chat-messages */}
-        <div id="chat-messages" className="flex-1 overflow-y-auto" ref={messagesRef}>
+        <div
+          id="chat-messages"
+          className="flex-1 overflow-y-auto"
+          ref={messagesRef}
+          style={{
+            paddingTop: '3.5rem',       // matches topbar height
+            paddingBottom: '9rem'       // enough to clear sticky bottom (mode-selector + input)
+          }}
+        >
+
 
 
           {chatMode === "replyEmail" && (
