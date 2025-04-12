@@ -439,7 +439,7 @@ export default function Home() {
         </div>
 
         {/* chat-container(include chat window+radio selector+input section) */}
-        <main className="flex flex-col w-full transition-all duration-300 ease-in-out">
+        <main className="flex flex-col w-full transition-all duration-300 ease-in-out overflow-y-auto pt-[50px] pb-[160px]">
           {/* chat-messages */}
           <div className="flex flex-col flex-1 transition-all duration-300 ease-in-out">
             {chatMode === "replyEmail" && (
