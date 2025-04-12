@@ -39,9 +39,6 @@ export default function Home() {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [originalEmail, setOriginalEmail] = useState("");
 
-  /*Add Dynamic height to chat-container*/
-  const chatContainerRef = useRef<HTMLDivElement>(null);
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
     if (typeof window !== "undefined") {
       return window.innerWidth >= 768; // Open by default on desktop, closed on mobile
