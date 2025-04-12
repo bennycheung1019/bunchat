@@ -431,8 +431,8 @@ export default function Home() {
 
         {/* bottom sticky section */}
         <div className="bg-white border-t">
-          
-          {/* mode-selector */}
+
+          {/* mode-selector */} 
           <div
             id="mode-selector"
             className="p-2 flex justify-around border-b text-sm md:ml-64"
