@@ -37,6 +37,10 @@ export default function Home() {
   const menuRef = useRef<HTMLDivElement | null>(null)
   const [originalEmail, setOriginalEmail] = useState("")
 
+  /*Add Dynamic height to chat-container*/
+  const chatContainerRef = useRef<HTMLDivElement>(null)
+  const [dynamicHeight, setDynamicHeight] = useState("100dvh")
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
     if (typeof window !== "undefined") {
       return window.innerWidth >= 768 // Open by default on desktop, closed on mobile
@@ -211,7 +215,22 @@ export default function Home() {
     }
   }, [])
 
+  useEffect(() => {
+    const updateHeight = () => {
+      // Viewport height without the mobile keyboard
+      const vh = window.innerHeight
+      setDynamicHeight(`${vh}px`)
+    }
+  
+    // Initial run
+    updateHeight()
+  
+    // Listen for resize (keyboard open/close)
+    window.addEventListener("resize", updateHeight)
+    return () => window.removeEventListener("resize", updateHeight)
+  }, [])
 
+  
   if (!session) {
     return (
       <main className="h-screen flex flex-col items-center justify-center bg-gray-100 text-center px-4">
@@ -344,7 +363,16 @@ export default function Home() {
       </div>
 
       {/* chat-container(include chat window+radio selector+input section) */}
-      <div className="chat-container relative flex flex-col" style={{ height: "100dvh" }}>
+      <div
+  className="chat-container flex flex-col"
+  ref={chatContainerRef}
+  style={{ height: dynamicHeight }}
+>
+  {/* Top bar */}
+  {/* Chat messages */}
+  {/* Input section */}
+</div>
+
 
 
         {/* Topbar */}
@@ -475,7 +503,7 @@ export default function Home() {
             </label>
           </div>
 
-
+          {/* input-area */}
           <div className="input-area flex items-center gap-2 p-4 md:ml-64">
 
             <textarea
