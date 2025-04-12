@@ -386,13 +386,17 @@ export default function Home() {
           ))}
         </ul>
       </div>
-      <div className="flex flex-col w-full">
+
+      {/* chat-container(include chat window+radio selector+input section) */}
+      <div
+        className="chat-container flex flex-col"
+        ref={chatContainerRef}
+        style={{ height: "100vh" }} // Full screen height
+      >
         {/* Topbar */}
-        <div
-          className="sticky top-0 z-30 w-full bg-white border-b "
-          style={{ height: "56px" }}
-        >
-          <div className="">
+        <div className="w-full bg-white border-b" style={{ height: "56px" }}>
+          {/*}
+          <div className="flex items-center justify-between px-4 py-2 h-full">
             <button
               ref={buttonRef}
               className="w-12 h-12 flex items-center justify-center bg-white hover:bg-gray-100 transition rounded shadow z-50"
@@ -400,172 +404,156 @@ export default function Home() {
             >
               <span className="text-xl">☰</span>
             </button>
-          </div>
+            <h1 className="text-lg font-semibold">BunChat</h1>
+            <div className="w-8 h-8 rounded-full bg-gray-300" />
+          </div>*/}
         </div>
 
-        {/* chat-container(include chat window+radio selector+input section) */}
-        <div
-          className="flex-1 overflow-y-auto pt-[106px] pb-[160px]"
-          ref={messagesRef}
-        >
-          {/* chat-messages */}
-          <div className="flex-1 overflow-y-auto" ref={messagesRef}>
-            {chatMode === "replyEmail" && (
-              <div className="space-y-4 p-4">
-                <div className="flex gap-2">
-                  <textarea
-                    placeholder="Paste the email you want to reply to"
-                    className="w-full p-2 border rounded"
-                    value={originalEmail}
-                    onChange={(e) => setOriginalEmail(e.target.value)}
-                  />
-                  <button
-                    className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    onClick={async () => {
-                      const text = await navigator.clipboard.readText();
-                      setOriginalEmail(text);
-                    }}
-                  >
-                    Paste
-                  </button>
-                </div>
-
+        {/* chat-messages */}
+        <div className="flex-1 overflow-y-auto" ref={messagesRef}>
+          {chatMode === "replyEmail" && (
+            <div className="space-y-4 p-4">
+              <div className="flex gap-2">
                 <textarea
-                  placeholder="Summarize what you want to say"
+                  placeholder="Paste the email you want to reply to"
                   className="w-full p-2 border rounded"
+                  value={originalEmail}
+                  onChange={(e) => setOriginalEmail(e.target.value)}
                 />
-                <div className="flex gap-4">
-                  <label>
-                    <input type="radio" name="tone" value="formal" /> Formal
-                  </label>
-                  <label>
-                    <input type="radio" name="tone" value="friendly" /> Friendly
-                  </label>
-                  <label>
-                    <input type="radio" name="tone" value="friendly" /> Angry
-                  </label>
-                </div>
-                <div
-                  className="p-4 bg-gray-100 border rounded cursor-pointer hover:bg-gray-200"
-                  onClick={() => {
-                    navigator.clipboard.writeText("Generated email text...");
-                    setShowCopied(true);
-                    setTimeout(() => setShowCopied(false), 1500);
+                <button
+                  className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  onClick={async () => {
+                    const text = await navigator.clipboard.readText();
+                    setOriginalEmail(text);
                   }}
                 >
-                  Generated email will appear here.
-                </div>
+                  Paste
+                </button>
               </div>
-            )}
 
-            {chatMode !== "replyEmail" &&
-              messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`message ${
-                    msg.role === "user" ? "user-message" : "bot-message"
-                  } hover:bg-gray-100 cursor-pointer transition`}
-                  onClick={() => {
-                    navigator.clipboard.writeText(msg.text);
-                    setShowCopied(true);
-                    setTimeout(() => setShowCopied(false), 1500);
-                  }}
-                  title="Click to copy"
-                >
-                  {msg.text}
-                </div>
-              ))}
-
-            {showCopied && (
-              <div className="absolute left-1/2 -translate-x-1/2 bottom-28 bg-black text-white text-xs px-3 py-1 rounded shadow z-50">
-                Copied!
-              </div>
-            )}
-          </div>
-
-          {/* bottom sticky section */}
-          <div
-            className="bg-white border-t z-30"
-            style={{
-              position: "fixed",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              paddingBottom: "env(safe-area-inset-bottom)",
-            }}
-          >
-            {/* mode-selector */}
-            <div
-              id="mode-selector"
-              className="p-2 flex justify-around border-b text-sm md:ml-64"
-            >
-              <label>
-                <input
-                  type="radio"
-                  name="chat-mode"
-                  value="chat"
-                  checked={chatMode === "chat"}
-                  onChange={() => setChatMode("chat")}
-                />{" "}
-                Chat
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="chat-mode"
-                  value="improve"
-                  checked={chatMode === "improve"}
-                  onChange={() => setChatMode("improve")}
-                />{" "}
-                Improve
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="chat-mode"
-                  value="translate"
-                  checked={chatMode === "translate"}
-                  onChange={() => setChatMode("translate")}
-                />{" "}
-                Translate
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="chat-mode"
-                  value="replyEmail"
-                  checked={chatMode === "replyEmail"}
-                  onChange={() => setChatMode("replyEmail")}
-                />{" "}
-                Reply Email
-              </label>
-            </div>
-
-            {/* input-area */}
-            <div className="input-area flex items-center gap-2 p-4 md:ml-64">
               <textarea
-                id="user-input"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSend();
-                  }
+                placeholder="Summarize what you want to say"
+                className="w-full p-2 border rounded"
+              />
+              <div className="flex gap-4">
+                <label>
+                  <input type="radio" name="tone" value="formal" /> Formal
+                </label>
+                <label>
+                  <input type="radio" name="tone" value="friendly" /> Friendly
+                </label>
+                <label>
+                  <input type="radio" name="tone" value="friendly" /> Angry
+                </label>
+              </div>
+              <div
+                className="p-4 bg-gray-100 border rounded cursor-pointer hover:bg-gray-200"
+                onClick={() => {
+                  navigator.clipboard.writeText("Generated email text...");
+                  setShowCopied(true);
+                  setTimeout(() => setShowCopied(false), 1500);
                 }}
-                placeholder="Type your message..."
-                className="flex-1 resize-none h-16 px-3 py-2 border rounded"
-              ></textarea>
-              <button
-                id="send-button"
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                onClick={handleSend}
-                disabled={!input.trim()}
               >
-                Send
-              </button>
+                Generated email will appear here.
+              </div>
             </div>
-          </div>
+          )}
+
+          {chatMode !== "replyEmail" &&
+            messages.map((msg, i) => (
+              <div
+                key={i}
+                className={`message ${
+                  msg.role === "user" ? "user-message" : "bot-message"
+                } hover:bg-gray-100 cursor-pointer transition`}
+                onClick={() => {
+                  navigator.clipboard.writeText(msg.text);
+                  setShowCopied(true);
+                  setTimeout(() => setShowCopied(false), 1500);
+                }}
+                title="Click to copy"
+              >
+                {msg.text}
+              </div>
+            ))}
+
+          {showCopied && (
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-28 bg-black text-white text-xs px-3 py-1 rounded shadow z-50">
+              Copied!
+            </div>
+          )}
+        </div>
+
+        {/* mode-selector */}
+        <div
+          id="mode-selector"
+          className="p-2 flex justify-around border-b text-sm md:ml-64"
+        >
+          <label>
+            <input
+              type="radio"
+              name="chat-mode"
+              value="chat"
+              checked={chatMode === "chat"}
+              onChange={() => setChatMode("chat")}
+            />{" "}
+            Chat
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="chat-mode"
+              value="improve"
+              checked={chatMode === "improve"}
+              onChange={() => setChatMode("improve")}
+            />{" "}
+            Improve
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="chat-mode"
+              value="translate"
+              checked={chatMode === "translate"}
+              onChange={() => setChatMode("translate")}
+            />{" "}
+            Translate
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="chat-mode"
+              value="replyEmail"
+              checked={chatMode === "replyEmail"}
+              onChange={() => setChatMode("replyEmail")}
+            />{" "}
+            Reply Email
+          </label>
+        </div>
+
+        {/* input-area */}
+        <div className="input-area flex items-center gap-2 p-4 md:ml-64">
+          <textarea
+            id="user-input"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            placeholder="Type your message..."
+            className="flex-1 resize-none h-16 px-3 py-2 border rounded"
+          ></textarea>
+          <button
+            id="send-button"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            onClick={handleSend}
+            disabled={!input.trim()}
+          >
+            Send
+          </button>
         </div>
       </div>
     </div>
