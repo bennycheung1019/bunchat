@@ -39,6 +39,13 @@ export default function Home() {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [originalEmail, setOriginalEmail] = useState("");
 
+  //for reply email use
+  const [replySummary, setReplySummary] = useState("");
+  const [replyTone, setReplyTone] = useState<"formal" | "friendly" | "angry">(
+    "formal"
+  );
+  const [generatedReply, setGeneratedReply] = useState("");
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
     if (typeof window !== "undefined") {
       return window.innerWidth >= 768; // Open by default on desktop, closed on mobile
@@ -161,6 +168,26 @@ export default function Home() {
     } else if (index < activeChat) {
       setActiveChat((prev) => prev - 1);
     }
+  };
+
+  const generateReplyEmail = async () => {
+    const res = await fetch("/api/generate-reply-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        originalEmail,
+        replySummary,
+        tone: replyTone,
+      }),
+    });
+
+    const data = await res.json();
+    return data.reply || "No response from the server.";
+  };
+  const handleGenerateEmail = async () => {
+    const result = await generateReplyEmail();
+    console.log("Generated reply:", result); // <- DEBUG
+    setGeneratedReply(result);
   };
 
   useEffect(() => {
@@ -430,27 +457,59 @@ export default function Home() {
                 <textarea
                   placeholder="Summarize what you want to say"
                   className="w-full p-2 border rounded"
+                  value={replySummary}
+                  onChange={(e) => setReplySummary(e.target.value)}
                 />
+
                 <div className="flex gap-4">
                   <label>
-                    <input type="radio" name="tone" value="formal" /> Formal
+                    <input
+                      type="radio"
+                      name="tone"
+                      value="formal"
+                      checked={replyTone === "formal"}
+                      onChange={() => setReplyTone("formal")}
+                    />{" "}
+                    Formal
                   </label>
                   <label>
-                    <input type="radio" name="tone" value="friendly" /> Friendly
+                    <input
+                      type="radio"
+                      name="tone"
+                      value="friendly"
+                      checked={replyTone === "friendly"}
+                      onChange={() => setReplyTone("friendly")}
+                    />{" "}
+                    Friendly
                   </label>
                   <label>
-                    <input type="radio" name="tone" value="friendly" /> Angry
+                    <input
+                      type="radio"
+                      name="tone"
+                      value="angry"
+                      checked={replyTone === "angry"}
+                      onChange={() => setReplyTone("angry")}
+                    />{" "}
+                    Angry
                   </label>
                 </div>
+
+                <button
+                  className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  onClick={handleGenerateEmail}
+                >
+                  Generate Reply
+                </button>
+
                 <div
                   className="p-4 bg-gray-100 border rounded cursor-pointer hover:bg-gray-200"
                   onClick={() => {
-                    navigator.clipboard.writeText("Generated email text...");
+                    navigator.clipboard.writeText(generatedReply);
                     setShowCopied(true);
                     setTimeout(() => setShowCopied(false), 1500);
                   }}
                 >
-                  Generated email will appear here.
+                  {generatedReply || "Generated email will appear here."}
                 </div>
               </div>
             )}
