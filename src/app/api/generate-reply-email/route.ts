@@ -9,7 +9,10 @@ const openai = new OpenAI({
 export async function POST(req: Request) {
   const { originalEmail, replySummary, tone } = await req.json();
 
-  const systemPrompt = `You are an assistant that writes professional emails. Based on the original email and the user's intent, write a full email reply using a ${tone} tone.`;
+  const systemPrompt =
+    tone === "short"
+      ? "You are an assistant that writes short and simple emails. Based on the original email and user's intent, reply concisely in 3-5 sentences."
+      : `You are an assistant that writes professional emails. Based on the original email and the user's intent, write a full email reply using a ${tone} tone.`;
 
   const userPrompt = `
 Original Email:

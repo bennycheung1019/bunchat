@@ -41,9 +41,9 @@ export default function Home() {
 
   //for reply email use
   const [replySummary, setReplySummary] = useState("");
-  const [replyTone, setReplyTone] = useState<"formal" | "friendly" | "angry">(
-    "formal"
-  );
+  const [replyTone, setReplyTone] = useState<
+    "formal" | "friendly" | "angry" | "short"
+  >("formal");
   const [generatedReply, setGeneratedReply] = useState("");
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
@@ -491,6 +491,16 @@ export default function Home() {
                       onChange={() => setReplyTone("angry")}
                     />{" "}
                     Angry
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="tone"
+                      value="short"
+                      checked={replyTone === "short"}
+                      onChange={() => setReplyTone("short")}
+                    />{" "}
+                    Short & Simple
                   </label>
                 </div>
 
