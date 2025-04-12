@@ -224,13 +224,14 @@ export default function Home() {
   
     // Initial run
     updateHeight()
+    setTimeout(updateHeight, 500)
   
     // Listen for resize (keyboard open/close)
     window.addEventListener("resize", updateHeight)
     return () => window.removeEventListener("resize", updateHeight)
   }, [])
 
-  
+
   if (!session) {
     return (
       <main className="h-screen flex flex-col items-center justify-center bg-gray-100 text-center px-4">
@@ -368,11 +369,6 @@ export default function Home() {
   ref={chatContainerRef}
   style={{ height: dynamicHeight }}
 >
-  {/* Top bar */}
-  {/* Chat messages */}
-  {/* Input section */}
-</div>
-
 
 
         {/* Topbar */}
