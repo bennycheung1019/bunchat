@@ -231,23 +231,25 @@ export default function Home() {
     }
   }, []);
 
+  {
+    /*this code is to fix the empty space below the input bar*/
+  }
   useEffect(() => {
     const updateHeight = () => {
-      // Viewport height without the mobile keyboard
       const vh = window.innerHeight;
+      console.log("New height:", vh);
       setDynamicHeight(`${vh}px`);
     };
 
-    // Initial run
     updateHeight();
     setTimeout(updateHeight, 500);
 
-    window.addEventListener("load", updateHeight);
-    return () => window.removeEventListener("load", updateHeight);
-
-    // Listen for resize (keyboard open/close)
     window.addEventListener("resize", updateHeight);
-    return () => window.removeEventListener("resize", updateHeight);
+    window.addEventListener("load", updateHeight);
+    return () => {
+      window.removeEventListener("resize", updateHeight);
+      window.removeEventListener("load", updateHeight);
+    };
   }, []);
 
   if (!session) {
