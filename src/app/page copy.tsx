@@ -344,11 +344,11 @@ export default function Home() {
       </div>
 
       {/* chat-container(include chat window+radio selector+input section) */}
-      <div className="chat-container flex flex-col h-screen">
+      <div className="chat-container relative flex flex-col" style={{ height: "calc(100vh - 240px)" }}>
 
 
         {/* Topbar */}
-        <div className="w-full bg-white border-b" style={{ height: "56px" }}>
+        <div className="w-full z-30 bg-white border-b" style={{ height: "56px" }}>
           <div className="flex items-center justify-between px-4 py-2 h-full">
             <button
               ref={buttonRef}
@@ -363,7 +363,15 @@ export default function Home() {
         </div>
 
         {/* chat-messages */}
-        <div className="flex-1 overflow-y-auto" ref={messagesRef}>
+        <div
+          id="chat-messages"
+          className="flex-1 overflow-y-auto pt-14 md:pt-16 pb-40 md:pb-0"
+          ref={messagesRef}
+        >
+
+
+
+
 
           {chatMode === "replyEmail" && (
             <div className="space-y-4 p-4">
@@ -430,8 +438,16 @@ export default function Home() {
         </div>
 
         {/* bottom sticky section */}
-        <div className="bg-white border-t">
-          
+        <div
+          className="bg-white border-t z-30"
+          style={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            paddingBottom: "env(safe-area-inset-bottom)",
+          }}
+        >
           {/* mode-selector */}
           <div
             id="mode-selector"
