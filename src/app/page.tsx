@@ -22,6 +22,7 @@ interface Message {
 
 export default function Home() {
   const { data: session } = useSession();
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [chatSessions, setChatSessions] = useState<string[]>(["Chat 1"]);
@@ -270,6 +271,22 @@ export default function Home() {
     };
   }, []);
 
+  //this code is to make the floating button fade in and out*/
+  useEffect(() => {
+    const container = messagesRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const isAtBottom =
+        container.scrollHeight - container.scrollTop - container.clientHeight <
+        100;
+      setShowScrollButton(!isAtBottom);
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, []);
+
   if (!session) {
     return (
       <main className="h-screen flex flex-col items-center justify-center bg-gray-100 text-center px-4">
@@ -439,9 +456,12 @@ export default function Home() {
         </div>
 
         {/* chat-container(include chat window+radio selector+input section) */}
-        <main className="flex flex-col w-full transition-all duration-300 ease-in-out overflow-y-auto pt-[50px] pb-[160px]">
+        <main className="flex flex-col w-full transition-all duration-300 ease-in-out overflow-y-auto pt-[10px] pb-[160px]">
           {/* chat-messages */}
-          <div className="flex flex-col flex-1 transition-all duration-300 ease-in-out">
+          <div
+            className="flex flex-col flex-1 transition-all duration-300 ease-in-out overflow-y-auto"
+            ref={messagesRef}
+          >
             {chatMode === "replyEmail" && (
               <div className="space-y-6 max-w-3xl mx-auto">
                 {/* Original Email Input */}
@@ -545,6 +565,34 @@ export default function Home() {
             )}
           </div>
 
+          {/* floating scroll button */}
+          <button
+            onClick={() =>
+              messagesRef.current?.scrollTo({
+                top: messagesRef.current.scrollHeight,
+                behavior: "smooth",
+              })
+            }
+            className={`fixed bottom-50 right-5 z-40 bg-white border border-gray-300 shadow-lg p-3 rounded-full transition-opacity duration-300 ease-in-out
+    ${showScrollButton ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            title="Scroll to bottom"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6 text-gray-700"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
           {/* bottom sticky section */}
           <div
             className="bg-white border-t z-30"
@@ -556,41 +604,6 @@ export default function Home() {
               paddingBottom: "env(safe-area-inset-bottom)",
             }}
           >
-            {/* mode-selector */}
-            <div
-              id="mode-selector"
-              className={`p-3 flex flex-wrap justify-center gap-2 border-t border-gray-200 bg-white shadow-sm transition-all duration-300 ${
-                isSidebarOpen ? "md:pl-64" : "md:pl-0"
-              }`}
-            >
-              {[
-                { label: "Chat", value: "chat" },
-                { label: "Improve", value: "improve" },
-                { label: "Translate", value: "translate" },
-                { label: "Reply Email", value: "replyEmail" },
-              ].map((mode) => (
-                <label
-                  key={mode.value}
-                  className={`px-4 py-1 rounded-full text-sm font-medium cursor-pointer border transition
-        ${
-          chatMode === mode.value
-            ? "bg-blue-600 text-white border-blue-600"
-            : "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
-        }`}
-                >
-                  <input
-                    type="radio"
-                    name="chat-mode"
-                    value={mode.value}
-                    checked={chatMode === mode.value}
-                    onChange={() => setChatMode(mode.value as typeof chatMode)}
-                    className="hidden"
-                  />
-                  {mode.label}
-                </label>
-              ))}
-            </div>
-
             {/* input-area */}
             <div
               className={`input-area flex items-end gap-3 p-4 bg-white border-t border-zinc-200 shadow-inner transition-all duration-300 ${
@@ -622,6 +635,94 @@ export default function Home() {
               >
                 Send
               </button>
+            </div>
+            {/* mode-selector */}
+            <div
+              id="mode-selector"
+              className={`flex justify-around items-center px-4 py-2 border-t border-gray-200 bg-white shadow-sm transition-all duration-300 ${
+                isSidebarOpen ? "md:pl-64" : "md:pl-0"
+              }`}
+            >
+              {[
+                {
+                  label: "Chat",
+                  value: "chat",
+                  icon: (
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.8}
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: "Improve",
+                  value: "improve",
+                  icon: (
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.8}
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 20h9" />
+                      <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: "Translate",
+                  value: "translate",
+                  icon: (
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.8}
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M5 8h14" />
+                      <path d="M5 12h9" />
+                      <path d="M5 16h6" />
+                      <path d="M19 16l-2-3-2 3" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: "Reply",
+                  value: "replyEmail",
+                  icon: (
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.8}
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M4 4h16v16H4z" stroke="none" />
+                      <path d="M22 12l-6-6v4H8v4h8v4z" />
+                    </svg>
+                  ),
+                },
+              ].map((mode) => (
+                <button
+                  key={mode.value}
+                  onClick={() => setChatMode(mode.value as typeof chatMode)}
+                  className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-md text-xs sm:text-sm transition ${
+                    chatMode === mode.value
+                      ? "bg-blue-50 text-blue-600 font-medium"
+                      : "text-gray-500 hover:bg-gray-100"
+                  }`}
+                >
+                  {mode.icon}
+                  <span>{mode.label}</span>
+                </button>
+              ))}
             </div>
           </div>
         </main>
