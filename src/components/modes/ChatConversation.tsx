@@ -16,6 +16,7 @@ export default function ChatConversation() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const messagesRef = useRef<HTMLDivElement>(null);
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -31,6 +32,48 @@ export default function ChatConversation() {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
     }
   }, [messages]);
+
+  //this code is to make the floating button fade in and out*/
+  useEffect(() => {
+    const container = messagesRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const isAtBottom =
+        container.scrollHeight - container.scrollTop - container.clientHeight <
+        100;
+      setShowScrollButton(!isAtBottom);
+    };
+
+    // Attach listener
+    container.addEventListener("scroll", handleScroll);
+
+    // Initial check (ensures correct state on load)
+    handleScroll();
+
+    // Cleanup
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, [messagesRef]);
+
+  //this code is to support the above floating button useEffect*/
+  useEffect(() => {
+    const checkRef = () => {
+      if (messagesRef.current) {
+        const container = messagesRef.current;
+        const isAtBottom =
+          container.scrollHeight -
+            container.scrollTop -
+            container.clientHeight <
+          100;
+        setShowScrollButton(!isAtBottom);
+      }
+    };
+
+    const timeout = setTimeout(checkRef, 100);
+    return () => clearTimeout(timeout);
+  }, []);
 
   const handleSend = async () => {
     if (!input.trim() || !session?.user?.id) return;
@@ -89,7 +132,7 @@ export default function ChatConversation() {
       {/* Scrollable message area */}
       <div
         ref={messagesRef}
-        className="flex-1 overflow-y-auto px-4 py-6 space-y-4 border border-red-500 h-0"
+        className="flex-1 overflow-y-auto px-4 py-6 space-y-4 border border-red-500 h-0 pt-30 pb-25"
       >
         {messages.map((msg, i) => (
           <div
@@ -113,9 +156,49 @@ export default function ChatConversation() {
         ))}
       </div>
 
-      {/* Input */}
-      <div className="sticky bottom-[10px] bg-white border-t px-4 py-3 z-10">
-        <div className="flex items-end gap-3">
+      {/* floating scroll button */}
+      <button
+        onClick={() =>
+          messagesRef.current?.scrollTo({
+            top: messagesRef.current.scrollHeight,
+            behavior: "smooth",
+          })
+        }
+        className={`fixed bottom-50 right-5 z-40 bg-white border border-gray-300 shadow-lg p-3 rounded-full transition-opacity duration-300 ease-in-out
+    ${showScrollButton ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        title="Scroll to bottom"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-6 h-6 text-gray-700"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      {/* Input area */}
+      <div
+        className="bg-white  z-30"
+        style={{
+          position: "fixed",
+          bottom: 80,
+          left: 0,
+          right: 0,
+          paddingBottom: "env(safe-area-inset-bottom)",
+        }}
+      >
+        <div
+          className={`input-area flex items-end gap-3 p-4 bg-white border-t border-zinc-200 shadow-inner"
+          }`}
+        >
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}

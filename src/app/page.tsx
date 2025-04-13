@@ -48,9 +48,11 @@ export default function Home() {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
+    <div className="h-screen flex flex-col bg-gray-50">
+      {/* Topbar */}
       <Topbar onToggleSidebar={() => {}} />
 
+      {/*Modes window*/}
       <main className="flex flex-col flex-1 w-full pb-20 transition-all duration-300 ease-in-out overflow-y-auto">
         {chatMode === "chat" && <ChatConversation />}
         {chatMode === "improve" && (
@@ -82,7 +84,7 @@ export default function Home() {
           {/* mode-selector */}
           <div
             id="mode-selector"
-            className={`flex justify-around items-center px-4 py-2 border-t border-gray-200 bg-white shadow-sm transition-all duration-300"
+            className={`flex justify-around items-center px-4 py-2  bg-white shadow-sm
             }`}
           >
             {[
