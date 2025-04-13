@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { saveMessage } from "@/lib/saveMessage";
 import { loadMessages } from "@/lib/loadMessages";
 import { useSession } from "next-auth/react";
-import { db } from "@/lib/firebase";
-import { addDoc, collection } from "firebase/firestore";
 
 // 👇 Define Message type locally
 interface Message {
@@ -38,23 +37,18 @@ export default function ChatConversation() {
 
     const userId = session.user.id;
     const sessionId = "session-0";
-    const chatRef = collection(
-      db,
-      "users",
-      userId,
-      "chats",
-      sessionId,
-      "messages"
-    );
-
     const userMessage: Message = { role: "user", text: input };
-    const tempAiMessage: Message = { role: "ai", text: "Thinking..." };
-    setMessages((prev) => [...prev, userMessage, tempAiMessage]);
+    const placeholder: Message = { role: "ai", text: "Thinking..." };
+
+    setMessages((prev) => [...prev, userMessage, placeholder]);
     setInput("");
 
     try {
-      const recentMessages = messages.slice(-6); // Last few messages to keep prompt short
-      const response = await fetch("/api/chat", {
+      const recentMessages = messages
+        .filter((msg) => msg.role === "user" || msg.role === "ai")
+        .slice(-6);
+
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -64,25 +58,28 @@ export default function ChatConversation() {
         }),
       });
 
-      const data = await response.json();
-
+      const data = await res.json();
       const aiMessage: Message = {
         role: "ai",
-        text: data.reply || "No response from GPT-4o-mini.",
+        text: data.reply || "No reply from GPT-4o-mini.",
       };
 
-      await addDoc(chatRef, userMessage);
-      await addDoc(chatRef, aiMessage);
+      // Replace "Thinking..." with actual reply
+      setMessages((prev) => [...prev.slice(0, -1), aiMessage]);
 
-      setMessages((prev) => [
-        ...prev.slice(0, -1), // Remove "Thinking..."
-        aiMessage,
-      ]);
+      // Save both message and response using helper
+      await saveMessage({
+        userId,
+        sessionId,
+        message: input,
+        response: data.reply,
+        title: "Single Session", // or your dynamic title if needed
+      });
     } catch (err) {
       console.error("GPT Error:", err);
       setMessages((prev) => [
         ...prev.slice(0, -1),
-        { role: "ai", text: "Error talking to GPT-4o-mini." },
+        { role: "ai", text: "Error contacting GPT-4o-mini." },
       ]);
     }
   };
