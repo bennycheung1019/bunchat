@@ -10,16 +10,18 @@ export async function POST(req: Request) {
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini", // Use OpenAI's new GPT-4o model
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
           content: systemPrompt || "You are a helpful assistant.",
         },
-        ...(history || []).map((m: { role: "user" | "ai"; text: string }) => ({
-          role: m.role === "ai" ? "assistant" : "user", // convert role to OpenAI format
-          content: m.text,
-        })),
+        ...(history?.length
+          ? history.map((m: { role: "user" | "ai"; text: string }) => ({
+              role: m.role === "ai" ? "assistant" : "user",
+              content: m.text,
+            }))
+          : []),
         { role: "user", content: message },
       ],
       temperature: 0.7,

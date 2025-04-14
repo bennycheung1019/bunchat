@@ -12,16 +12,15 @@ export default function LanguageTranslation() {
     if (!input.trim()) return;
     setLoading(true);
 
-    let prompt = "";
-    if (target === "en") {
-      prompt = 'Translate the quoted text to English: "' + input + '"';
-    } else if (target === "zh-tw") {
-      prompt =
-        'Translate the quoted text to Traditional Chinese: "' + input + '"';
-    } else {
-      prompt =
-        'Translate the quoted text to Simplified Chinese: "' + input + '"';
-    }
+    const prompt = `"${input}"`; // always quoted
+
+    const systemPrompt = {
+      en: "Translate the quoted text to English. Return only the translated version without the quotes",
+      "zh-tw":
+        "Translate the quoted text to Traditional Chinese. Return only the translated version without the quotes",
+      "zh-cn":
+        "Translate the quoted text to Simplified Chinese. Return only the translated version without the quotes",
+    }[target];
 
     try {
       const res = await fetch("/api/chat", {
@@ -29,9 +28,7 @@ export default function LanguageTranslation() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: prompt,
-          systemPrompt:
-            "You are a bilingual translator. Only translate the quoted text and return only the result.",
-          history: [],
+          systemPrompt,
         }),
       });
 
