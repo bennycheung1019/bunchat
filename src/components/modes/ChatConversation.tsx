@@ -203,7 +203,7 @@ export default function ChatConversation() {
         className="bg-white  z-30"
         style={{
           position: "fixed",
-          bottom: 80,
+          bottom: 78,
           left: 0,
           right: 0,
           paddingBottom: "env(safe-area-inset-bottom)",
