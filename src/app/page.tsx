@@ -55,9 +55,7 @@ export default function Home() {
       {/*Modes window*/}
       <main className="flex flex-col flex-1 w-full pb-45 overflow-y-auto">
         {chatMode === "chat" && <ChatConversation />}
-        {chatMode === "improve" && (
-          <ImproveWriting onToggleSidebar={() => {}} />
-        )}
+        {chatMode === "improve" && <ImproveWriting />}
         {chatMode === "translate" && (
           <LanguageTranslation
             onTranslate={(text, lang) => console.log(text, lang)}

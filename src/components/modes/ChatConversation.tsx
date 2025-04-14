@@ -17,6 +17,13 @@ export default function ChatConversation() {
   const [input, setInput] = useState("");
   const messagesRef = useRef<HTMLDivElement>(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const [showCopied, setShowCopied] = useState(false);
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setShowCopied(true);
+    setTimeout(() => setShowCopied(false), 1500);
+  };
 
   useEffect(() => {
     const fetch = async () => {
@@ -143,19 +150,25 @@ export default function ChatConversation() {
             }`}
           >
             <div
+              onClick={() => handleCopy(msg.text)}
               className={`inline-block px-4 py-3 rounded-xl max-w-[80%] whitespace-pre-line shadow-md cursor-pointer ${
                 msg.role === "user"
                   ? "bg-blue-100 text-blue-900 hover:ring-2 ring-blue-300"
                   : "bg-gray-100 text-gray-800 hover:ring-2 ring-gray-300"
               }`}
               title="Click to copy"
-              onClick={() => navigator.clipboard.writeText(msg.text)}
             >
               {msg.text}
             </div>
           </div>
         ))}
       </div>
+
+      {showCopied && (
+        <div className="fixed left-1/2 -translate-x-1/2 bottom-45 bg-black text-white text-xs px-3 py-1 rounded shadow-lg z-50 animate-fadeIn">
+          Copied!
+        </div>
+      )}
 
       {/* floating scroll button */}
       <button
