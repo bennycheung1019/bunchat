@@ -53,7 +53,7 @@ export default function Home() {
       <Topbar onToggleSidebar={() => {}} />
 
       {/*Modes window*/}
-      <main className="flex flex-col flex-1 w-full pb-20 transition-all duration-300 ease-in-out overflow-y-auto">
+      <main className="flex flex-col flex-1 w-full pb-45 overflow-y-auto">
         {chatMode === "chat" && <ChatConversation />}
         {chatMode === "improve" && (
           <ImproveWriting onToggleSidebar={() => {}} />

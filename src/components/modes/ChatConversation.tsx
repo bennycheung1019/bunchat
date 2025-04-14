@@ -128,16 +128,17 @@ export default function ChatConversation() {
   };
 
   return (
-    <div className="flex flex-col flex-1 overflow-hidden">
+    <div className="flex-1 overflow-hidden relative">
       {/* Scrollable message area */}
       <div
         ref={messagesRef}
-        className="flex-1 overflow-y-auto px-4 py-6 space-y-4 border border-red-500 h-0 pt-30 pb-25"
+        className="absolute inset-0 overflow-y-auto px-4 py-6 space-y-4"
+        style={{ paddingBottom: "40px" }}
       >
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`w-full flex mb-4 ${
+            className={`w-full flex  ${
               msg.role === "user" ? "justify-end" : "justify-start"
             }`}
           >
