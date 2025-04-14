@@ -133,7 +133,7 @@ export default function ChatConversation() {
       <div
         ref={messagesRef}
         className="absolute inset-0 overflow-y-auto px-4 py-6 space-y-4"
-        style={{ paddingBottom: "40px" }}
+        style={{ paddingBottom: "160px" }}
       >
         {messages.map((msg, i) => (
           <div
