@@ -44,7 +44,7 @@ export default function ReplyEmail() {
   };
 
   return (
-    <div className="bg-gray-50 px-4 sm:px-6 lg:px-8 py-6 max-w-4xl mx-auto w-full space-y-6">
+    <div className="bg-gray-50 px-4 sm:px-6 lg:px-8 py-6 max-w-4xl mx-auto w-full min-h-screen overflow-y-auto space-y-6">
       {/* Original Email Input */}
       <div className="relative">
         <textarea
