@@ -2,22 +2,15 @@
 
 import { useState } from "react";
 
-interface Props {
-  onGenerate: (
-    originalEmail: string,
-    replySummary: string,
-    tone: string
-  ) => void;
-  generatedReply: string;
-}
-
-export default function ReplyEmail({ onGenerate, generatedReply }: Props) {
+export default function ReplyEmail() {
   const [originalEmail, setOriginalEmail] = useState("");
   const [replySummary, setReplySummary] = useState("");
   const [replyTone, setReplyTone] = useState<"formal" | "friendly" | "short">(
     "formal"
   );
+  const [generatedReply, setGeneratedReply] = useState("");
   const [showCopied, setShowCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const tones = ["short", "formal", "friendly"];
 
@@ -25,6 +18,29 @@ export default function ReplyEmail({ onGenerate, generatedReply }: Props) {
     navigator.clipboard.writeText(text);
     setShowCopied(true);
     setTimeout(() => setShowCopied(false), 1500);
+  };
+
+  const handleGenerateReply = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/generate-reply-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          originalEmail,
+          replySummary,
+          tone: replyTone,
+        }),
+      });
+
+      const data = await res.json();
+      setGeneratedReply(data.reply || "No reply from server.");
+    } catch (error) {
+      console.error("Error generating reply:", error);
+      setGeneratedReply("Failed to generate reply.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -39,6 +55,7 @@ export default function ReplyEmail({ onGenerate, generatedReply }: Props) {
         />
         {/* Paste & Clear Icons */}
         <div className="absolute bottom-3 right-4 flex gap-3">
+          {/* Paste */}
           <button
             onClick={async () => {
               const text = await navigator.clipboard.readText();
@@ -63,6 +80,7 @@ export default function ReplyEmail({ onGenerate, generatedReply }: Props) {
             </svg>
           </button>
 
+          {/* Clear */}
           <button
             onClick={() => setOriginalEmail("")}
             title="Clear"
@@ -91,7 +109,7 @@ export default function ReplyEmail({ onGenerate, generatedReply }: Props) {
         </div>
       </div>
 
-      {/* Reply Summary */}
+      {/* Summary Input */}
       <textarea
         value={replySummary}
         onChange={(e) => setReplySummary(e.target.value)}
@@ -99,7 +117,7 @@ export default function ReplyEmail({ onGenerate, generatedReply }: Props) {
         className="w-full p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[120px]"
       />
 
-      {/* Tone Selector (Styled Buttons) */}
+      {/* Tone Selector */}
       <div className="flex gap-3 flex-wrap">
         {tones.map((tone) => (
           <button
@@ -121,15 +139,15 @@ export default function ReplyEmail({ onGenerate, generatedReply }: Props) {
 
       {/* Generate Button */}
       <button
-        onClick={() => onGenerate(originalEmail, replySummary, replyTone)}
+        onClick={handleGenerateReply}
         disabled={!originalEmail.trim() || !replySummary.trim()}
-        className={`ml-auto px-4 py-2 text-sm font-semibold rounded shadow-md transition ${
+        className={`px-4 py-2 text-sm rounded transition ml-auto ${
           originalEmail.trim() && replySummary.trim()
             ? "bg-green-600 text-white hover:bg-green-700"
-            : "bg-green-100 text-gray-400 cursor-not-allowed"
+            : "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
         }`}
       >
-        Generate Reply
+        {loading ? "Generating..." : "Generate Reply"}
       </button>
 
       {/* Output */}
@@ -140,7 +158,7 @@ export default function ReplyEmail({ onGenerate, generatedReply }: Props) {
         {generatedReply || "Generated email will appear here."}
       </div>
 
-      {/* Copied Alert */}
+      {/* Copied Toast */}
       {showCopied && (
         <div className="fixed left-1/2 -translate-x-1/2 bottom-28 bg-black text-white text-xs px-3 py-1 rounded shadow-lg z-50 animate-fadeIn">
           Copied!

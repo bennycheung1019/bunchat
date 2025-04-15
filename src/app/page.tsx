@@ -57,12 +57,7 @@ export default function Home() {
         {chatMode === "chat" && <ChatConversation />}
         {chatMode === "improve" && <ImproveWriting />}
         {chatMode === "translate" && <LanguageTranslation />}
-        {chatMode === "replyEmail" && (
-          <ReplyEmail
-            onGenerate={(reply) => console.log(reply)}
-            generatedReply=""
-          />
-        )}
+        {chatMode === "replyEmail" && <ReplyEmail />}
 
         {/* bottom sticky section */}
         <div
