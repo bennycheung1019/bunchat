@@ -19,7 +19,7 @@ export default function ImproveWriting() {
         body: JSON.stringify({
           message: `"${input}"`, // quote the message as per your system prompt convention
           systemPrompt:
-            "You are a writing assistant. The user's message will always be inside quotation marks. Rewrite only the quoted text to be clearer, more concise, and professional. Return only the improved version without quotes.",
+            "You are a writing assistant. The user's message will always be inside quotation marks. Rewrite only the quoted text to be clearer, more concise, and professional. Return only the improved version without that quotation marks.",
         }),
       });
 
@@ -82,11 +82,10 @@ export default function ImproveWriting() {
             onClick={() => setInput("")}
             title="Clear"
             disabled={!input.trim()}
-            className={`transition ${
-              input.trim()
+            className={`transition ${input.trim()
                 ? "text-gray-500 hover:text-red-500"
                 : "text-gray-300 cursor-not-allowed"
-            }`}
+              }`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -111,11 +110,10 @@ export default function ImproveWriting() {
         <button
           onClick={handleImprove}
           disabled={loading || !input.trim()}
-          className={`px-4 py-2 text-sm rounded transition ml-auto ${
-            loading || !input.trim()
+          className={`px-4 py-2 text-sm rounded transition ml-auto ${loading || !input.trim()
               ? "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
               : "bg-green-600 text-white hover:bg-green-700"
-          }`}
+            }`}
         >
           {loading ? "Improving..." : "Improve Writing"}
         </button>
