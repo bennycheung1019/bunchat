@@ -71,7 +71,7 @@ export default function Home() {
 
       {/*Modes window*/}
       <main className={`transition-all duration-300 ease-in-out ${isSidebarOpen ? "md:ml-64" : ""}`}>
-        <main className="flex flex-col flex-1 w-full pb-45 overflow-y-auto">
+        <div className="flex flex-col flex-1 w-full pb-45 overflow-y-auto">
           {currentView === "work" && (
             <>
               {chatMode === "chat" && <ChatConversation />}
@@ -186,7 +186,7 @@ export default function Home() {
             </div>
           )}
 
-        </main>
+        </div>
       </main>
     </div>
   );
