@@ -20,7 +20,7 @@ export default function Home() {
   >("chat");
 
   //for sidebar
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // default: open
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // default: close
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [currentView, setCurrentView] = useState<"work" | "generateImage">("work");
 
@@ -64,7 +64,9 @@ export default function Home() {
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         sidebarRef={sidebarRef}
+        setIsSidebarOpen={setIsSidebarOpen}
         setCurrentView={setCurrentView}
+        currentView={currentView}
       />
 
       {/*Modes window*/}
