@@ -11,7 +11,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <link rel="stylesheet" href="/style.css" />
       </head>
       <body>
         <AuthProvider>{children}</AuthProvider>

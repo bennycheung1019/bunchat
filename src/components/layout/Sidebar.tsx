@@ -1,21 +1,15 @@
 // components/layout/Sidebar.tsx
 "use client";
 
-import Link from "next/link";
-
 interface SidebarProps {
     isSidebarOpen: boolean;
-    setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
     sidebarRef: React.RefObject<HTMLDivElement | null>;
     setCurrentView: (view: "work" | "generateImage") => void;
 }
 
-
-
 const Sidebar: React.FC<SidebarProps> = ({
     isSidebarOpen,
     sidebarRef,
-    setIsSidebarOpen,
     setCurrentView,
 }) => {
     return (

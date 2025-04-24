@@ -63,11 +63,9 @@ export default function Home() {
       <Topbar onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
       <Sidebar
         isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
         sidebarRef={sidebarRef}
         setCurrentView={setCurrentView}
       />
-
 
       {/*Modes window*/}
       <main className={`transition-all duration-300 ease-in-out ${isSidebarOpen ? "md:ml-64" : ""}`}>
@@ -78,8 +76,6 @@ export default function Home() {
               {chatMode === "improve" && <ImproveWriting />}
               {chatMode === "translate" && <LanguageTranslation />}
               {chatMode === "replyEmail" && <ReplyEmail />}
-
-
 
               {/* bottom sticky section */}
               <div
