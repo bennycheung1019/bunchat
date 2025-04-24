@@ -11,7 +11,11 @@ interface Message {
   text: string;
 }
 
-export default function ChatConversation() {
+interface ChatConversationProps {
+  isSidebarOpen: boolean;
+}
+
+export default function ChatConversation({ isSidebarOpen }: ChatConversationProps) {
   const { data: session } = useSession();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -71,8 +75,8 @@ export default function ChatConversation() {
         const container = messagesRef.current;
         const isAtBottom =
           container.scrollHeight -
-            container.scrollTop -
-            container.clientHeight <
+          container.scrollTop -
+          container.clientHeight <
           100;
         setShowScrollButton(!isAtBottom);
       }
@@ -145,17 +149,15 @@ export default function ChatConversation() {
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`w-full flex  ${
-              msg.role === "user" ? "justify-end" : "justify-start"
-            }`}
+            className={`w-full flex  ${msg.role === "user" ? "justify-end" : "justify-start"
+              }`}
           >
             <div
               onClick={() => handleCopy(msg.text)}
-              className={`inline-block px-4 py-3 rounded-xl max-w-[80%] whitespace-pre-line shadow-md cursor-pointer ${
-                msg.role === "user"
-                  ? "bg-blue-100 text-blue-900 hover:ring-2 ring-blue-300"
-                  : "bg-gray-100 text-gray-800 hover:ring-2 ring-gray-300"
-              }`}
+              className={`inline-block px-4 py-3 rounded-xl max-w-[80%] whitespace-pre-line shadow-md cursor-pointer ${msg.role === "user"
+                ? "bg-blue-100 text-blue-900 hover:ring-2 ring-blue-300"
+                : "bg-gray-100 text-gray-800 hover:ring-2 ring-gray-300"
+                }`}
               title="Click to copy"
             >
               {msg.text}
@@ -200,19 +202,17 @@ export default function ChatConversation() {
 
       {/* Input area */}
       <div
-        className="bg-white  z-30"
+        className={`bg-white z-30 fixed bottom-[76px] right-0 left-0 transition-all duration-300 ${isSidebarOpen ? "md:left-64" : "left-0"
+          }`}
         style={{
-          position: "fixed",
-          bottom: 76,
-          left: 0,
-          right: 0,
           paddingBottom: "env(safe-area-inset-bottom)",
         }}
       >
+
         <div
-          className={`input-area flex items-end gap-3 p-4 bg-white border-t border-zinc-200 shadow-inner"
-          }`}
+          className="input-area flex items-center gap-3 p-4 bg-white border-t border-zinc-200 shadow-inner"
         >
+
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -228,11 +228,10 @@ export default function ChatConversation() {
           <button
             onClick={handleSend}
             disabled={!input.trim()}
-            className={`ml-3 px-4 py-2 rounded-md text-sm font-semibold text-white transition-all duration-200 shadow-md ${
-              input.trim()
-                ? "bg-blue-600 hover:bg-blue-700"
-                : "bg-blue-300 cursor-not-allowed"
-            }`}
+            className={`ml-3 px-4 py-2 rounded-md text-sm font-semibold text-white transition-all duration-200 shadow-md ${input.trim()
+              ? "bg-blue-600 hover:bg-blue-700"
+              : "bg-blue-300 cursor-not-allowed"
+              }`}
           >
             Send
           </button>

@@ -27,6 +27,8 @@ export default function Home() {
 
   //
   const messagesRef = useRef<HTMLDivElement>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
+
 
 
   // Scroll to bottom when messages change
@@ -35,6 +37,30 @@ export default function Home() {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
     }
   }, [chatMode]);
+
+  //close sidebar when click outside of sidebar (work in mobile view only)
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const isMobile = window.innerWidth < 768;
+
+      if (
+        isMobile &&
+        isSidebarOpen &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node) &&
+        !(toggleButtonRef.current?.contains(event.target as Node))
+      ) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isSidebarOpen]);
+
+
 
   // Sign in screen
   if (!session) {
@@ -60,7 +86,7 @@ export default function Home() {
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Topbar */}
-      <Topbar onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <Topbar onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} toggleButtonRef={toggleButtonRef} />
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         sidebarRef={sidebarRef}
@@ -75,22 +101,21 @@ export default function Home() {
         <div className="flex flex-col flex-1 w-full pb-45 overflow-y-auto">
           {currentView === "work" && (
             <>
-              {chatMode === "chat" && <ChatConversation />}
+              {chatMode === "chat" && <ChatConversation isSidebarOpen={isSidebarOpen} />}
               {chatMode === "improve" && <ImproveWriting />}
               {chatMode === "translate" && <LanguageTranslation />}
               {chatMode === "replyEmail" && <ReplyEmail />}
 
               {/* bottom sticky section */}
               <div
-                className="bg-white z-30"
+                className={`bg-white z-30 fixed bottom-0 right-0 left-0 transition-all duration-300 ${isSidebarOpen ? "md:left-64" : ""
+                  }`}
                 style={{
-                  position: "fixed",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
                   paddingBottom: "env(safe-area-inset-bottom)",
                 }}
               >
+
+
                 {/* mode-selector */}
                 <div
                   id="mode-selector"
