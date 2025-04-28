@@ -12,6 +12,8 @@ import ChatConversation from "@/components/modes/ChatConversation";
 import ImproveWriting from "@/components/modes/ImproveWriting";
 import LanguageTranslation from "@/components/modes/LanguageTranslation";
 import ReplyEmail from "@/components/modes/ReplyEmail";
+import GenerateImage from "@/components/modes/GenerateImage";
+
 
 export default function Home() {
   const { data: session } = useSession();
@@ -206,11 +208,8 @@ export default function Home() {
             </>
           )}
 
-          {currentView === "generateImage" && (
-            <div className="flex flex-col items-center justify-center h-full text-gray-500">
-              <p>🧠 Image Generator screen coming soon...</p>
-            </div>
-          )}
+          {currentView === "generateImage" && <GenerateImage />}
+
 
         </div>
       </main>
