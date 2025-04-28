@@ -15,14 +15,9 @@ export async function POST(req: Request) {
   }
 
   try {
-    // Convert uploaded image to base64
-    const arrayBuffer = await file.arrayBuffer();
-    const base64Image = Buffer.from(arrayBuffer).toString("base64");
-
-    // Here we just generate a new image based on style prompt
     const response = await openai.images.generate({
-      model: "dall-e-3", // or "dall-e-2"
-      prompt: `Make this image ${style}`,
+      model: "dall-e-3", // or dall-e-2 if you prefer
+      prompt: `Generate a drawing of the uploaded image ${style}`,
       n: 1,
       size: "512x512",
       response_format: "url",
