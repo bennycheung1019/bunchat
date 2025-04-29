@@ -1,23 +1,22 @@
+// app/[locale]/layout.tsx
 import { ReactNode } from "react";
-import LocaleClientLayout from "@/components/LocaleClientLayout";
+import LocaleClientLayout from "@/components/LocaleClientLayout"; // Assuming this provides context/wrappers needed for the locale
 import { LoadUserSettingsOnStart } from "@/components/LoadUserSettingsOnStart";
 
-// Use an inline type definition for the props
-export default function Layout({
+// This is a NESTED layout - it should NOT have <html> or <body>
+export default function LocaleLayout({ // Renamed slightly for clarity, but 'Layout' is fine too
     children,
     params,
 }: {
     children: ReactNode;
-    params: { locale: string }; // Specify only the known 'locale' parameter as string
+    params: { locale: string }; // Standard typing for params in a nested dynamic route
 }) {
+    // NO <html> or <body> tags here!
     return (
-        <html lang={params.locale}>
-            <body>
-                <LocaleClientLayout locale={params.locale}>
-                    <LoadUserSettingsOnStart />
-                    {children}
-                </LocaleClientLayout>
-            </body>
-        </html>
+        // Pass locale to your client layout if it needs it (e.g., for next-intl provider)
+        <LocaleClientLayout locale={params.locale}>
+            <LoadUserSettingsOnStart />
+            {children}
+        </LocaleClientLayout>
     );
 }
