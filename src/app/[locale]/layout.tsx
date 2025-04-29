@@ -2,12 +2,12 @@ import { ReactNode } from "react";
 import LocaleClientLayout from "@/components/LocaleClientLayout";
 import { LoadUserSettingsOnStart } from "@/components/LoadUserSettingsOnStart";
 
-type LocaleLayoutProps = {
+interface LayoutProps {
     children: ReactNode;
     params: { locale: string };
-};
+}
 
-export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
+export default function Layout({ children, params }: LayoutProps) {
     return (
         <html lang={params.locale}>
             <body>
