@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 const styles = [
     { label: "The Simpsons", prompt: "in The Simpsons cartoon style" },
@@ -110,7 +111,7 @@ export default function GenerateImage() {
             {/* Generated Image Display */}
             {generatedImage && (
                 <div className="space-y-4 pt-6 text-center">
-                    <img
+                    <Image
                         src={generatedImage}
                         alt="Generated Cartoon"
                         className="w-60 h-60 object-cover rounded-lg mx-auto border"

@@ -3,6 +3,7 @@
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 
 interface TopbarProps {
   onToggleSidebar: () => void;
@@ -49,7 +50,7 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
             className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-blue-400 transition"
           >
             {session?.user?.image ? (
-              <img
+              <Image
                 src={session.user.image}
                 alt="User Avatar"
                 className="w-full h-full object-cover"
