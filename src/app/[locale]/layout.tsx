@@ -7,7 +7,7 @@ export default function Layout({
     params,
 }: {
     children: ReactNode;
-    params: any; // <-- ✅ force bypass type checking
+    params: { [key: string]: string }
 }) {
     return (
         <html lang={params.locale}>
