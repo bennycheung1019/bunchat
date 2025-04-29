@@ -2,15 +2,13 @@ import { ReactNode } from "react";
 import LocaleClientLayout from "@/components/LocaleClientLayout";
 import { LoadUserSettingsOnStart } from "@/components/LoadUserSettingsOnStart";
 
-// Correct props typing for App Router Layout
-export interface LayoutProps {
+interface LayoutProps {
     children: ReactNode;
-    params: {
-        locale: string;
-    };
+    params: { locale: string };
 }
 
-export default function LocaleLayout({ children, params }: LayoutProps) {
+// ✅ `async` function required because App Router treats params as Promise
+export default async function LocaleLayout({ children, params }: LayoutProps) {
     return (
         <LocaleClientLayout locale={params.locale}>
             <LoadUserSettingsOnStart />
