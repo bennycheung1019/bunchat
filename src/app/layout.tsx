@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import "./globals.css";
-import AuthProvider from "@/providers/SessionProvider";
+
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return <>{children}</>; // ❌ no <html> or <body> here
