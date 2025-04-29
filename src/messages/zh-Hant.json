@@ -3,9 +3,16 @@
     "logout": "登出",
     "theme": "主題",
     "language": "語言",
-    "light": "亮色",
-    "dark": "暗色",
+    "light": "淺色",
+    "dark": "深色",
     "account": "帳戶",
     "save": "儲存",
-    "cancel": "取消"
+    "cancel": "取消",
+    "welcomeTitle": "歡迎來到 AI 聊天機器人",
+    "welcomeSubtitle": "使用 Google 登入開始聊天",
+    "signInButton": "用 Google 登入",
+    "modeChat": "聊天",
+    "modeImprove": "改善",
+    "modeTranslate": "翻譯",
+    "modeReply": "回覆"
 }

@@ -4,6 +4,8 @@
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import "@/app/globals.css";
+import { useTranslations } from "next-intl";
+
 
 // componets imports
 import Topbar from "@/components/layout/Topbar";
@@ -30,6 +32,8 @@ export default function Home() {
   //
   const messagesRef = useRef<HTMLDivElement>(null);
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
+  const t = useTranslations();
+
 
 
 
@@ -70,17 +74,18 @@ export default function Home() {
 
       <main className="h-screen flex flex-col items-center justify-center bg-gray-100 text-center px-4">
         <h1 className="text-2xl font-semibold mb-4">
-          Welcome to the AI Chatbot
+          {t("welcomeTitle")}
         </h1>
         <p className="mb-6 text-gray-600">
-          Sign in with Google to start chatting
+          {t("welcomeSubtitle")}
         </p>
         <button
           onClick={() => signIn("google")}
           className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
         >
-          Sign in with Google
+          {t("signInButton")}
         </button>
+
       </main>
     );
   }
@@ -126,7 +131,7 @@ export default function Home() {
                 >
                   {[
                     {
-                      label: "Chat",
+                      label: "modeChat",
                       value: "chat",
                       icon: (
                         <svg
@@ -141,7 +146,7 @@ export default function Home() {
                       ),
                     },
                     {
-                      label: "Improve",
+                      label: "modeImprove",
                       value: "improve",
                       icon: (
                         <svg
@@ -157,7 +162,7 @@ export default function Home() {
                       ),
                     },
                     {
-                      label: "Translate",
+                      label: "modeTranslate",
                       value: "translate",
                       icon: (
                         <svg
@@ -175,7 +180,7 @@ export default function Home() {
                       ),
                     },
                     {
-                      label: "Reply",
+                      label: "modeReply",
                       value: "replyEmail",
                       icon: (
                         <svg
@@ -200,7 +205,7 @@ export default function Home() {
                         }`}
                     >
                       {mode.icon}
-                      <span>{mode.label}</span>
+                      <span>{t(mode.label)}</span>
                     </button>
                   ))}
                 </div>

@@ -1,41 +1,42 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+// src/middleware.ts
 
-const locales = ['en', 'zh-Hant', 'zh-Hans'];
-const defaultLocale = 'en';
+import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
-    const { pathname } = request.nextUrl;
+const PUBLIC_FILE = /\.(.*)$/;
 
-    // Skip next-intl routes (_next, api, etc.)
-    if (pathname.startsWith("/_next") || pathname.startsWith("/api")) {
+const locales = ["en", "zh-Hant", "zh-Hans"];
+
+export function middleware(req: NextRequest) {
+    const { pathname } = req.nextUrl;
+
+    // Skip next if it's a static file or API
+    if (PUBLIC_FILE.test(pathname) || pathname.startsWith("/api")) {
         return NextResponse.next();
     }
 
-    // Check if pathname already includes a locale
     const pathnameIsMissingLocale = locales.every(
         (locale) => !pathname.startsWith(`/${locale}`)
     );
 
     if (pathnameIsMissingLocale) {
-        const locale = defaultLocale;
-        const url = request.nextUrl.clone();
-        url.pathname = `/${locale}${pathname}`;
-        return NextResponse.redirect(url);
+        // Try to get from localStorage-like cookies first
+        const preferredLanguage = req.cookies.get("preferredLanguage")?.value;
+
+        const locale = preferredLanguage || "en"; // fallback default
+
+        return NextResponse.redirect(new URL(`/${locale}${pathname}`, req.url));
     }
 
     return NextResponse.next();
 }
 
-// Apply middleware only to routes starting from root
+// Tell Next.js to run middleware on all routes
 export const config = {
     matcher: [
         /*
-         * Match all request paths except for the ones starting with:
-         * - api (API routes)
-         * - _next/static (static files)
-         * - _next/image (image optimization files)
-         * - favicon.ico (favicon file)
+         * Match all request paths except for:
+         * - Static files (_next, favicon, etc.)
+         * - API routes
          */
         "/((?!api|_next/static|_next/image|favicon.ico).*)",
     ],

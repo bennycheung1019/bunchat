@@ -7,5 +7,12 @@
     "dark": "Dark",
     "account": "Account",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "welcomeTitle": "Welcome to the AI Chatbot",
+    "welcomeSubtitle": "Sign in with Google to start chatting",
+    "signInButton": "Sign in with Google",
+    "modeChat": "Chat",
+    "modeImprove": "Improve",
+    "modeTranslate": "Translate",
+    "modeReply": "Reply"
 }

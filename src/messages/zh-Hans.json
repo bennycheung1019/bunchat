@@ -7,5 +7,12 @@
     "dark": "暗色",
     "account": "账户",
     "save": "保存",
-    "cancel": "取消"
+    "cancel": "取消",
+    "welcomeTitle": "欢迎来到 AI 聊天机器人",
+    "welcomeSubtitle": "使用 Google 登录开始聊天",
+    "signInButton": "用 Google 登录",
+    "modeChat": "聊天",
+    "modeImprove": "改进",
+    "modeTranslate": "翻译",
+    "modeReply": "回复"
 }

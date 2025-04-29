@@ -1,7 +1,8 @@
 // src/lib/firebase.ts
 
-import { initializeApp, getApps, getApp } from "firebase/app"
-import { getFirestore } from "firebase/firestore"
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth"; // (optional) if you also need auth
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -10,12 +11,14 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-}
+};
 
-// Avoid re-initializing Firebase (Next.js hot reload fix)
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp()
+// Avoid re-initializing Firebase (Next.js hot reload safe)
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-// Export Firestore database
-const db = getFirestore(app)
+// Initialize services
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-export { db }
+// Export them
+export { app, db, auth };
