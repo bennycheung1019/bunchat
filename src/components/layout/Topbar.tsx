@@ -53,6 +53,8 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
               <Image
                 src={session.user.image}
                 alt="User Avatar"
+                width={40}
+                height={40}
                 className="w-full h-full object-cover"
               />
             ) : (
