@@ -1,42 +1,35 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
-export default function LanguageTranslation() {
+export default function ImproveWriting() {
+  const t = useTranslations();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
 
-  const handleTranslate = async (target: "en" | "zh-tw" | "zh-cn") => {
+  const handleImprove = async () => {
     if (!input.trim()) return;
     setLoading(true);
-
-    const prompt = `"${input}"`; // always quoted
-
-    const systemPrompt = {
-      en: "Translate the quoted text to English. Return only the translated version without the quotes",
-      "zh-tw":
-        "Translate the quoted text to Traditional Chinese. Return only the translated version without the quotes",
-      "zh-cn":
-        "Translate the quoted text to Simplified Chinese. Return only the translated version without the quotes",
-    }[target];
 
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: prompt,
-          systemPrompt,
+          message: `"${input}"`,
+          systemPrompt:
+            "You are a writing assistant. The user's message will always be inside quotation marks. Rewrite only the quoted text to be clearer, more concise, and professional. Return only the improved version without that quotation marks.",
         }),
       });
 
       const data = await res.json();
-      setOutput(data.reply || "No reply.");
+      setOutput(data.reply || t("improve.error"));
     } catch (err) {
       console.error(err);
-      setOutput("Error translating text.");
+      setOutput(t("improve.error"));
     } finally {
       setLoading(false);
     }
@@ -50,15 +43,16 @@ export default function LanguageTranslation() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-4xl mx-auto w-full space-y-4">
+      {/* Input Textarea */}
       <div className="relative">
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Type or paste something here..."
+          placeholder={t("improve.placeholder")}
           className="w-full p-4 pr-20 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[140px]"
         />
 
-        {/* Paste & Clear Icons */}
+        {/* Action Icons */}
         <div className="absolute bottom-3 right-4 flex gap-3">
           {/* Paste */}
           <button
@@ -66,10 +60,9 @@ export default function LanguageTranslation() {
               const text = await navigator.clipboard.readText();
               setInput(text);
             }}
-            title="Paste"
+            title={t("common.paste")}
             className="text-gray-500 hover:text-blue-600 transition"
           >
-            {/* Clipboard Paste Icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-6 h-6 sm:w-7 sm:h-7 text-gray-500 hover:text-blue-600 transition-colors"
@@ -89,22 +82,19 @@ export default function LanguageTranslation() {
           {/* Clear */}
           <button
             onClick={() => setInput("")}
-            title="Clear"
+            title={t("common.clear")}
             disabled={!input.trim()}
-            className={`transition ${
-              input.trim()
-                ? "text-gray-500 hover:text-red-500"
-                : "text-gray-300 cursor-not-allowed"
-            }`}
+            className={`transition ${input.trim()
+              ? "text-gray-500 hover:text-red-500"
+              : "text-gray-300 cursor-not-allowed"
+              }`}
           >
-            {/* trash can Icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className={`w-6 h-6 sm:w-7 sm:h-7 transition-colors ${
-                input.trim()
-                  ? "text-gray-500 hover:text-red-600"
-                  : "text-gray-300"
-              }`}
+              className={`w-6 h-6 sm:w-7 sm:h-7 transition-colors ${input.trim()
+                ? "text-gray-500 hover:text-red-600"
+                : "text-gray-300"
+                }`}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -118,61 +108,34 @@ export default function LanguageTranslation() {
             </svg>
           </button>
         </div>
+
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex flex-wrap justify-between items-center gap-4">
-        <div className="flex gap-2">
-          <button
-            onClick={() => handleTranslate("en")}
-            disabled={loading || !input.trim()}
-            className={`px-4 py-2 text-sm rounded transition ${
-              input.trim()
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-blue-100 text-blue-400 cursor-not-allowed opacity-50"
+      {/* Improve Button */}
+      <div>
+        <button
+          onClick={handleImprove}
+          disabled={loading || !input.trim()}
+          className={`px-4 py-2 text-sm rounded transition ${loading || !input.trim()
+            ? "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
+            : "bg-green-600 text-white hover:bg-green-700"
             }`}
-          >
-            Translate to English
-          </button>
-
-          <button
-            onClick={() => handleTranslate("zh-tw")}
-            disabled={loading || !input.trim()}
-            className={`px-4 py-2 text-sm rounded transition ${
-              input.trim()
-                ? "bg-green-600 text-white hover:bg-green-700"
-                : "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
-            }`}
-          >
-            翻譯成繁體中文
-          </button>
-
-          <button
-            onClick={() => handleTranslate("zh-cn")}
-            disabled={loading || !input.trim()}
-            className={`px-4 py-2 text-sm rounded transition ${
-              input.trim()
-                ? "bg-yellow-500 text-white hover:bg-yellow-600"
-                : "bg-yellow-100 text-yellow-400 cursor-not-allowed opacity-50"
-            }`}
-          >
-            翻译成简体中文
-          </button>
-        </div>
+        >
+          {loading ? t("improve.loading") : t("improve.button")}
+        </button>
       </div>
 
-      {/* Translated Output */}
+      {/* Output */}
       <div
         className="p-4 rounded-lg bg-yellow-50 text-yellow-900 border border-yellow-200 shadow-inner cursor-pointer whitespace-pre-line hover:ring-2 ring-yellow-300 transition"
         onClick={() => handleCopy(output)}
       >
-        {output || "Translated text will appear here."}
+        {output || t("improve.placeholderOutput")}
       </div>
 
-      {/* Copied Toast */}
       {showCopied && (
         <div className="fixed left-1/2 -translate-x-1/2 bottom-28 bg-black text-white text-xs px-3 py-1 rounded shadow-lg z-50 animate-fadeIn">
-          Copied!
+          {t("common.copied")}
         </div>
       )}
     </div>

@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function ReplyEmail() {
+  const t = useTranslations("reply");
   const [originalEmail, setOriginalEmail] = useState("");
   const [replySummary, setReplySummary] = useState("");
   const [replyTone, setReplyTone] = useState<"formal" | "friendly" | "short">(
@@ -34,10 +36,10 @@ export default function ReplyEmail() {
       });
 
       const data = await res.json();
-      setGeneratedReply(data.reply || "No reply from server.");
+      setGeneratedReply(data.reply || t("error"));
     } catch (error) {
       console.error("Error generating reply:", error);
-      setGeneratedReply("Failed to generate reply.");
+      setGeneratedReply(t("error"));
     } finally {
       setLoading(false);
     }
@@ -50,7 +52,7 @@ export default function ReplyEmail() {
         <textarea
           value={originalEmail}
           onChange={(e) => setOriginalEmail(e.target.value)}
-          placeholder="Paste the email you want to reply to"
+          placeholder={t("placeholderEmail")}
           className="w-full p-4 pr-20 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[140px]"
         />
         {/* Paste & Clear Icons */}
@@ -61,7 +63,7 @@ export default function ReplyEmail() {
               const text = await navigator.clipboard.readText();
               setOriginalEmail(text);
             }}
-            title="Paste"
+            title={t("paste")}
             className="text-gray-500 hover:text-blue-600 transition"
           >
             <svg
@@ -83,13 +85,12 @@ export default function ReplyEmail() {
           {/* Clear */}
           <button
             onClick={() => setOriginalEmail("")}
-            title="Clear"
+            title={t("clear")}
             disabled={!originalEmail.trim()}
-            className={`transition ${
-              originalEmail.trim()
+            className={`transition ${originalEmail.trim()
                 ? "text-gray-500 hover:text-red-500"
                 : "text-gray-300 cursor-not-allowed"
-            }`}
+              }`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +114,7 @@ export default function ReplyEmail() {
       <textarea
         value={replySummary}
         onChange={(e) => setReplySummary(e.target.value)}
-        placeholder="Summarize what you want to say"
+        placeholder={t("placeholderSummary")}
         className="w-full p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[120px]"
       />
 
@@ -124,15 +125,12 @@ export default function ReplyEmail() {
             key={tone}
             type="button"
             onClick={() => setReplyTone(tone as typeof replyTone)}
-            className={`px-4 py-2 text-sm rounded border font-medium transition ${
-              replyTone === tone
+            className={`px-4 py-2 text-sm rounded border font-medium transition ${replyTone === tone
                 ? "bg-blue-600 text-white border-blue-600"
                 : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
-            }`}
+              }`}
           >
-            {tone === "short"
-              ? "Short & Simple"
-              : tone.charAt(0).toUpperCase() + tone.slice(1)}
+            {t(`tone.${tone}`)}
           </button>
         ))}
       </div>
@@ -141,13 +139,12 @@ export default function ReplyEmail() {
       <button
         onClick={handleGenerateReply}
         disabled={!originalEmail.trim() || !replySummary.trim()}
-        className={`px-4 py-2 text-sm rounded transition ml-auto ${
-          originalEmail.trim() && replySummary.trim()
+        className={`px-4 py-2 text-sm rounded transition ml-auto ${originalEmail.trim() && replySummary.trim()
             ? "bg-green-600 text-white hover:bg-green-700"
             : "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
-        }`}
+          }`}
       >
-        {loading ? "Generating..." : "Generate Reply"}
+        {loading ? t("loading") : t("generate")}
       </button>
 
       {/* Output */}
@@ -155,13 +152,13 @@ export default function ReplyEmail() {
         className="p-4 rounded-lg bg-yellow-50 text-yellow-900 border border-yellow-200 shadow-inner cursor-pointer whitespace-pre-line hover:ring-2 ring-yellow-300 transition"
         onClick={() => handleCopy(generatedReply)}
       >
-        {generatedReply || "Generated email will appear here."}
+        {generatedReply || t("placeholderOutput")}
       </div>
 
       {/* Copied Toast */}
       {showCopied && (
         <div className="fixed left-1/2 -translate-x-1/2 bottom-28 bg-black text-white text-xs px-3 py-1 rounded shadow-lg z-50 animate-fadeIn">
-          Copied!
+          {t("copied")}
         </div>
       )}
     </div>

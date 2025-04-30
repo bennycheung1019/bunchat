@@ -3,8 +3,8 @@
     "logout": "登出",
     "theme": "主題",
     "language": "語言",
-    "light": "淺色",
-    "dark": "深色",
+    "light": "亮色",
+    "dark": "暗色",
     "account": "帳戶",
     "save": "儲存",
     "cancel": "取消",
@@ -15,12 +15,53 @@
     "modeImprove": "改善",
     "modeTranslate": "翻譯",
     "modeReply": "回覆",
-    "improve.button": "改善寫作",
-    "improve.loading": "正在改善...",
-    "improve.placeholder": "請輸入或貼上文字...",
-    "improve.placeholderOutput": "改善後的內容將顯示在此。",
-    "improve.error": "改善文字時發生錯誤。",
-    "common.copied": "已複製！",
-    "common.paste": "貼上",
-    "common.clear": "清除"
+    "improve": {
+        "button": "改善寫作",
+        "loading": "正在改善...",
+        "placeholder": "請輸入或貼上內容...",
+        "placeholderOutput": "改善後的內容將顯示在這裡。",
+        "error": "改善文字時發生錯誤。"
+    },
+    "common": {
+        "copied": "已複製！",
+        "paste": "貼上",
+        "clear": "清除"
+    },
+    "translate": {
+        "placeholder": "請輸入或貼上內容...",
+        "placeholderOutput": "翻譯後的文字將顯示在這裡。",
+        "paste": "貼上",
+        "clear": "清除",
+        "toEnglish": "翻譯成英文",
+        "toTraditional": "翻譯成繁體中文",
+        "toSimplified": "翻譯成簡體中文",
+        "copied": "已複製！",
+        "error": "翻譯失敗。"
+    },
+    "reply": {
+        "placeholderEmail": "貼上您要回覆的郵件內容",
+        "placeholderSummary": "簡要說明您要表達的內容",
+        "placeholderOutput": "產生的郵件內容會顯示在這裡。",
+        "generate": "產生回覆",
+        "loading": "產生中...",
+        "error": "無法產生回覆。",
+        "paste": "貼上",
+        "clear": "清除",
+        "copied": "已複製！",
+        "tone": {
+            "short": "簡短回覆",
+            "formal": "正式",
+            "friendly": "親切"
+        }
+    },
+    "chat": {
+        "thinking": "思考中...",
+        "noReply": "GPT-4o-mini 沒有回應。",
+        "error": "與 GPT-4o-mini 通訊錯誤。",
+        "clickToCopy": "點擊以複製",
+        "placeholder": "輸入你的訊息...",
+        "send": "發送",
+        "scrollToBottom": "滾動到底部",
+        "copied": "已複製！"
+    }
 }

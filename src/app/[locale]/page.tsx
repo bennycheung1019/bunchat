@@ -10,11 +10,11 @@ import { useTranslations } from "next-intl";
 // componets imports
 import Topbar from "@/components/layout/Topbar";
 import Sidebar from "@/components/layout/Sidebar";
-import ChatConversation from "@/components/modes/ChatConversation";
-import ImproveWriting from "@/components/modes/ImproveWriting";
-import LanguageTranslation from "@/components/modes/LanguageTranslation";
-import ReplyEmail from "@/components/modes/ReplyEmail";
-import GenerateImage from "@/components/modes/GenerateImage";
+import ChatConversation from "@/app/[locale]/ChatConversation";
+import ImproveWriting from "@/app/[locale]/ImproveWriting";
+import LanguageTranslation from "@/app/[locale]/LanguageTranslation";
+import ReplyEmail from "@/app/[locale]/ReplyEmail";
+import GenerateImage from "@/app/[locale]/GenerateImage";
 
 
 export default function Home() {

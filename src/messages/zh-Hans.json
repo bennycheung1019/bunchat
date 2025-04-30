@@ -15,12 +15,53 @@
     "modeImprove": "改进",
     "modeTranslate": "翻译",
     "modeReply": "回复",
-    "improve.button": "优化写作",
-    "improve.loading": "正在优化...",
-    "improve.placeholder": "请输入或粘贴文本...",
-    "improve.placeholderOutput": "优化后的内容将显示在此。",
-    "improve.error": "优化文本时发生错误。",
-    "common.copied": "已复制！",
-    "common.paste": "粘贴",
-    "common.clear": "清除"
+    "improve": {
+        "button": "优化写作",
+        "loading": "正在优化...",
+        "placeholder": "请输入或粘贴内容...",
+        "placeholderOutput": "优化后的内容将显示在这里。",
+        "error": "优化文字时发生错误。"
+    },
+    "common": {
+        "copied": "已复制！",
+        "paste": "粘贴",
+        "clear": "清除"
+    },
+    "translate": {
+        "placeholder": "请输入或粘贴内容...",
+        "placeholderOutput": "翻译后的文字将显示在这里。",
+        "paste": "粘贴",
+        "clear": "清除",
+        "toEnglish": "翻译成英文",
+        "toTraditional": "翻译成繁体中文",
+        "toSimplified": "翻译成简体中文",
+        "copied": "已复制！",
+        "error": "翻译失败。"
+    },
+    "reply": {
+        "placeholderEmail": "粘贴您要回复的邮件内容",
+        "placeholderSummary": "简要说明您想表达的内容",
+        "placeholderOutput": "生成的邮件内容将显示在这里。",
+        "generate": "生成回复",
+        "loading": "生成中...",
+        "error": "无法生成回复。",
+        "paste": "粘贴",
+        "clear": "清除",
+        "copied": "已复制！",
+        "tone": {
+            "short": "简洁回复",
+            "formal": "正式",
+            "friendly": "友好"
+        }
+    },
+    "chat": {
+        "thinking": "思考中...",
+        "noReply": "GPT-4o-mini 没有回复。",
+        "error": "与 GPT-4o-mini 通信错误。",
+        "clickToCopy": "点击复制",
+        "placeholder": "输入你的消息...",
+        "send": "发送",
+        "scrollToBottom": "滚动到底部",
+        "copied": "已复制！"
+    }
 }

@@ -1,9 +1,9 @@
-// src/i18n.ts
 import { notFound } from 'next/navigation';
 import { getRequestConfig } from 'next-intl/server';
 
 const locales = ['en', 'zh-Hant', 'zh-Hans'] as const;
 type Locale = (typeof locales)[number];
+
 type Messages = {
     settings: string;
     logout: string;
@@ -21,19 +21,55 @@ type Messages = {
     modeImprove: string;
     modeTranslate: string;
     modeReply: string;
-    // New i18n keys for ImproveWriting.tsx
-    "improve.button": string;
-    "improve.loading": string;
-    "improvePlaceholder": string;
-    "improve.placeholderOutput": string;
-    "improve.error": string;
-
-    // Shared keys
-    "common.copied": string;
-    "common.paste": string;
-    "common.clear": string;
+    improve: {
+        button: string;
+        loading: string;
+        placeholder: string;
+        placeholderOutput: string;
+        error: string;
+    };
+    common: {
+        copied: string;
+        paste: string;
+        clear: string;
+    };
+    translate: {
+        button: {
+            en: string;
+            "zh-tw": string;
+            "zh-cn": string;
+        };
+        placeholder: string;
+        placeholderOutput: string;
+        error: string;
+    };
+    reply: {
+        placeholderEmail: string;
+        placeholderSummary: string;
+        placeholderOutput: string;
+        generate: string;
+        loading: string;
+        error: string;
+        paste: string;
+        clear: string;
+        copied: string;
+        tone: {
+            short: string;
+            formal: string;
+            friendly: string;
+        };
+    };
+    chat: {
+        thinking: string;
+        noReply: string;
+        error: string;
+        clickToCopy: string;
+        placeholder: string;
+        send: string;
+        scrollToBottom: string;
+        copied: string;
+    };
 };
-
 
 export default getRequestConfig(async ({ locale }) => {
     if (!locale || !locales.includes(locale as Locale)) {
@@ -46,6 +82,6 @@ export default getRequestConfig(async ({ locale }) => {
 
     return {
         locale: typedLocale,
-        messages,
+        messages
     };
 });

@@ -15,12 +15,53 @@
     "modeImprove": "Improve",
     "modeTranslate": "Translate",
     "modeReply": "Reply",
-    "improve.button": "Improve Writing",
-    "improve.loading": "Improving...",
-    "improvePlaceholder": "Type or paste something here...",
-    "improve.placeholderOutput": "Improved version will appear here.",
-    "improve.error": "Error improving text.",
-    "common.copied": "Copied!",
-    "common.paste": "Paste",
-    "common.clear": "Clear"
+    "improve": {
+        "button": "Improve Writing",
+        "loading": "Improving...",
+        "placeholder": "Type or paste something here...",
+        "placeholderOutput": "Improved version will appear here.",
+        "error": "Error improving text."
+    },
+    "common": {
+        "copied": "Copied!",
+        "paste": "Paste",
+        "clear": "Clear"
+    },
+    "translate": {
+        "placeholder": "Type or paste something here...",
+        "placeholderOutput": "Translated text will appear here.",
+        "paste": "Paste",
+        "clear": "Clear",
+        "toEnglish": "Translate to English",
+        "toTraditional": "Translate to Traditional Chinese",
+        "toSimplified": "Translate to Simplified Chinese",
+        "copied": "Copied!",
+        "error": "Error translating text."
+    },
+    "reply": {
+        "placeholderEmail": "Paste the email you want to reply to",
+        "placeholderSummary": "Summarize what you want to say",
+        "placeholderOutput": "Generated email will appear here.",
+        "generate": "Generate Reply",
+        "loading": "Generating...",
+        "error": "Failed to generate reply.",
+        "paste": "Paste",
+        "clear": "Clear",
+        "copied": "Copied!",
+        "tone": {
+            "short": "Short & Simple",
+            "formal": "Formal",
+            "friendly": "Friendly"
+        }
+    },
+    "chat": {
+        "thinking": "Thinking...",
+        "noReply": "No reply from GPT-4o-mini.",
+        "error": "Error contacting GPT-4o-mini.",
+        "clickToCopy": "Click to copy",
+        "placeholder": "Type your message...",
+        "send": "Send",
+        "scrollToBottom": "Scroll to bottom",
+        "copied": "Copied!"
+    }
 }
