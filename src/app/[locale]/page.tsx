@@ -16,8 +16,6 @@ import LanguageTranslation from "@/app/[locale]/LanguageTranslation";
 import ReplyEmail from "@/app/[locale]/ReplyEmail";
 import ImageTool from "@/app/[locale]/ImageTool";
 
-import GenerateImage from "@/app/[locale]/GenerateImage";
-
 
 export default function Home() {
   const { data: session } = useSession();
@@ -28,7 +26,8 @@ export default function Home() {
   //for sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // default: close
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const [currentView, setCurrentView] = useState<"work" | "generateImage">("work");
+  const [currentView, setCurrentView] = useState<"work" | "imageTool">("work");
+
 
 
   //

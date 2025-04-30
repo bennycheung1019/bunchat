@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
-import { Readable } from "stream";
 
 export const runtime = "edge";
 

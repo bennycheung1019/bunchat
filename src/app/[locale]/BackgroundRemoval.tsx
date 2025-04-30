@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export default function BackgroundRemoval() {
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
@@ -44,7 +45,7 @@ export default function BackgroundRemoval() {
     return (
         <div className="px-4 py-6 max-w-2xl mx-auto space-y-6">
             {previewUrl && (
-                <img src={previewUrl} alt="Preview" className="w-60 h-60 object-cover rounded border mx-auto" />
+                <Image src={previewUrl} alt="Preview" className="w-60 h-60 object-cover rounded border mx-auto" />
             )}
 
             <div className="border-2 border-dashed border-gray-300 p-6 rounded text-center hover:border-blue-400">
@@ -70,7 +71,7 @@ export default function BackgroundRemoval() {
 
             {resultUrl && (
                 <div className="pt-4 text-center">
-                    <img src={resultUrl} alt="Result" className="w-60 h-60 object-cover rounded mx-auto border" />
+                    <Image src={resultUrl} alt="Result" className="w-60 h-60 object-cover rounded mx-auto border" />
                     <a href={resultUrl} download className="text-blue-500 underline block mt-2">Download</a>
                 </div>
             )}
