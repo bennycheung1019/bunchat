@@ -14,5 +14,13 @@
     "modeChat": "聊天",
     "modeImprove": "改善",
     "modeTranslate": "翻譯",
-    "modeReply": "回覆"
+    "modeReply": "回覆",
+    "improve.button": "改善寫作",
+    "improve.loading": "正在改善...",
+    "improve.placeholder": "請輸入或貼上文字...",
+    "improve.placeholderOutput": "改善後的內容將顯示在此。",
+    "improve.error": "改善文字時發生錯誤。",
+    "common.copied": "已複製！",
+    "common.paste": "貼上",
+    "common.clear": "清除"
 }

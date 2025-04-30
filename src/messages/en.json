@@ -14,5 +14,13 @@
     "modeChat": "Chat",
     "modeImprove": "Improve",
     "modeTranslate": "Translate",
-    "modeReply": "Reply"
+    "modeReply": "Reply",
+    "improve.button": "Improve Writing",
+    "improve.loading": "Improving...",
+    "improve.placeholder": "Type or paste something here...",
+    "improve.placeholderOutput": "Improved version will appear here.",
+    "improve.error": "Error improving text.",
+    "common.copied": "Copied!",
+    "common.paste": "Paste",
+    "common.clear": "Clear"
 }

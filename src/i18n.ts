@@ -21,6 +21,17 @@ type Messages = {
     modeImprove: string;
     modeTranslate: string;
     modeReply: string;
+    // New i18n keys for ImproveWriting.tsx
+    "improve.button": string;
+    "improve.loading": string;
+    "improve.placeholder": string;
+    "improve.placeholderOutput": string;
+    "improve.error": string;
+
+    // Shared keys
+    "common.copied": string;
+    "common.paste": string;
+    "common.clear": string;
 };
 
 
