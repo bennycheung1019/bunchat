@@ -2,18 +2,18 @@
 import { notFound } from 'next/navigation';
 import { getRequestConfig } from 'next-intl/server';
 
-const locales = ['en', 'zh-Hant', 'zh-Hans'];
+const locales = ['en', 'zh-Hant', 'zh-Hans'] as const;
+type Locale = (typeof locales)[number];
 
-export default getRequestConfig(async ({ locale }) => {
-    // Validate that the incoming `locale` parameter is valid
-    if (!locales.includes(locale as any)) {
-        notFound(); // This throws and stops execution if locale is invalid
+export default getRequestConfig(async ({ locale }): Promise<{ locale: Locale; messages: any }> => {
+    if (!locale || !locales.includes(locale as Locale)) {
+        notFound();
     }
 
-    // If execution reaches here, locale must be a valid string.
-    // Assert the type to satisfy TypeScript.
+    const typedLocale = locale as Locale;
+
     return {
-        locale: locale as string, // <-- Add 'as string' assertion here
-        messages: (await import(`./messages/${locale}.json`)).default // Use ./messages instead of ../messages
+        locale: typedLocale,
+        messages: (await import(`./messages/${typedLocale}.json`)).default
     };
 });
