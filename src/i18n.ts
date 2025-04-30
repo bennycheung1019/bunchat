@@ -24,7 +24,7 @@ type Messages = {
     // New i18n keys for ImproveWriting.tsx
     "improve.button": string;
     "improve.loading": string;
-    "improve.placeholder": string;
+    "improvePlaceholder": string;
     "improve.placeholderOutput": string;
     "improve.error": string;
 
