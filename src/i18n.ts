@@ -69,6 +69,16 @@ type Messages = {
         scrollToBottom: string;
         copied: string;
     };
+    sidebar: {
+        navigation: string;
+        work: string;
+        generate: string;
+    };
+    topbar: {
+        settings: string;
+        logout: string;
+    };
+
 };
 
 export default getRequestConfig(async ({ locale }) => {

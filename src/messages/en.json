@@ -63,5 +63,14 @@
         "send": "Send",
         "scrollToBottom": "Scroll to bottom",
         "copied": "Copied!"
+    },
+    "sidebar": {
+        "navigation": "Navigation",
+        "work": "Work",
+        "generate": "Generate Image"
+    },
+    "topbar": {
+        "settings": "Settings",
+        "logout": "Logout"
     }
 }

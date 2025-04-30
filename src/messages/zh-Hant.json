@@ -63,5 +63,14 @@
         "send": "發送",
         "scrollToBottom": "滾動到底部",
         "copied": "已複製！"
+    },
+    "sidebar": {
+        "navigation": "導航",
+        "work": "工作區",
+        "generate": "生成圖片"
+    },
+    "topbar": {
+        "settings": "設定",
+        "logout": "登出"
     }
 }

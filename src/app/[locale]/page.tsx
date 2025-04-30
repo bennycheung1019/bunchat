@@ -8,8 +8,8 @@ import { useTranslations } from "next-intl";
 
 
 // componets imports
-import Topbar from "@/components/layout/Topbar";
-import Sidebar from "@/components/layout/Sidebar";
+import Topbar from "@/app/[locale]/layout/Topbar";
+import Sidebar from "@/app/[locale]/layout/Sidebar";
 import ChatConversation from "@/app/[locale]/ChatConversation";
 import ImproveWriting from "@/app/[locale]/ImproveWriting";
 import LanguageTranslation from "@/app/[locale]/LanguageTranslation";

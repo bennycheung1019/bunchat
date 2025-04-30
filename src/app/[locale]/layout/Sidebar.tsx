@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 
 interface SidebarProps {
     isSidebarOpen: boolean;
@@ -17,6 +18,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     setCurrentView,
     currentView,
 }) => {
+    const t = useTranslations();
+
     return (
         <div
             id="chat-library"
@@ -29,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       `}
         >
             <h2 className="text-lg font-semibold text-zinc-800 mb-6 text-center tracking-wide">
-                Navigation
+                {t("sidebar.navigation")}
             </h2>
 
             <div className="space-y-2">
@@ -40,8 +43,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                         setIsSidebarOpen(false);
                     }}
                     className={`flex items-center gap-3 w-full px-4 py-2 rounded-md text-sm font-medium transition ${currentView === "work"
-                        ? "bg-blue-100 text-blue-600"
-                        : "text-gray-700 hover:bg-gray-100"
+                            ? "bg-blue-100 text-blue-600"
+                            : "text-gray-700 hover:bg-gray-100"
                         }`}
                 >
                     <svg
@@ -53,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     >
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                     </svg>
-                    Work
+                    {t("sidebar.work")}
                 </button>
 
                 {/* Generate Image Button */}
@@ -63,8 +66,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                         setIsSidebarOpen(false);
                     }}
                     className={`flex items-center gap-3 w-full px-4 py-2 rounded-md text-sm font-medium transition ${currentView === "generateImage"
-                        ? "bg-blue-100 text-blue-600"
-                        : "text-gray-700 hover:bg-gray-100"
+                            ? "bg-blue-100 text-blue-600"
+                            : "text-gray-700 hover:bg-gray-100"
                         }`}
                 >
                     <svg
@@ -77,7 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                         <path d="M4 4h16v16H4z" stroke="none" />
                         <path d="M4 16l4-4 4 4 4-6 4 6" />
                     </svg>
-                    Generate Image
+                    {t("sidebar.generate")}
                 </button>
             </div>
         </div>

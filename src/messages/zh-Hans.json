@@ -63,5 +63,14 @@
         "send": "发送",
         "scrollToBottom": "滚动到底部",
         "copied": "已复制！"
+    },
+    "sidebar": {
+        "navigation": "导航",
+        "work": "工作区",
+        "generate": "生成图片"
+    },
+    "topbar": {
+        "settings": "设置",
+        "logout": "登出"
     }
 }

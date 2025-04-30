@@ -4,6 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface TopbarProps {
   onToggleSidebar: () => void;
@@ -15,8 +16,8 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations();
 
-  // Close dropdown if click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -73,13 +74,13 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
                 }}
                 className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
               >
-                Settings
+                {t("settings")}
               </button>
               <button
                 onClick={() => signOut()}
                 className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
               >
-                Logout
+                {t("logout")}
               </button>
             </div>
           )}
