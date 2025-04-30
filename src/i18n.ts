@@ -72,11 +72,17 @@ type Messages = {
     sidebar: {
         navigation: string;
         work: string;
-        generate: string;
+        imageTool: string;
     };
     topbar: {
         settings: string;
         logout: string;
+    };
+    imageTools: {
+        backgroundRemoval: string;
+        upscaling: string;
+        ocr: string;
+        generate: string;
     };
 
 };

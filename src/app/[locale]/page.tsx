@@ -14,6 +14,8 @@ import ChatConversation from "@/app/[locale]/ChatConversation";
 import ImproveWriting from "@/app/[locale]/ImproveWriting";
 import LanguageTranslation from "@/app/[locale]/LanguageTranslation";
 import ReplyEmail from "@/app/[locale]/ReplyEmail";
+import ImageTool from "@/app/[locale]/ImageTool";
+
 import GenerateImage from "@/app/[locale]/GenerateImage";
 
 
@@ -213,7 +215,8 @@ export default function Home() {
             </>
           )}
 
-          {currentView === "generateImage" && <GenerateImage />}
+          {currentView === "imageTool" && <ImageTool />}
+
 
 
         </div>

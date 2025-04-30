@@ -67,10 +67,16 @@
     "sidebar": {
         "navigation": "导航",
         "work": "工作区",
-        "generate": "生成图片"
+        "imageTool": "图像工具"
     },
     "topbar": {
         "settings": "设置",
         "logout": "登出"
+    },
+    "imageTools": {
+        "backgroundRemoval": "去背景",
+        "upscaling": "图像增强",
+        "ocr": "文字识别",
+        "generate": "生成图片"
     }
 }

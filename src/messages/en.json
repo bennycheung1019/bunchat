@@ -67,10 +67,16 @@
     "sidebar": {
         "navigation": "Navigation",
         "work": "Work",
-        "generate": "Generate Image"
+        "imageTool": "Image Tool"
     },
     "topbar": {
         "settings": "Settings",
         "logout": "Logout"
+    },
+    "imageTools": {
+        "backgroundRemoval": "Remove BG",
+        "upscaling": "Upscale",
+        "ocr": "OCR",
+        "generate": "Draw"
     }
 }

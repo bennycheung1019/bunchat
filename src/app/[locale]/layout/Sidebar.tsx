@@ -7,8 +7,8 @@ interface SidebarProps {
     isSidebarOpen: boolean;
     sidebarRef: React.RefObject<HTMLDivElement | null>;
     setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setCurrentView: (view: "work" | "generateImage") => void;
-    currentView: "work" | "generateImage";
+    setCurrentView: (view: "work" | "imageTool") => void;
+    currentView: "work" | "imageTool";
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -43,8 +43,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                         setIsSidebarOpen(false);
                     }}
                     className={`flex items-center gap-3 w-full px-4 py-2 rounded-md text-sm font-medium transition ${currentView === "work"
-                            ? "bg-blue-100 text-blue-600"
-                            : "text-gray-700 hover:bg-gray-100"
+                        ? "bg-blue-100 text-blue-600"
+                        : "text-gray-700 hover:bg-gray-100"
                         }`}
                 >
                     <svg
@@ -59,15 +59,15 @@ const Sidebar: React.FC<SidebarProps> = ({
                     {t("sidebar.work")}
                 </button>
 
-                {/* Generate Image Button */}
+                {/* Image Tool Button */}
                 <button
                     onClick={() => {
-                        setCurrentView("generateImage");
+                        setCurrentView("imageTool");
                         setIsSidebarOpen(false);
                     }}
-                    className={`flex items-center gap-3 w-full px-4 py-2 rounded-md text-sm font-medium transition ${currentView === "generateImage"
-                            ? "bg-blue-100 text-blue-600"
-                            : "text-gray-700 hover:bg-gray-100"
+                    className={`flex items-center gap-3 w-full px-4 py-2 rounded-md text-sm font-medium transition ${currentView === "imageTool"
+                        ? "bg-blue-100 text-blue-600"
+                        : "text-gray-700 hover:bg-gray-100"
                         }`}
                 >
                     <svg
@@ -80,7 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                         <path d="M4 4h16v16H4z" stroke="none" />
                         <path d="M4 16l4-4 4 4 4-6 4 6" />
                     </svg>
-                    {t("sidebar.generate")}
+                    {t("sidebar.imageTool") || "Image Tool"}
                 </button>
             </div>
         </div>
