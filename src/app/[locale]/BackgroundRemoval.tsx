@@ -44,11 +44,11 @@ export default function BackgroundRemoval() {
         setLoading(true);
         setProgress(10);
 
-        try {
-            const interval = setInterval(() => {
-                setProgress((prev) => (prev < 90 ? prev + 10 : prev));
-            }, 400);
+        const interval = setInterval(() => {
+            setProgress((prev) => (prev < 90 ? prev + 10 : prev));
+        }, 400);
 
+        try {
             const res = await fetch("/api/remove-background", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -57,21 +57,26 @@ export default function BackgroundRemoval() {
 
             const data = await res.json();
             if (data.resultUrl) {
-                setResultUrl(data.resultUrl);
                 setProgress(100);
+
+                // ✨ Add a little delay (e.g., 800ms) so progress bar shows
+                setTimeout(() => {
+                    setResultUrl(data.resultUrl);
+                    setLoading(false);
+                    clearInterval(interval);
+                }, 800);
             } else {
                 throw new Error("API failed");
             }
-
-            clearInterval(interval);
         } catch (err) {
             console.error(err);
             alert("Failed to remove background.");
             setProgress(0);
-        } finally {
+            clearInterval(interval);
             setLoading(false);
         }
     };
+
 
     const reset = () => {
         setUploadedImage(null);
