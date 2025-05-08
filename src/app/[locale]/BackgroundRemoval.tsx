@@ -19,6 +19,7 @@ export default function BackgroundRemoval() {
         }
     };
 
+
     const handleRemoveBackground = async () => {
         if (!uploadedImage) return;
         setLoading(true);
