@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { getFirestore, doc, getDoc } from "firebase/firestore"; // 🔥 Added Firestore import
+import { app } from "@/lib/firebase"; // your firebase.ts file (adjust if needed)
 
 interface TopbarProps {
   onToggleSidebar: () => void;
@@ -15,6 +17,7 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
   const { data: session } = useSession();
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [tokenBalance, setTokenBalance] = useState<number>(0); // ✅ Added state
   const dropdownRef = useRef<HTMLDivElement>(null);
   const t = useTranslations();
 
@@ -31,6 +34,24 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
     };
   }, []);
 
+  // 🔵 Load token balance when user logged in
+  useEffect(() => {
+    const fetchTokens = async () => {
+      if (!session?.user?.id) return;
+
+      const db = getFirestore(app);
+      const userRef = doc(db, "users", session.user.id);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const tokens = userSnap.data().tokens || 0;
+        setTokenBalance(tokens);
+      }
+    };
+
+    fetchTokens();
+  }, [session]);
+
   return (
     <div className="sticky top-0 z-30 w-full bg-white shadow-sm">
       <div className="h-14 flex items-center px-4 justify-between">
@@ -44,46 +65,54 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
           <span className="text-xl">☰</span>
         </button>
 
-        {/* Avatar + Dropdown */}
-        <div className="relative" ref={dropdownRef}>
-          <button
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-blue-400 transition"
-          >
-            {session?.user?.image ? (
-              <Image
-                src={session.user.image}
-                alt="User Avatar"
-                width={40}
-                height={40}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
-                ?
+        {/* Token balance and Avatar */}
+        <div className="flex items-center gap-4">
+          {/* ✅ Token Balance Display */}
+          <div className="text-sm text-gray-700 font-medium">
+            Tokens: <span className="text-blue-600">{tokenBalance}</span>
+          </div>
+
+          {/* Avatar + Dropdown */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-blue-400 transition"
+            >
+              {session?.user?.image ? (
+                <Image
+                  src={session.user.image}
+                  alt="User Avatar"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+                  ?
+                </div>
+              )}
+            </button>
+
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-2 text-sm z-40">
+                <button
+                  onClick={() => {
+                    setIsDropdownOpen(false);
+                    router.push("/settings");
+                  }}
+                  className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                >
+                  {t("settings")}
+                </button>
+                <button
+                  onClick={() => signOut()}
+                  className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                >
+                  {t("logout")}
+                </button>
               </div>
             )}
-          </button>
-
-          {isDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-2 text-sm z-40">
-              <button
-                onClick={() => {
-                  setIsDropdownOpen(false);
-                  router.push("/settings");
-                }}
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-              >
-                {t("settings")}
-              </button>
-              <button
-                onClick={() => signOut()}
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-              >
-                {t("logout")}
-              </button>
-            </div>
-          )}
+          </div>
         </div>
 
       </div>

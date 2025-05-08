@@ -5,6 +5,7 @@ import { saveMessage } from "@/lib/saveMessage";
 import { loadMessages } from "@/lib/loadMessages";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { getUserTokens, deductTokens } from "@/lib/tokenUtils";
 
 interface Message {
   role: "user" | "ai";
@@ -88,6 +89,16 @@ export default function ChatConversation({ isSidebarOpen }: ChatConversationProp
     const sessionId = "session-0";
     const userMessage: Message = { role: "user", text: input };
     const placeholder: Message = { role: "ai", text: t("thinking") };
+
+
+    // 💥  Check and deduct tokens
+    const tokens = await getUserTokens(session.user.id);
+    if (tokens < 5) {  // Example: Chat costs 5 tokens
+      alert("Not enough tokens. Please purchase more.");
+      return;
+    }
+    await deductTokens(session.user.id, 5); // Deduct tokens first
+
 
     setMessages((prev) => [...prev, userMessage, placeholder]);
     setInput("");
