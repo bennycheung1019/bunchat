@@ -34,11 +34,9 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
     };
   }, []);
 
-  // 🔵 Load token balance when user logged in
   useEffect(() => {
     const fetchTokens = async () => {
       if (!session?.user?.id) return;
-
       const db = getFirestore(app);
       const userRef = doc(db, "users", session.user.id);
       const userSnap = await getDoc(userRef);
@@ -46,11 +44,23 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
       if (userSnap.exists()) {
         const tokens = userSnap.data().tokens || 0;
         setTokenBalance(tokens);
+        localStorage.setItem("tokenBalance", tokens.toString());
       }
     };
 
     fetchTokens();
+
+    const syncTokens = () => {
+      const storedTokens = localStorage.getItem("tokenBalance");
+      if (storedTokens) {
+        setTokenBalance(Number(storedTokens));
+      }
+    };
+
+    window.addEventListener("storage", syncTokens);
+    return () => window.removeEventListener("storage", syncTokens);
   }, [session]);
+
 
   return (
     <div className="sticky top-0 z-30 w-full bg-white shadow-sm">
