@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import heic2any from "heic2any"; // Install this: npm install heic2any
 import Image from "next/image";
 
 export default function BackgroundRemoval() {
@@ -9,15 +10,31 @@ export default function BackgroundRemoval() {
     const [resultUrl, setResultUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
-    const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
-            setUploadedImage(file);
-            const reader = new FileReader();
-            reader.onload = (event) => setPreviewUrl(event.target?.result as string);
-            reader.readAsDataURL(file);
+        if (!file) return;
+
+        let processedFile = file;
+
+        // Check if HEIC and convert
+        if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic")) {
+            try {
+                const blob = await heic2any({ blob: file, toType: "image/jpeg" });
+                processedFile = new File([blob as BlobPart], file.name.replace(/\.heic/i, ".jpg"), { type: "image/jpeg" });
+            } catch (err) {
+                console.error("Failed to convert HEIC -> JPEG:", err);
+                alert("Failed to process HEIC image.");
+                return;
+            }
         }
+
+        setUploadedImage(processedFile);
+
+        const reader = new FileReader();
+        reader.onload = (event) => setPreviewUrl(event.target?.result as string);
+        reader.readAsDataURL(processedFile);
     };
+
 
 
     const handleRemoveBackground = async () => {
