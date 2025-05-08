@@ -176,7 +176,6 @@ export default function BackgroundRemoval() {
                     </div>
                     <a href={resultUrl} download className="text-blue-500 underline block">
                         Download Result
-
                     </a>
                     <button
                         onClick={handleReset}
