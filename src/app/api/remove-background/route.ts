@@ -1,26 +1,38 @@
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
 
-export const runtime = "edge";
-
 const replicate = new Replicate({
-    auth: process.env.REPLICATE_API_TOKEN,
+    auth: process.env.REPLICATE_API_TOKEN!,
 });
 
 export async function POST(req: Request) {
-    const formData = await req.formData();
-    const file = formData.get("image") as File;
+    const { imageUrl } = await req.json();
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    if (!imageUrl) {
+        return NextResponse.json({ error: "No image URL provided" }, { status: 400 });
+    }
 
-    const input = {
-        image: `data:image/jpeg;base64,${buffer.toString("base64")}`,
-    };
+    try {
+        // ⚡ Create a prediction manually
+        const prediction = await replicate.predictions.create({
+            version: "a029dff38972b5fda4ec5d75d7d1cd25aeff621d2cf4946a41055d7db66b80bc",
+            input: {
+                image: imageUrl,
+                format: "png",
+                reverse: false,
+                threshold: 0,
+                background_type: "rgba",
+            },
+            wait: true, // ⏳ wait for prediction to complete
+        });
 
-    const output = await replicate.run("851-labs/background-remover", {
-        input,
-    });
+        console.log("🟡 Prediction Result:", prediction);
 
-    return NextResponse.json({ resultUrl: output });
+        const resultUrl = prediction.output; // this is a real URL string
+
+        return NextResponse.json({ resultUrl });
+    } catch (error) {
+        console.error("🔴 Replicate API error:", error);
+        return NextResponse.json({ error: "Failed to remove background" }, { status: 500 });
+    }
 }
