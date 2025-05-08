@@ -1,5 +1,4 @@
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
-import { auth } from "@/lib/firebase"; // your firebase auth setup
 
 const db = getFirestore();
 

@@ -58,7 +58,7 @@ export default function GenerateImage() {
             {/* Uploaded Image Preview */}
             {previewImage && (
                 <div className="w-full flex justify-center">
-                    <img
+                    <Image
                         src={previewImage}
                         alt="Uploaded Preview"
                         className="w-60 h-60 object-cover rounded-lg border"
