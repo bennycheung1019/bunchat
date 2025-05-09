@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
+import { useTokenContext } from "@/context/TokenContext";
+import { deductTokens } from "@/lib/tokenUtils";
+
 
 export default function LanguageTranslation() {
   const t = useTranslations("translate");
@@ -9,10 +13,20 @@ export default function LanguageTranslation() {
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
+  const { data: session } = useSession();
+  const { tokenBalance, refreshTokenBalance } = useTokenContext();
+
 
   const handleTranslate = async (target: "en" | "zh-tw" | "zh-cn") => {
     if (!input.trim()) return;
+
+    if (tokenBalance < 2) {
+      alert("Not enough tokens. Please purchase more to use this feature.");
+      return;
+    }
+
     setLoading(true);
+
 
     const prompt = `"${input}"`; // always quoted
 
@@ -36,6 +50,12 @@ export default function LanguageTranslation() {
 
       const data = await res.json();
       setOutput(data.reply || t("error"));
+
+      if (data.reply && session?.user?.id) {
+        await deductTokens(session.user.id, 2); // ✅ TOKEN AMOUNT HERE
+        await refreshTokenBalance();
+      }
+
     } catch (err) {
       console.error(err);
       setOutput(t("error"));
@@ -94,16 +114,16 @@ export default function LanguageTranslation() {
             title={t("clear")}
             disabled={!input.trim()}
             className={`transition ${input.trim()
-                ? "text-gray-500 hover:text-red-500"
-                : "text-gray-300 cursor-not-allowed"
+              ? "text-gray-500 hover:text-red-500"
+              : "text-gray-300 cursor-not-allowed"
               }`}
           >
             {/* trash can Icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className={`w-6 h-6 sm:w-7 sm:h-7 transition-colors ${input.trim()
-                  ? "text-gray-500 hover:text-red-600"
-                  : "text-gray-300"
+                ? "text-gray-500 hover:text-red-600"
+                : "text-gray-300"
                 }`}
               fill="none"
               viewBox="0 0 24 24"
@@ -127,8 +147,8 @@ export default function LanguageTranslation() {
             onClick={() => handleTranslate("en")}
             disabled={loading || !input.trim()}
             className={`px-4 py-2 text-sm rounded transition ${input.trim()
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-blue-100 text-blue-400 cursor-not-allowed opacity-50"
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-blue-100 text-blue-400 cursor-not-allowed opacity-50"
               }`}
           >
             {t("toEnglish")}
@@ -138,8 +158,8 @@ export default function LanguageTranslation() {
             onClick={() => handleTranslate("zh-tw")}
             disabled={loading || !input.trim()}
             className={`px-4 py-2 text-sm rounded transition ${input.trim()
-                ? "bg-green-600 text-white hover:bg-green-700"
-                : "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
+              ? "bg-green-600 text-white hover:bg-green-700"
+              : "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
               }`}
           >
             {t("toTraditional")}
@@ -149,8 +169,8 @@ export default function LanguageTranslation() {
             onClick={() => handleTranslate("zh-cn")}
             disabled={loading || !input.trim()}
             className={`px-4 py-2 text-sm rounded transition ${input.trim()
-                ? "bg-yellow-500 text-white hover:bg-yellow-600"
-                : "bg-yellow-100 text-yellow-400 cursor-not-allowed opacity-50"
+              ? "bg-yellow-500 text-white hover:bg-yellow-600"
+              : "bg-yellow-100 text-yellow-400 cursor-not-allowed opacity-50"
               }`}
           >
             {t("toSimplified")}

@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
+import { useTokenContext } from "@/context/TokenContext";
+import { deductTokens } from "@/lib/tokenUtils";
+
 
 export default function ReplyEmail() {
   const t = useTranslations("reply");
@@ -13,6 +17,9 @@ export default function ReplyEmail() {
   const [generatedReply, setGeneratedReply] = useState("");
   const [showCopied, setShowCopied] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
+  const { tokenBalance, refreshTokenBalance } = useTokenContext();
+
 
   const tones = ["short", "formal", "friendly"];
 
@@ -23,7 +30,13 @@ export default function ReplyEmail() {
   };
 
   const handleGenerateReply = async () => {
+    if (tokenBalance < 4) {
+      alert("Not enough tokens. Please purchase more to use this feature.");
+      return;
+    }
+
     setLoading(true);
+
     try {
       const res = await fetch("/api/generate-reply-email", {
         method: "POST",
@@ -37,6 +50,12 @@ export default function ReplyEmail() {
 
       const data = await res.json();
       setGeneratedReply(data.reply || t("error"));
+
+      if (data.reply && session?.user?.id) {
+        await deductTokens(session.user.id, 4);  // ✅ TOKEN AMOUNT HERE
+        await refreshTokenBalance();
+      }
+
     } catch (error) {
       console.error("Error generating reply:", error);
       setGeneratedReply(t("error"));
@@ -88,8 +107,8 @@ export default function ReplyEmail() {
             title={t("clear")}
             disabled={!originalEmail.trim()}
             className={`transition ${originalEmail.trim()
-                ? "text-gray-500 hover:text-red-500"
-                : "text-gray-300 cursor-not-allowed"
+              ? "text-gray-500 hover:text-red-500"
+              : "text-gray-300 cursor-not-allowed"
               }`}
           >
             <svg
@@ -126,8 +145,8 @@ export default function ReplyEmail() {
             type="button"
             onClick={() => setReplyTone(tone as typeof replyTone)}
             className={`px-4 py-2 text-sm rounded border font-medium transition ${replyTone === tone
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+              ? "bg-blue-600 text-white border-blue-600"
+              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
               }`}
           >
             {t(`tone.${tone}`)}
@@ -140,8 +159,8 @@ export default function ReplyEmail() {
         onClick={handleGenerateReply}
         disabled={!originalEmail.trim() || !replySummary.trim()}
         className={`px-4 py-2 text-sm rounded transition ml-auto ${originalEmail.trim() && replySummary.trim()
-            ? "bg-green-600 text-white hover:bg-green-700"
-            : "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
+          ? "bg-green-600 text-white hover:bg-green-700"
+          : "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
           }`}
       >
         {loading ? t("loading") : t("generate")}

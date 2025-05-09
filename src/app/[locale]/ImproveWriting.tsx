@@ -45,7 +45,7 @@ export default function ImproveWriting() {
       const data = await res.json();
       setOutput(data.reply || t("improve.error"));
       if (data.reply && session?.user?.id) {
-        await deductTokens(session.user.id, 3);
+        await deductTokens(session.user.id, 3); // ✅ TOKEN AMOUNT HERE
         await refreshTokenBalance();
       }
 
