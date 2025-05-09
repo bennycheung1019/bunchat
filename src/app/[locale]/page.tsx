@@ -106,9 +106,10 @@ export default function Home() {
         <div className="flex flex-col flex-1 w-full pb-45 overflow-y-auto">
           {currentView === "work" && (
             <>
-              <ChatConversation
-                isSidebarOpen={isSidebarOpen}
-              />
+              {chatMode === "chat" && (
+                <ChatConversation isSidebarOpen={isSidebarOpen} />
+              )}
+
               {chatMode === "improve" && <ImproveWriting />}
               {chatMode === "translate" && <LanguageTranslation />}
               {chatMode === "replyEmail" && <ReplyEmail />}

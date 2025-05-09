@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { deductTokens } from "@/lib/tokenUtils";
+import { useSession } from "next-auth/react";
+import { useTokenContext } from "@/context/TokenContext";
 
 export default function ImproveWriting() {
   const t = useTranslations();
@@ -9,10 +12,24 @@ export default function ImproveWriting() {
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
+  const { data: session } = useSession();
+  const { tokenBalance, refreshTokenBalance } = useTokenContext();
 
   const handleImprove = async () => {
+    if (!session?.user?.id) {
+      alert("Please sign in again.");
+      return;
+    }
+
     if (!input.trim()) return;
+
+    if (tokenBalance < 3) {
+      alert("Not enough tokens. Please purchase more to use this feature.");
+      return;
+    }
+
     setLoading(true);
+
 
     try {
       const res = await fetch("/api/chat", {
@@ -27,6 +44,11 @@ export default function ImproveWriting() {
 
       const data = await res.json();
       setOutput(data.reply || t("improve.error"));
+      if (data.reply && session?.user?.id) {
+        await deductTokens(session.user.id, 3);
+        await refreshTokenBalance();
+      }
+
     } catch (err) {
       console.error(err);
       setOutput(t("improve.error"));
