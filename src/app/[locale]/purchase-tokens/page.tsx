@@ -1,4 +1,4 @@
-// ✅ File: /src/app/[locale]/purchase-tokens/page.tsx (ESLint-safe for production)
+// ✅ File: /src/app/[locale]/purchase-tokens/page.tsx (Final ESLint-safe build fix)
 
 "use client";
 
@@ -7,6 +7,12 @@ import { useSession } from "next-auth/react";
 
 interface AirwallexElement {
     destroy: () => void;
+}
+
+declare global {
+    interface Window {
+        airwallexCardElement?: AirwallexElement;
+    }
 }
 
 interface AirwallexGlobal {
@@ -66,7 +72,7 @@ export default function PurchaseTokens() {
                     client_secret: clientSecret,
                     dom_id: "card-container",
                     onReady: (element: AirwallexElement) => {
-                        (window as any).airwallexCardElement = element;
+                        window.airwallexCardElement = element;
                     },
                 });
             }
@@ -77,7 +83,7 @@ export default function PurchaseTokens() {
 
     const handleSubmit = async () => {
         const Airwallex = (window as unknown as AirwallexGlobal).Airwallex;
-        const element = (window as any).airwallexCardElement as AirwallexElement;
+        const element = window.airwallexCardElement;
 
         if (!Airwallex || !element || !clientSecret) {
             alert("Card element not ready.");
