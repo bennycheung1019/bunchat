@@ -27,7 +27,7 @@ export default function PurchaseTokens() {
     }, [amount, session]);
 
     useEffect(() => {
-        const Airwallex = (window as unknown as { Airwallex?: any }).Airwallex;
+        const Airwallex = (window as { Airwallex?: { init: Function; createElement: Function } }).Airwallex;
 
         const initCard = () => {
             if (!clientSecret || !Airwallex) return;
@@ -41,7 +41,7 @@ export default function PurchaseTokens() {
                 client_secret: clientSecret,
                 dom_id: "airwallex-card",
                 onReady: (element: unknown) => {
-                    (window as any).airwallexCardElement = element;
+                    (window as { airwallexCardElement?: unknown }).airwallexCardElement = element;
                 },
             });
         };
@@ -50,7 +50,7 @@ export default function PurchaseTokens() {
             initCard();
         } else {
             const check = setInterval(() => {
-                const AirwallexNow = (window as unknown as { Airwallex?: any }).Airwallex;
+                const AirwallexNow = (window as { Airwallex?: { init: Function; createElement: Function } }).Airwallex;
                 if (AirwallexNow) {
                     initCard();
                     clearInterval(check);
@@ -60,8 +60,8 @@ export default function PurchaseTokens() {
     }, [clientSecret]);
 
     const handleConfirm = async () => {
-        const Airwallex = (window as unknown as { Airwallex?: any }).Airwallex;
-        const element = (window as unknown as { airwallexCardElement?: unknown }).airwallexCardElement;
+        const Airwallex = (window as { Airwallex?: { confirmPaymentIntent: Function } }).Airwallex;
+        const element = (window as { airwallexCardElement?: unknown }).airwallexCardElement;
 
         if (!Airwallex || !element) {
             alert("Card element is not ready.");
