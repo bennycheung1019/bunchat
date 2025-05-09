@@ -5,6 +5,8 @@ import { signIn, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import "@/app/globals.css";
 import { useTranslations } from "next-intl";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { app } from "@/lib/firebase"; // adjust if your firebase init is elsewhere
 
 
 // componets imports
@@ -28,14 +30,24 @@ export default function Home() {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [currentView, setCurrentView] = useState<"work" | "imageTool">("work");
 
+  //for token update
+  const [tokenBalance, setTokenBalance] = useState<number>(0);
 
+  const refreshTokenBalance = async () => {
+    if (!session?.user?.id) return;
+    const db = getFirestore(app);
+    const userRef = doc(db, "users", session.user.id);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      const tokens = userSnap.data().tokens || 0;
+      setTokenBalance(tokens);
+    }
+  };
 
   //
   const messagesRef = useRef<HTMLDivElement>(null);
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
   const t = useTranslations();
-
-
 
 
   // Scroll to bottom when messages change
@@ -94,13 +106,22 @@ export default function Home() {
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Topbar */}
-      <Topbar onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} toggleButtonRef={toggleButtonRef} />
+      <Topbar
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        toggleButtonRef={toggleButtonRef}
+        tokenBalance={tokenBalance} // ✅ Add this
+      />
+
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         sidebarRef={sidebarRef}
         setIsSidebarOpen={setIsSidebarOpen}
         setCurrentView={setCurrentView}
         currentView={currentView}
+      />
+      <ChatConversation
+        isSidebarOpen={isSidebarOpen}
+        refreshTokenBalance={refreshTokenBalance}
       />
 
       {/*Modes window*/}
@@ -109,7 +130,10 @@ export default function Home() {
         <div className="flex flex-col flex-1 w-full pb-45 overflow-y-auto">
           {currentView === "work" && (
             <>
-              {chatMode === "chat" && <ChatConversation isSidebarOpen={isSidebarOpen} />}
+              <ChatConversation
+                isSidebarOpen={isSidebarOpen}
+                refreshTokenBalance={refreshTokenBalance} // ✅ ADD THIS
+              />
               {chatMode === "improve" && <ImproveWriting />}
               {chatMode === "translate" && <LanguageTranslation />}
               {chatMode === "replyEmail" && <ReplyEmail />}

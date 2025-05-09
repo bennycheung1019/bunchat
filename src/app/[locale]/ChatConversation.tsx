@@ -14,9 +14,14 @@ interface Message {
 
 interface ChatConversationProps {
   isSidebarOpen: boolean;
+  refreshTokenBalance: () => Promise<void>;
 }
 
-export default function ChatConversation({ isSidebarOpen }: ChatConversationProps) {
+export default function ChatConversation({
+  isSidebarOpen,
+  refreshTokenBalance, // ✅ Add this
+}: ChatConversationProps) {
+
   const { data: session } = useSession();
   const t = useTranslations("chat");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -97,8 +102,6 @@ export default function ChatConversation({ isSidebarOpen }: ChatConversationProp
       alert("Not enough tokens. Please purchase more.");
       return;
     }
-    await deductTokens(session.user.id, 5); // Deduct tokens first
-
 
     setMessages((prev) => [...prev, userMessage, placeholder]);
     setInput("");
@@ -133,6 +136,11 @@ export default function ChatConversation({ isSidebarOpen }: ChatConversationProp
         response: data.reply,
         title: "Single Session",
       });
+
+      if (data.reply) {
+        await deductTokens(userId, 5);         // ✅ Only deduct if reply is good
+        await refreshTokenBalance();           // ✅ Then update the balance
+      }
     } catch (err) {
       console.error("GPT Error:", err);
       setMessages((prev) => [
@@ -140,6 +148,7 @@ export default function ChatConversation({ isSidebarOpen }: ChatConversationProp
         { role: "ai", text: t("error") },
       ]);
     }
+
   };
 
   return (

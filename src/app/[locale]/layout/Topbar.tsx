@@ -11,7 +11,9 @@ import { app } from "@/lib/firebase"; // your firebase.ts file (adjust if needed
 interface TopbarProps {
   onToggleSidebar: () => void;
   toggleButtonRef: React.RefObject<HTMLButtonElement | null>;
+  tokenBalance: number;
 }
+
 
 const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => {
   const { data: session } = useSession();
