@@ -119,10 +119,6 @@ export default function Home() {
         setCurrentView={setCurrentView}
         currentView={currentView}
       />
-      <ChatConversation
-        isSidebarOpen={isSidebarOpen}
-        refreshTokenBalance={refreshTokenBalance}
-      />
 
       {/*Modes window*/}
       <main className={`flex flex-col flex-1 h-full transition-all duration-300 ease-in-out ${isSidebarOpen ? "md:ml-64" : ""}`}>
@@ -132,7 +128,7 @@ export default function Home() {
             <>
               <ChatConversation
                 isSidebarOpen={isSidebarOpen}
-                refreshTokenBalance={refreshTokenBalance} // ✅ ADD THIS
+                refreshTokenBalance={refreshTokenBalance}
               />
               {chatMode === "improve" && <ImproveWriting />}
               {chatMode === "translate" && <LanguageTranslation />}
