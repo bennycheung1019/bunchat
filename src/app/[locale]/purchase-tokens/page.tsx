@@ -3,6 +3,19 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
+interface AirwallexElement {
+    init: (options: { env: string; origin: string }) => void;
+    createElement: (type: string, config: {
+        client_secret: string;
+        dom_id: string;
+        onReady: (element: unknown) => void;
+    }) => void;
+    confirmPaymentIntent: (config: {
+        element: unknown;
+        client_secret: string;
+    }) => Promise<{ status: string }>;
+}
+
 export default function PurchaseTokens() {
     const { data: session } = useSession();
     const [clientSecret, setClientSecret] = useState("");
@@ -27,7 +40,7 @@ export default function PurchaseTokens() {
     }, [amount, session]);
 
     useEffect(() => {
-        const Airwallex = (window as { Airwallex?: { init: Function; createElement: Function } }).Airwallex;
+        const Airwallex = (window as unknown as { Airwallex?: AirwallexElement }).Airwallex;
 
         const initCard = () => {
             if (!clientSecret || !Airwallex) return;
@@ -40,7 +53,7 @@ export default function PurchaseTokens() {
             Airwallex.createElement("card", {
                 client_secret: clientSecret,
                 dom_id: "airwallex-card",
-                onReady: (element: unknown) => {
+                onReady: (element) => {
                     (window as { airwallexCardElement?: unknown }).airwallexCardElement = element;
                 },
             });
@@ -50,7 +63,7 @@ export default function PurchaseTokens() {
             initCard();
         } else {
             const check = setInterval(() => {
-                const AirwallexNow = (window as { Airwallex?: { init: Function; createElement: Function } }).Airwallex;
+                const AirwallexNow = (window as { Airwallex?: AirwallexElement }).Airwallex;
                 if (AirwallexNow) {
                     initCard();
                     clearInterval(check);
@@ -60,7 +73,7 @@ export default function PurchaseTokens() {
     }, [clientSecret]);
 
     const handleConfirm = async () => {
-        const Airwallex = (window as { Airwallex?: { confirmPaymentIntent: Function } }).Airwallex;
+        const Airwallex = (window as unknown as { Airwallex?: AirwallexElement }).Airwallex;
         const element = (window as { airwallexCardElement?: unknown }).airwallexCardElement;
 
         if (!Airwallex || !element) {
