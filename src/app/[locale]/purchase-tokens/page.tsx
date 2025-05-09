@@ -60,6 +60,7 @@ export default function PurchaseTokens() {
         fetchIntent();
     }, [amount, session]);
 
+
     useEffect(() => {
         const interval = setInterval(() => {
             const Airwallex = (window as unknown as AirwallexGlobal).Airwallex;
