@@ -1,4 +1,4 @@
-// ✅ File: /src/app/[locale]/purchase-tokens/page.tsx (updated with delayed card init)
+// ✅ File: /src/app/[locale]/purchase-tokens/page.tsx (updated for demo env + type fixes)
 
 "use client";
 
@@ -43,8 +43,8 @@ export default function PurchaseTokens() {
                 const card = Airwallex.createElement("card", {
                     client_secret: clientSecret,
                     dom_id: "card-container",
-                    onReady: (el: any) => {
-                        (window as any).airwallexCardElement = el;
+                    onReady: (element: unknown) => {
+                        (window as any).airwallexCardElement = element;
                     },
                 });
             }
