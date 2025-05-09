@@ -1,4 +1,4 @@
-// ✅ File: /src/app/[locale]/purchase-tokens/page.tsx (updated for demo env + type fixes)
+// ✅ File: /src/app/[locale]/purchase-tokens/page.tsx (updated for production + ESLint type fixes)
 
 "use client";
 
@@ -34,16 +34,16 @@ export default function PurchaseTokens() {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            const Airwallex = (window as any).Airwallex;
+            const Airwallex = (window as unknown as { Airwallex?: any }).Airwallex;
             if (Airwallex && clientSecret && document.getElementById("card-container")) {
                 clearInterval(interval);
 
                 Airwallex.init({ env: "production", origin: window.location.origin });
 
-                const card = Airwallex.createElement("card", {
+                Airwallex.createElement("card", {
                     client_secret: clientSecret,
                     dom_id: "card-container",
-                    onReady: (element: unknown) => {
+                    onReady: (element: object) => {
                         (window as any).airwallexCardElement = element;
                     },
                 });
@@ -54,7 +54,7 @@ export default function PurchaseTokens() {
     }, [clientSecret]);
 
     const handleSubmit = async () => {
-        const Airwallex = (window as any).Airwallex;
+        const Airwallex = (window as unknown as { Airwallex?: any }).Airwallex;
         const element = (window as any).airwallexCardElement;
 
         if (!Airwallex || !element || !clientSecret) {
