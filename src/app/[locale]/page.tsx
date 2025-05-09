@@ -6,7 +6,9 @@ import { useEffect, useRef, useState } from "react";
 import "@/app/globals.css";
 import { useTranslations } from "next-intl";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { app } from "@/lib/firebase"; // adjust if your firebase init is elsewhere
+import { app } from "@/lib/firebase";
+import { useCallback } from "react";
+import { flushSync } from "react-dom";
 
 
 // componets imports
@@ -33,16 +35,25 @@ export default function Home() {
   //for token update
   const [tokenBalance, setTokenBalance] = useState<number>(0);
 
-  const refreshTokenBalance = async () => {
+  const refreshTokenBalance = useCallback(async () => {
     if (!session?.user?.id) return;
-    const db = getFirestore(app);
-    const userRef = doc(db, "users", session.user.id);
-    const userSnap = await getDoc(userRef);
-    if (userSnap.exists()) {
-      const tokens = userSnap.data().tokens || 0;
-      setTokenBalance(tokens);
+
+    try {
+      const db = getFirestore(app);
+      const userRef = doc(db, "users", session.user.id);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const tokens = userSnap.data().tokens || 0;
+        flushSync(() => {
+          setTokenBalance(tokens);
+        });
+        console.log("🟢 Token balance updated to:", tokens);
+      }
+    } catch (err) {
+      console.error("Failed to refresh token balance:", err);
     }
-  };
+  }, [session?.user?.id]);
+
 
   //
   const messagesRef = useRef<HTMLDivElement>(null);
