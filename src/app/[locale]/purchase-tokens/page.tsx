@@ -3,29 +3,19 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
-interface AirwallexElement {
-    init: (options: { env: string; origin: string }) => void;
-    createElement: (type: string, config: {
-        client_secret: string;
-        dom_id: string;
-        onReady: (element: unknown) => void;
-    }) => void;
-    confirmPaymentIntent: (config: {
-        element: unknown;
-        client_secret: string;
-    }) => Promise<{ status: string }>;
-}
-
 export default function PurchaseTokens() {
     const { data: session } = useSession();
-    const [clientSecret, setClientSecret] = useState("");
     const [amount, setAmount] = useState(500); // $5 = 50 tokens
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const createIntent = async () => {
-            if (!amount || !session?.user?.id) return;
+    const handleRedirectToHostedCheckout = async () => {
+        if (!session?.user?.id) {
+            alert("You must be logged in to purchase tokens.");
+            return;
+        }
 
+        setLoading(true);
+        try {
             const res = await fetch("/api/create-payment-intent", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -33,72 +23,15 @@ export default function PurchaseTokens() {
             });
 
             const data = await res.json();
-            setClientSecret(data.client_secret);
-        };
 
-        createIntent();
-    }, [amount, session]);
-
-    useEffect(() => {
-        const Airwallex = (window as unknown as { Airwallex?: AirwallexElement }).Airwallex;
-
-        const initCard = () => {
-            if (!clientSecret || !Airwallex) return;
-
-            Airwallex.init({
-                env: "demo",
-                origin: window.location.origin,
-            });
-
-            Airwallex.createElement("card", {
-                client_secret: clientSecret,
-                dom_id: "airwallex-card",
-                onReady: (element) => {
-                    (window as { airwallexCardElement?: unknown }).airwallexCardElement = element;
-                },
-            });
-        };
-
-        if (Airwallex) {
-            initCard();
-        } else {
-            const check = setInterval(() => {
-                const AirwallexNow = (window as { Airwallex?: AirwallexElement }).Airwallex;
-                if (AirwallexNow) {
-                    initCard();
-                    clearInterval(check);
-                }
-            }, 200);
-        }
-    }, [clientSecret]);
-
-    const handleConfirm = async () => {
-        const Airwallex = (window as unknown as { Airwallex?: AirwallexElement }).Airwallex;
-        const element = (window as { airwallexCardElement?: unknown }).airwallexCardElement;
-
-        if (!Airwallex || !element) {
-            alert("Card element is not ready.");
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            const result = await Airwallex.confirmPaymentIntent({
-                element,
-                client_secret: clientSecret,
-            });
-
-            if (result?.status === "succeeded") {
-                alert("✅ Payment successful!");
-                window.location.href = `/purchase-success?tokens=${amount === 500 ? 50 : amount === 1000 ? 120 : 300
-                    }`;
+            if (data?.next_action?.redirect_to_url) {
+                window.location.href = data.next_action.redirect_to_url;
             } else {
-                alert("❌ Payment failed. Please try again.");
+                alert("❌ Failed to create hosted checkout session.");
             }
         } catch (err) {
-            console.error("Payment error:", err);
-            alert("Something went wrong with the payment.");
+            console.error("Payment intent error:", err);
+            alert("Something went wrong.");
         } finally {
             setLoading(false);
         }
@@ -118,15 +51,13 @@ export default function PurchaseTokens() {
                 <option value={2000}>💎 300 Tokens – $20.00</option>
             </select>
 
-            <div id="airwallex-card" className="border p-4 rounded shadow-sm" />
-
             <button
-                onClick={handleConfirm}
+                onClick={handleRedirectToHostedCheckout}
                 className={`w-full py-2 text-white font-medium rounded transition ${loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
                     }`}
                 disabled={loading}
             >
-                {loading ? "Processing..." : "Pay Now"}
+                {loading ? "Redirecting..." : "Pay Now"}
             </button>
         </div>
     );
