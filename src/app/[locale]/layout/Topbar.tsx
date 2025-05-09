@@ -7,20 +7,21 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { getFirestore, doc, getDoc } from "firebase/firestore"; // 🔥 Added Firestore import
 import { app } from "@/lib/firebase"; // your firebase.ts file (adjust if needed)
+import { useTokenContext } from "@/context/TokenContext";
 
 interface TopbarProps {
   onToggleSidebar: () => void;
   toggleButtonRef: React.RefObject<HTMLButtonElement | null>;
-  tokenBalance: number;
 }
 
 const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [tokenBalance, setTokenBalance] = useState<number>(0); // ✅ Added state
   const dropdownRef = useRef<HTMLDivElement>(null);
   const t = useTranslations();
+
+  const { tokenBalance } = useTokenContext();
   console.log("🔵 Topbar received tokenBalance:", tokenBalance);
 
   useEffect(() => {
@@ -35,34 +36,6 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  useEffect(() => {
-    const fetchTokens = async () => {
-      if (!session?.user?.id) return;
-      const db = getFirestore(app);
-      const userRef = doc(db, "users", session.user.id);
-      const userSnap = await getDoc(userRef);
-
-      if (userSnap.exists()) {
-        const tokens = userSnap.data().tokens || 0;
-        setTokenBalance(tokens);
-        localStorage.setItem("tokenBalance", tokens.toString());
-      }
-    };
-
-    fetchTokens();
-
-    const syncTokens = () => {
-      const storedTokens = localStorage.getItem("tokenBalance");
-      if (storedTokens) {
-        setTokenBalance(Number(storedTokens));
-      }
-    };
-
-    window.addEventListener("storage", syncTokens);
-    return () => window.removeEventListener("storage", syncTokens);
-  }, [session]);
-
 
   return (
     <div className="sticky top-0 z-30 w-full bg-white shadow-sm">

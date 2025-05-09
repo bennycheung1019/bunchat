@@ -6,6 +6,7 @@ import { loadMessages } from "@/lib/loadMessages";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { getUserTokens, deductTokens } from "@/lib/tokenUtils";
+import { useTokenContext } from "@/context/TokenContext";
 
 interface Message {
   role: "user" | "ai";
@@ -14,12 +15,10 @@ interface Message {
 
 interface ChatConversationProps {
   isSidebarOpen: boolean;
-  refreshTokenBalance: () => Promise<void>;
 }
 
 export default function ChatConversation({
   isSidebarOpen,
-  refreshTokenBalance, // ✅ Add this
 }: ChatConversationProps) {
 
   const { data: session } = useSession();
@@ -29,6 +28,7 @@ export default function ChatConversation({
   const messagesRef = useRef<HTMLDivElement>(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
+  const { refreshTokenBalance } = useTokenContext();
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);

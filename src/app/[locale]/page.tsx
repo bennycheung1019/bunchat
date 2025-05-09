@@ -5,11 +5,6 @@ import { signIn, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import "@/app/globals.css";
 import { useTranslations } from "next-intl";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { app } from "@/lib/firebase";
-import { useCallback } from "react";
-import { flushSync } from "react-dom";
-
 
 // componets imports
 import Topbar from "@/app/[locale]/layout/Topbar";
@@ -31,29 +26,6 @@ export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // default: close
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [currentView, setCurrentView] = useState<"work" | "imageTool">("work");
-
-  //for token update
-  const [tokenBalance, setTokenBalance] = useState<number>(0);
-
-  const refreshTokenBalance = useCallback(async () => {
-    if (!session?.user?.id) return;
-
-    try {
-      const db = getFirestore(app);
-      const userRef = doc(db, "users", session.user.id);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        const tokens = userSnap.data().tokens || 0;
-        flushSync(() => {
-          setTokenBalance(tokens);
-        });
-        console.log("🟢 Token balance updated to:", tokens);
-      }
-    } catch (err) {
-      console.error("Failed to refresh token balance:", err);
-    }
-  }, [session?.user?.id]);
-
 
   //
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -90,9 +62,6 @@ export default function Home() {
     };
   }, [isSidebarOpen]);
 
-  console.log("🟢 Token state updated to:", tokenBalance);
-
-
   // Sign in screen
   if (!session) {
     return (
@@ -121,7 +90,6 @@ export default function Home() {
       <Topbar
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         toggleButtonRef={toggleButtonRef}
-        tokenBalance={tokenBalance} // ✅ Add this
       />
 
       <Sidebar
@@ -140,7 +108,6 @@ export default function Home() {
             <>
               <ChatConversation
                 isSidebarOpen={isSidebarOpen}
-                refreshTokenBalance={refreshTokenBalance}
               />
               {chatMode === "improve" && <ImproveWriting />}
               {chatMode === "translate" && <LanguageTranslation />}

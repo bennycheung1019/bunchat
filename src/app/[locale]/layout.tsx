@@ -2,6 +2,7 @@
 import { ReactNode } from "react";
 import LocaleClientLayout from "@/components/LocaleClientLayout";
 import { LoadUserSettingsOnStart } from "@/components/LoadUserSettingsOnStart";
+import { TokenProvider } from "@/context/TokenContext";
 
 export default async function LocaleLayout({
     children,
@@ -14,8 +15,10 @@ export default async function LocaleLayout({
 
     return (
         <LocaleClientLayout locale={locale}>
-            <LoadUserSettingsOnStart />
-            {children}
+            <TokenProvider>
+                <LoadUserSettingsOnStart />
+                {children}
+            </TokenProvider>
         </LocaleClientLayout>
     );
 }
