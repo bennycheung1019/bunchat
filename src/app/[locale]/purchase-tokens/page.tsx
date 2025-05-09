@@ -1,9 +1,31 @@
-// ✅ File: /src/app/[locale]/purchase-tokens/page.tsx (updated for production + ESLint type fixes)
+// ✅ File: /src/app/[locale]/purchase-tokens/page.tsx (ESLint-safe for production)
 
 "use client";
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+
+interface AirwallexElement {
+    destroy: () => void;
+}
+
+interface AirwallexGlobal {
+    Airwallex?: {
+        init: (options: { env: string; origin: string }) => void;
+        createElement: (
+            type: string,
+            options: {
+                client_secret: string;
+                dom_id: string;
+                onReady: (element: AirwallexElement) => void;
+            }
+        ) => void;
+        confirmPaymentIntent: (options: {
+            element: AirwallexElement;
+            client_secret: string;
+        }) => Promise<{ status?: string }>;
+    };
+}
 
 export default function PurchaseTokens() {
     const { data: session } = useSession();
@@ -34,7 +56,7 @@ export default function PurchaseTokens() {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            const Airwallex = (window as unknown as { Airwallex?: any }).Airwallex;
+            const Airwallex = (window as unknown as AirwallexGlobal).Airwallex;
             if (Airwallex && clientSecret && document.getElementById("card-container")) {
                 clearInterval(interval);
 
@@ -43,7 +65,7 @@ export default function PurchaseTokens() {
                 Airwallex.createElement("card", {
                     client_secret: clientSecret,
                     dom_id: "card-container",
-                    onReady: (element: object) => {
+                    onReady: (element: AirwallexElement) => {
                         (window as any).airwallexCardElement = element;
                     },
                 });
@@ -54,8 +76,8 @@ export default function PurchaseTokens() {
     }, [clientSecret]);
 
     const handleSubmit = async () => {
-        const Airwallex = (window as unknown as { Airwallex?: any }).Airwallex;
-        const element = (window as any).airwallexCardElement;
+        const Airwallex = (window as unknown as AirwallexGlobal).Airwallex;
+        const element = (window as any).airwallexCardElement as AirwallexElement;
 
         if (!Airwallex || !element || !clientSecret) {
             alert("Card element not ready.");
