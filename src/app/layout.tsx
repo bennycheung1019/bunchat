@@ -8,9 +8,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     // Add <html> and <body> tags HERE
     // You might set a default lang or fetch it differently if needed at this root level
     <html lang="en">
-      <body>
-        {children}
-      </body>
+      <head>
+        <script
+          src="https://checkout.airwallex.com/assets/elements.bundle.min.js"
+          async
+        ></script>
+      </head>
+      <body>{children}</body>
     </html>
   );
 }
