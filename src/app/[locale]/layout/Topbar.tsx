@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { getFirestore, doc, getDoc } from "firebase/firestore"; // 🔥 Added Firestore import
-import { app } from "@/lib/firebase"; // your firebase.ts file (adjust if needed)
 import { useTokenContext } from "@/context/TokenContext";
 
 interface TopbarProps {
