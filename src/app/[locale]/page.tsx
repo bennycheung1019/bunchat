@@ -5,6 +5,8 @@ import { signIn, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import "@/app/globals.css";
 import { useTranslations } from "next-intl";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { app } from "@/lib/firebase"; // adjust if needed
 
 // componets imports
 import Topbar from "@/app/[locale]/layout/Topbar";
@@ -32,6 +34,28 @@ export default function Home() {
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
   const t = useTranslations();
 
+  //Create Email and Tokens for the first login
+
+  useEffect(() => {
+    const saveUserToFirestore = async () => {
+      if (!session?.user?.id || !session.user.email) return;
+
+      const db = getFirestore(app);
+      const userRef = doc(db, "users", session.user.id);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          email: session.user.email,
+          createdAt: serverTimestamp(),
+          tokens: 10, // optional default token count
+        });
+        console.log("📦 New user created in Firestore");
+      }
+    };
+
+    saveUserToFirestore();
+  }, [session]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
