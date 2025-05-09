@@ -26,9 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             id: response.data.id,
         });
     } catch (err: unknown) {
-        const error = err as any;
-        console.error("❌ Airwallex error:", error?.response?.data || error?.message || error);
+        const error = err as { response?: { data?: any }; message?: string };
+        console.error("❌ Airwallex error:", error.response?.data || error.message || error);
         res.status(500).json({ error: "Failed to create PaymentIntent" });
     }
-
 }

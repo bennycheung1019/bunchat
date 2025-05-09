@@ -6,10 +6,9 @@ import { useSession } from "next-auth/react";
 export default function PurchaseTokens() {
     const { data: session } = useSession();
     const [clientSecret, setClientSecret] = useState("");
-    const [amount, setAmount] = useState(500); // Default $5 = 50 tokens
+    const [amount, setAmount] = useState(500); // $5 = 50 tokens
     const [loading, setLoading] = useState(false);
 
-    // Step 1: Create payment intent from backend
     useEffect(() => {
         const createIntent = async () => {
             if (!amount || !session?.user?.id) return;
@@ -27,32 +26,42 @@ export default function PurchaseTokens() {
         createIntent();
     }, [amount, session]);
 
-    // Step 2: Mount Airwallex card element
     useEffect(() => {
-        const Airwallex = (window as any).Airwallex;
+        const Airwallex = (window as unknown as { Airwallex?: any }).Airwallex;
 
-        if (!clientSecret || !Airwallex) return;
+        const initCard = () => {
+            if (!clientSecret || !Airwallex) return;
 
-        Airwallex.init({
-            env: "demo", // or 'staging' / 'production'
-            origin: window.location.origin,
-        });
+            Airwallex.init({
+                env: "demo",
+                origin: window.location.origin,
+            });
 
-        Airwallex.createElement("card", {
-            client_secret: clientSecret,
-            dom_id: "airwallex-card",
-            onReady: function (element: any) {
-                // Store the element to use later
-                (window as any).airwallexCardElement = element;
-            },
-        });
+            Airwallex.createElement("card", {
+                client_secret: clientSecret,
+                dom_id: "airwallex-card",
+                onReady: (element: unknown) => {
+                    (window as any).airwallexCardElement = element;
+                },
+            });
+        };
+
+        if (Airwallex) {
+            initCard();
+        } else {
+            const check = setInterval(() => {
+                const AirwallexNow = (window as unknown as { Airwallex?: any }).Airwallex;
+                if (AirwallexNow) {
+                    initCard();
+                    clearInterval(check);
+                }
+            }, 200);
+        }
     }, [clientSecret]);
 
-
-    // Step 3: Handle confirmation
     const handleConfirm = async () => {
-        const Airwallex = (window as any).Airwallex;
-        const element = (window as any).airwallexCardElement;
+        const Airwallex = (window as unknown as { Airwallex?: any }).Airwallex;
+        const element = (window as unknown as { airwallexCardElement?: unknown }).airwallexCardElement;
 
         if (!Airwallex || !element) {
             alert("Card element is not ready.");
@@ -69,7 +78,8 @@ export default function PurchaseTokens() {
 
             if (result?.status === "succeeded") {
                 alert("✅ Payment successful!");
-                window.location.href = `/purchase-success?tokens=${amount === 500 ? 50 : amount === 1000 ? 120 : 300}`;
+                window.location.href = `/purchase-success?tokens=${amount === 500 ? 50 : amount === 1000 ? 120 : 300
+                    }`;
             } else {
                 alert("❌ Payment failed. Please try again.");
             }
@@ -81,12 +91,10 @@ export default function PurchaseTokens() {
         }
     };
 
-
     return (
         <div className="max-w-md mx-auto py-10 px-4 space-y-6">
             <h2 className="text-xl font-semibold text-center">🎁 Buy Tokens</h2>
 
-            {/* Token Packages */}
             <select
                 className="w-full border p-2 rounded"
                 value={amount}
@@ -97,10 +105,8 @@ export default function PurchaseTokens() {
                 <option value={2000}>💎 300 Tokens – $20.00</option>
             </select>
 
-            {/* Airwallex Card Element */}
             <div id="airwallex-card" className="border p-4 rounded shadow-sm" />
 
-            {/* Confirm Button */}
             <button
                 onClick={handleConfirm}
                 className={`w-full py-2 text-white font-medium rounded transition ${loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
