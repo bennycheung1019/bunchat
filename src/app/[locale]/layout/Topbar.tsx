@@ -14,7 +14,6 @@ interface TopbarProps {
   tokenBalance: number;
 }
 
-
 const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -22,6 +21,7 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
   const [tokenBalance, setTokenBalance] = useState<number>(0); // ✅ Added state
   const dropdownRef = useRef<HTMLDivElement>(null);
   const t = useTranslations();
+  console.log("🔵 Topbar received tokenBalance:", tokenBalance);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -84,6 +84,7 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
             Tokens: <span className="text-blue-600">{tokenBalance}</span>
           </div>
 
+
           {/* Avatar + Dropdown */}
           <div className="relative" ref={dropdownRef}>
             <button
@@ -126,7 +127,6 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
             )}
           </div>
         </div>
-
       </div>
     </div>
   );

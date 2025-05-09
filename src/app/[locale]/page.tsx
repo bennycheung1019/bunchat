@@ -90,6 +90,7 @@ export default function Home() {
     };
   }, [isSidebarOpen]);
 
+  console.log("🟢 Token state updated to:", tokenBalance);
 
 
   // Sign in screen
