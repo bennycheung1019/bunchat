@@ -9,6 +9,10 @@ import { loadStripe } from "@stripe/stripe-js";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
+interface PaymentIntentWithMetadata {
+    metadata?: { tokens?: string };
+}
+
 export default function PurchaseSuccess() {
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -35,7 +39,8 @@ export default function PurchaseSuccess() {
                 if (!stripe) throw new Error("Stripe not loaded");
 
                 const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
-                const metadata = (paymentIntent as any)?.metadata;
+                const metadata = (paymentIntent as PaymentIntentWithMetadata)?.metadata;
+
                 const tokenAmount = Number(metadata?.tokens || 0);
 
                 if (paymentIntent?.status === "succeeded" && tokenAmount > 0) {

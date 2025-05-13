@@ -19,7 +19,7 @@ function amountToTokens(amount: number) {
     return 0;
 }
 
-function CheckoutForm({ amount, clientSecret }: { amount: number; clientSecret: string }) {
+function CheckoutForm() {
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
@@ -96,7 +96,7 @@ export default function PurchaseTokens() {
 
             {clientSecret && (
                 <Elements options={{ clientSecret }} stripe={stripePromise}>
-                    <CheckoutForm amount={amount} clientSecret={clientSecret} />
+                    <CheckoutForm />
                 </Elements>
             )}
         </div>
