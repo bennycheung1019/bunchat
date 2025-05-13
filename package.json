@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.0",
+    "@stripe/react-stripe-js": "^3.7.0",
     "@stripe/stripe-js": "^7.3.0",
     "axios": "^1.9.0",
     "firebase": "^11.6.0",
@@ -20,7 +21,8 @@
     "openai": "^4.93.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "replicate": "^1.0.1"
+    "replicate": "^1.0.1",
+    "stripe": "^18.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -28,6 +30,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/stripe": "^8.0.416",
     "eslint": "^9",
     "eslint-config-next": "15.2.5",
     "tailwindcss": "^4",

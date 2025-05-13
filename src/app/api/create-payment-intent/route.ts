@@ -1,81 +1,45 @@
 // ✅ File: /src/app/api/create-payment-intent/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2025-04-30.basil",
+
+});
 
 export async function POST(req: NextRequest) {
     const body = await req.json();
-    const { amount, currency = "USD" } = body;
+    const { amount = 500, currency = "usd", customerId } = body;
 
-    const clientId = process.env.AIRWALLEX_CLIENT_ID;
-    const apiKey = process.env.AIRWALLEX_API_KEY;
-
-    if (!clientId || !apiKey) {
-        return NextResponse.json({ error: "Missing Airwallex client credentials" }, { status: 500 });
+    if (!customerId) {
+        return NextResponse.json({ error: "Missing customer ID" }, { status: 400 });
     }
-
-    console.log("🔐 AIRWALLEX_CLIENT_ID present:", !!clientId);
-    console.log("🔐 AIRWALLEX_API_KEY present:", !!apiKey);
 
     try {
-        // Step 1: Authenticate and get access token
-        const authRes = await axios.post(
-            "https://api.airwallex.com/api/v1/authentication/login",
-            {},
-            {
-                headers: {
-                    "x-client-id": clientId,
-                    "x-api-key": apiKey,
-                },
-            }
-        );
-
-        const token = authRes.data.token;
-        console.log("✅ Received access token (first 8 chars):", token.slice(0, 8));
-
-        // Step 2: Create PaymentIntent for custom card form usage
-        const intentRes = await axios.post(
-            "https://api.airwallex.com/api/v1/pa/payment_intents/create",
-            {
-                request_id: `order_${Date.now()}`,
-                merchant_order_id: `merchant_order_${Date.now()}`,
-                currency,
-                amount,
-                payment_method_options: {
-                    card: {
-                        auto_capture: true,
-                    },
-                },
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount,
+            currency,
+            metadata: {
+                customerId,
+                tokens: String(amountToTokens(amount)), // ✅ Ensure it's a string
             },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                    "x-client-id": clientId,
-                },
-            }
-        );
+        });
 
-        console.log("📦 PaymentIntent response:", intentRes.data);
 
         return NextResponse.json({
-            id: intentRes.data.id,
-            client_secret: intentRes.data.client_secret,
-            status: intentRes.data.status,
+            clientSecret: paymentIntent.client_secret,
         });
-    } catch (err: unknown) {
-        const error = err as {
-            response?: {
-                data?: unknown;
-                status?: number;
-            };
-            message?: string;
-        };
-        console.error("❌ Airwallex API full error:", {
-            data: error.response?.data,
-            status: error.response?.status,
-            message: error.message,
-        });
+    } catch (err) {
+        console.error("Stripe error:", err);
         return NextResponse.json({ error: "Failed to create PaymentIntent" }, { status: 500 });
     }
+}
+
+function amountToTokens(amount: number) {
+    // Match your frontend plans
+    if (amount === 500) return 50;
+    if (amount === 1000) return 120;
+    if (amount === 2000) return 300;
+    return 0;
 }
