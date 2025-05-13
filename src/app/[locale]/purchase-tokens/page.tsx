@@ -12,13 +12,6 @@ import { loadStripe } from "@stripe/stripe-js";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-function amountToTokens(amount: number) {
-    if (amount === 500) return 50;
-    if (amount === 1000) return 120;
-    if (amount === 2000) return 300;
-    return 0;
-}
-
 function CheckoutForm() {
     const stripe = useStripe();
     const elements = useElements();
