@@ -27,6 +27,72 @@ function stripeLocaleFromAppLocale(appLocale: string): StripeElementLocale {
     }
 }
 
+function DiamondIcon() {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-4 h-4 text-blue-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+        >
+            <path d="M6 3L3 9l9 12 9-12-3-6H6z" />
+        </svg>
+    );
+}
+
+function TokenSelector({
+    amount,
+    setAmount,
+}: {
+    amount: number;
+    setAmount: (val: number) => void;
+}) {
+    const packages = [
+        { value: 500, label: 50, price: "$5.00" },
+        { value: 1000, label: 120, price: "$10.00" },
+        { value: 2000, label: 300, price: "$20.00" },
+    ];
+
+    return (
+        <div className="space-y-3">
+            <div className="grid gap-2">
+                {packages.map((pkg) => {
+                    const isSelected = amount === pkg.value;
+
+                    return (
+                        <button
+                            key={pkg.value}
+                            onClick={() => setAmount(pkg.value)}
+                            className={`flex items-center justify-between w-full px-4 py-2 rounded-md border transition font-medium ${isSelected
+                                    ? "bg-blue-600 text-white border-blue-600"
+                                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                                }`}
+                        >
+                            <span className={`flex items-center gap-1 ${isSelected ? "text-white" : "text-gray-800"}`}>
+                                {pkg.label}
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className={`w-4 h-4 ${isSelected ? "text-white" : "text-blue-500"}`}
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                >
+                                    <path d="M6 3L3 9l9 12 9-12-3-6H6z" />
+                                </svg>
+                            </span>
+                            <span className={`text-sm ${isSelected ? "text-white" : "text-gray-500"}`}>{pkg.price}</span>
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
+    );
+}
+
+
 function CheckoutForm() {
     const stripe = useStripe();
     const elements = useElements();
@@ -35,7 +101,6 @@ function CheckoutForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         if (!stripe || !elements) return;
 
         setLoading(true);
@@ -102,20 +167,10 @@ export function PurchaseTokensClient({ locale }: { locale: string }) {
                 <p className="text-gray-600">{t("subtitle")}</p>
             </div>
 
-            <div className="space-y-3">
-                <label htmlFor="amount" className="block font-medium text-gray-700">
-                    {t("choosePackage")}
-                </label>
-                <select
-                    className="w-full border p-2 rounded"
-                    value={amount}
-                    onChange={(e) => setAmount(Number(e.target.value))}
-                >
-                    <option value={500}>50 Tokens – $5.00</option>
-                    <option value={1000}>120 Tokens – $10.00</option>
-                    <option value={2000}>300 Tokens – $20.00</option>
-                </select>
-            </div>
+            <label className="block font-medium text-gray-700">
+                {t("choosePackage")}
+            </label>
+            <TokenSelector amount={amount} setAmount={setAmount} />
 
             {clientSecret && paymentIntentId ? (
                 <Elements
