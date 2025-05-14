@@ -27,7 +27,7 @@ function stripeLocaleFromAppLocale(appLocale: string): StripeElementLocale {
     }
 }
 
-function CheckoutForm({ paymentIntentId }: { paymentIntentId: string }) {
+function CheckoutForm() {
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
@@ -125,7 +125,7 @@ export function PurchaseTokensClient({ locale }: { locale: string }) {
                         locale: stripeLocaleFromAppLocale(locale),
                     }}
                 >
-                    <CheckoutForm paymentIntentId={paymentIntentId} />
+                    <CheckoutForm />
                 </Elements>
             ) : (
                 <p className="text-center text-gray-500">Loading Stripe…</p>
