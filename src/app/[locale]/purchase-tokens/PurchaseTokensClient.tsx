@@ -29,10 +29,10 @@ function stripeLocaleFromAppLocale(appLocale: string): StripeElementLocale {
 
 function TokenSelector({
     amount,
-    setAmount,
+    onSelect,
 }: {
     amount: number | null;
-    setAmount: (val: number) => void;
+    onSelect: (val: number) => void;
 }) {
     const packages = [
         { value: 500, label: 50, price: "$5.00" },
@@ -49,7 +49,7 @@ function TokenSelector({
                     return (
                         <button
                             key={pkg.value}
-                            onClick={() => setAmount(pkg.value)}
+                            onClick={() => onSelect(pkg.value)}
                             className={`flex items-center justify-between w-full px-4 py-2 rounded-md border transition font-medium ${isSelected
                                     ? "bg-blue-600 text-white border-blue-600"
                                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
@@ -126,6 +126,14 @@ export function PurchaseTokensClient({ locale }: { locale: string }) {
     const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
     const t = useTranslations("purchase");
 
+    // 🔁 Handle package selection and reset previous Stripe intent
+    const handleAmountChange = (val: number) => {
+        setAmount(val);
+        setClientSecret(null);
+        setPaymentIntentId(null);
+    };
+
+    // 🔁 Fetch a new PaymentIntent whenever a new amount is selected
     useEffect(() => {
         if (!session?.user?.id || amount === null) return;
 
@@ -152,7 +160,7 @@ export function PurchaseTokensClient({ locale }: { locale: string }) {
             </div>
 
             <label className="block font-medium text-gray-700">{t("choosePackage")}</label>
-            <TokenSelector amount={amount} setAmount={setAmount} />
+            <TokenSelector amount={amount} onSelect={handleAmountChange} />
 
             {amount === null ? (
                 <p className="text-center text-gray-400">{t("selectPrompt") ?? "Please select a token package."}</p>
