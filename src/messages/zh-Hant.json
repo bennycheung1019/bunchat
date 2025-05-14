@@ -78,5 +78,19 @@
         "upscaling": "升級解析度",
         "ocr": "文字辨識",
         "generate": "產生圖片"
+    },
+    "purchase": {
+        "title": "購買代幣",
+        "subtitle": "選擇一個代幣方案並進行安全付款。",
+        "choosePackage": "💰 選擇方案",
+        "processing": "處理中...",
+        "payNow": "立即付款",
+        "back": "返回"
+    },
+    "success": {
+        "title": "購買成功",
+        "processing": "正在處理您的付款...",
+        "confirmed": "✅ 已收到付款，代幣將很快加到您的帳戶中。",
+        "back": "返回應用程式"
     }
 }

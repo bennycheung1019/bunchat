@@ -78,5 +78,19 @@
         "upscaling": "Upscale",
         "ocr": "OCR",
         "generate": "Draw"
+    },
+    "purchase": {
+        "title": "Buy Tokens",
+        "subtitle": "Select a token package and proceed with secure payment.",
+        "choosePackage": "💰 Choose Package",
+        "processing": "Processing...",
+        "payNow": "Pay Now",
+        "back": "Back"
+    },
+    "success": {
+        "title": "Purchase Successful",
+        "processing": "Processing your purchase...",
+        "confirmed": "✅ Payment received. Tokens will be added to your account shortly.",
+        "back": "Back to App"
     }
 }

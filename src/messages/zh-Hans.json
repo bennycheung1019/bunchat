@@ -78,5 +78,19 @@
         "upscaling": "图像增强",
         "ocr": "文字识别",
         "generate": "生成图片"
+    },
+    "purchase": {
+        "title": "购买代币",
+        "subtitle": "选择一个代币套餐并进行安全支付。",
+        "choosePackage": "💰 选择套餐",
+        "processing": "处理中...",
+        "payNow": "立即支付",
+        "back": "返回"
+    },
+    "success": {
+        "title": "购买成功",
+        "processing": "正在处理您的付款...",
+        "confirmed": "✅ 付款已收到，代币将很快添加到您的账户中。",
+        "back": "返回应用"
     }
 }

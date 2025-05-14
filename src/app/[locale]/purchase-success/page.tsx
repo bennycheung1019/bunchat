@@ -2,30 +2,32 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function PurchaseSuccess() {
-    const [message, setMessage] = useState("Processing your purchase...");
+    const t = useTranslations("success");
+    const [message, setMessage] = useState(t("processing"));
     const router = useRouter();
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setMessage("✅ Payment received. Tokens will be added to your account shortly.");
+            setMessage(t("confirmed"));
         }, 1500);
 
         return () => clearTimeout(timeout);
-    }, []);
+    }, [t]);
 
     return (
         <div className="max-w-md mx-auto py-20 px-6 text-center space-y-6">
-            <h1 className="text-3xl font-bold">Purchase Successful</h1>
+            <h1 className="text-3xl font-bold">{t("title")}</h1>
             <p className="text-gray-700 text-lg">{message}</p>
 
-            {message.startsWith("✅") && (
+            {message === t("confirmed") && (
                 <button
                     onClick={() => router.push("/")}
                     className="w-full py-3 text-white font-semibold text-lg rounded-lg bg-blue-600 hover:bg-blue-700 transition duration-150"
                 >
-                    Back to App
+                    {t("back")}
                 </button>
             )}
         </div>
