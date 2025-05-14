@@ -1,20 +1,21 @@
+// ✅ File: /src/app/api/stripe-webhook/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
-import { app } from "@/lib/firebase";
+import { buffer } from "micro";
+import { db } from "@/lib/firebase-admin";
+
+export const config = {
+    api: { bodyParser: false },
+};
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2025-04-30.basil",
 });
 
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};
-
 export async function POST(req: NextRequest) {
-    const sig = req.headers.get("stripe-signature") as string;
+    const sig = req.headers.get("stripe-signature");
+
+    if (!sig) return NextResponse.json({ error: "Missing signature" }, { status: 400 });
 
     let event;
 
@@ -27,31 +28,30 @@ export async function POST(req: NextRequest) {
             process.env.STRIPE_WEBHOOK_SECRET!
         );
     } catch (err) {
-        console.error("❌ Webhook signature verification failed:", err);
-        return NextResponse.json({ error: "Webhook Error" }, { status: 400 });
+        console.error("❌ Webhook signature error:", err);
+        return NextResponse.json({ error: "Webhook error" }, { status: 400 });
     }
 
-    // ✅ Handle only successful payments
     if (event.type === "payment_intent.succeeded") {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        const customerId = paymentIntent.metadata?.customerId;
-        const tokens = parseInt(paymentIntent.metadata?.tokens || "0");
+        const intent = event.data.object as Stripe.PaymentIntent;
+        const customerId = intent.metadata?.customerId;
+        const tokens = parseInt(intent.metadata?.tokens || "0");
 
         if (!customerId || !tokens) {
-            console.warn("⚠️ Missing customerId or tokens in metadata.");
+            console.warn("⚠️ Missing metadata");
             return NextResponse.json({ received: true });
         }
 
         try {
-            const db = getFirestore(app);
-            const userRef = doc(db, "users", customerId);
-            const userSnap = await getDoc(userRef);
-            const currentTokens = userSnap.exists() ? userSnap.data().tokens || 0 : 0;
+            const userRef = db.collection("users").doc(customerId);
+            const userSnap = await userRef.get();
+            const current = userSnap.exists ? userSnap.data()?.tokens || 0 : 0;
 
-            await setDoc(userRef, { tokens: currentTokens + tokens }, { merge: true });
-            console.log(`✅ ${tokens} tokens added for user ${customerId}`);
-        } catch (e) {
-            console.error("❌ Firestore update failed:", e);
+            await userRef.set({ tokens: current + tokens }, { merge: true });
+
+            console.log(`✅ Tokens updated: ${current} → ${current + tokens} for user ${customerId}`);
+        } catch (err) {
+            console.error("❌ Firestore write failed:", err);
         }
     }
 
