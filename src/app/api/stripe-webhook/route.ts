@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { buffer } from "micro";
-import { getFirestore, doc, updateDoc, getDoc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import { app } from "@/lib/firebase";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
