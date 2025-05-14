@@ -66,19 +66,17 @@ function CheckoutForm({ paymentIntentId }: { paymentIntentId: string }) {
 export default function PurchaseTokens() {
     const { data: session } = useSession();
     const router = useRouter();
-    const [amount, setAmount] = useState(510);
+    const [amount, setAmount] = useState(500);
     const [clientSecret, setClientSecret] = useState<string | null>(null);
     const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
 
     useEffect(() => {
-        console.log("🧩 CheckoutForm mounted");
-        console.log("💡 amount changed to:", amount);
+        if (!session?.user?.id || !amount) return;
+
+        console.log("🧾 Creating intent for amount:", amount);
 
         const fetchIntent = async () => {
-            if (!session?.user?.id) return;
-
-            console.log("🧾 Creating intent for amount:", amount);
-
+            console.log("⚠️ Fetching PaymentIntent with amount:", amount);
             const res = await fetch("/api/create-payment-intent", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -91,7 +89,8 @@ export default function PurchaseTokens() {
         };
 
         fetchIntent();
-    }, [amount, session]);
+    }, [amount, session?.user?.id]);
+
 
     console.log("💡 Rendering PurchaseTokens with:");
     console.log("clientSecret:", clientSecret);
