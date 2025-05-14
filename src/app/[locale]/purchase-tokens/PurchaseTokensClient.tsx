@@ -27,21 +27,6 @@ function stripeLocaleFromAppLocale(appLocale: string): StripeElementLocale {
     }
 }
 
-function DiamondIcon() {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4 text-blue-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-        >
-            <path d="M6 3L3 9l9 12 9-12-3-6H6z" />
-        </svg>
-    );
-}
-
 function TokenSelector({
     amount,
     setAmount,
@@ -66,8 +51,8 @@ function TokenSelector({
                             key={pkg.value}
                             onClick={() => setAmount(pkg.value)}
                             className={`flex items-center justify-between w-full px-4 py-2 rounded-md border transition font-medium ${isSelected
-                                    ? "bg-blue-600 text-white border-blue-600"
-                                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                                ? "bg-blue-600 text-white border-blue-600"
+                                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
                                 }`}
                         >
                             <span className={`flex items-center gap-1 ${isSelected ? "text-white" : "text-gray-800"}`}>
