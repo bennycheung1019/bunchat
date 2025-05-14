@@ -124,12 +124,13 @@ export default function PurchaseTokens() {
             </div>
 
             {clientSecret && paymentIntentId ? (
-                <Elements stripe={stripePromise} options={{ clientSecret }}>
+                <Elements key={clientSecret} stripe={stripePromise} options={{ clientSecret }}>
                     <CheckoutForm paymentIntentId={paymentIntentId} />
                 </Elements>
             ) : (
                 <p className="text-center text-gray-500">Loading Stripe…</p>
             )}
+
 
             <div className="text-center">
                 <button
