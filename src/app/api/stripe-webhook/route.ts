@@ -18,6 +18,8 @@ export async function POST(req: NextRequest) {
 
     let event;
 
+
+
     try {
         const rawBody = await req.arrayBuffer();
         const bodyBuffer = Buffer.from(rawBody);
