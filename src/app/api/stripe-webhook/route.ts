@@ -1,7 +1,6 @@
 // ✅ File: /src/app/api/stripe-webhook/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { buffer } from "micro";
 import { db } from "@/lib/firebase-admin";
 
 export const config = {
