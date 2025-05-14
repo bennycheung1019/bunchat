@@ -85,7 +85,8 @@
         "choosePackage": "💰 Choose Package",
         "processing": "Processing...",
         "payNow": "Pay Now",
-        "back": "Back"
+        "back": "Back",
+        "selectPrompt": "Please select a token package."
     },
     "success": {
         "title": "Purchase Successful",

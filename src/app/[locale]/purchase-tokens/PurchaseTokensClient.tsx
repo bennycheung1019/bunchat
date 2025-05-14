@@ -31,7 +31,7 @@ function TokenSelector({
     amount,
     setAmount,
 }: {
-    amount: number;
+    amount: number | null;
     setAmount: (val: number) => void;
 }) {
     const packages = [
@@ -51,8 +51,8 @@ function TokenSelector({
                             key={pkg.value}
                             onClick={() => setAmount(pkg.value)}
                             className={`flex items-center justify-between w-full px-4 py-2 rounded-md border transition font-medium ${isSelected
-                                ? "bg-blue-600 text-white border-blue-600"
-                                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                                    ? "bg-blue-600 text-white border-blue-600"
+                                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
                                 }`}
                         >
                             <span className={`flex items-center gap-1 ${isSelected ? "text-white" : "text-gray-800"}`}>
@@ -76,7 +76,6 @@ function TokenSelector({
         </div>
     );
 }
-
 
 function CheckoutForm() {
     const stripe = useStripe();
@@ -122,13 +121,13 @@ function CheckoutForm() {
 export function PurchaseTokensClient({ locale }: { locale: string }) {
     const { data: session } = useSession();
     const router = useRouter();
-    const [amount, setAmount] = useState(500);
+    const [amount, setAmount] = useState<number | null>(null);
     const [clientSecret, setClientSecret] = useState<string | null>(null);
     const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
     const t = useTranslations("purchase");
 
     useEffect(() => {
-        if (!session?.user?.id || !amount) return;
+        if (!session?.user?.id || amount === null) return;
 
         const fetchIntent = async () => {
             const res = await fetch("/api/create-payment-intent", {
@@ -152,12 +151,12 @@ export function PurchaseTokensClient({ locale }: { locale: string }) {
                 <p className="text-gray-600">{t("subtitle")}</p>
             </div>
 
-            <label className="block font-medium text-gray-700">
-                {t("choosePackage")}
-            </label>
+            <label className="block font-medium text-gray-700">{t("choosePackage")}</label>
             <TokenSelector amount={amount} setAmount={setAmount} />
 
-            {clientSecret && paymentIntentId ? (
+            {amount === null ? (
+                <p className="text-center text-gray-400">{t("selectPrompt") ?? "Please select a token package."}</p>
+            ) : clientSecret && paymentIntentId ? (
                 <Elements
                     stripe={stripePromise}
                     options={{
