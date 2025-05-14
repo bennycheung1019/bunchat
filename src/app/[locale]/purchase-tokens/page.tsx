@@ -66,7 +66,7 @@ function CheckoutForm({ paymentIntentId }: { paymentIntentId: string }) {
 export default function PurchaseTokens() {
     const { data: session } = useSession();
     const router = useRouter();
-    const [amount, setAmount] = useState(500);
+    const [amount, setAmount] = useState(510);
     const [clientSecret, setClientSecret] = useState<string | null>(null);
     const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
 
@@ -75,6 +75,8 @@ export default function PurchaseTokens() {
 
         const fetchIntent = async () => {
             if (!session?.user?.id) return;
+
+            console.log("🧾 Creating intent for amount:", amount);
 
             const res = await fetch("/api/create-payment-intent", {
                 method: "POST",
