@@ -1,5 +1,6 @@
 import { PurchaseTokensClient } from "./PurchaseTokensClient";
 
-export default function Page({ params }: { params: { locale: string } }) {
-    return <PurchaseTokensClient locale={params.locale} />;
+export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    return <PurchaseTokensClient locale={locale} />;
 }
