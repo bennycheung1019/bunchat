@@ -22,7 +22,11 @@ function CheckoutForm({ paymentIntentId }: { paymentIntentId: string }) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!stripe || !elements) return;
+        if (!stripe || !elements) {
+            console.warn("⛔ handleSubmit aborted: Stripe or Elements not ready", { stripe, elements });
+            return;
+        }
+
 
         setLoading(true);
 
@@ -34,7 +38,7 @@ function CheckoutForm({ paymentIntentId }: { paymentIntentId: string }) {
         const result = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: `${window.location.origin}/purchase-success?payment_intent=${paymentIntentId}`,
+                return_url: `${window.location.origin}/purchase-success`,
             },
             redirect: "always",
         });
@@ -46,8 +50,10 @@ function CheckoutForm({ paymentIntentId }: { paymentIntentId: string }) {
 
         setLoading(false);
     };
+
     console.log("Stripe object:", stripe);
     console.log("Elements object:", elements);
+
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <PaymentElement />
