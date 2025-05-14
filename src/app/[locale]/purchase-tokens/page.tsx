@@ -72,6 +72,7 @@ export default function PurchaseTokens() {
 
     useEffect(() => {
         console.log("🧩 CheckoutForm mounted");
+        console.log("💡 amount changed to:", amount);
 
         const fetchIntent = async () => {
             if (!session?.user?.id) return;
@@ -108,15 +109,19 @@ export default function PurchaseTokens() {
                     💰 Choose Package
                 </label>
                 <select
-                    id="amount"
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg"
+                    className="w-full border p-2 rounded"
                     value={amount}
-                    onChange={(e) => setAmount(Number(e.target.value))}
+                    onChange={(e) => {
+                        const selectedAmount = Number(e.target.value);
+                        console.log("💡 Selected amount:", selectedAmount); // ✅ log here
+                        setAmount(selectedAmount);
+                    }}
                 >
                     <option value={500}>50 Tokens – $5.00</option>
                     <option value={1000}>120 Tokens – $10.00</option>
                     <option value={2000}>300 Tokens – $20.00</option>
                 </select>
+
             </div>
 
             {clientSecret && paymentIntentId ? (
