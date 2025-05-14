@@ -13,23 +13,32 @@ import { loadStripe } from "@stripe/stripe-js";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 
-function CheckoutForm() {
+
+function CheckoutForm({ paymentIntentId }: { paymentIntentId: string }) {
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
         if (!stripe || !elements) return;
 
         setLoading(true);
 
+        // Log the parameters
+        console.log("🧾 Confirming payment with the following parameters:");
+        console.log("Elements:", elements);
+        console.log("paymentIntentId:", paymentIntentId);
+
         const result = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: `${window.location.origin}/purchase-success`, // ✅ clean URL, no query string
+                return_url: `${window.location.origin}/purchase-success?payment_intent=${paymentIntentId}`,
             },
+            redirect: "always",
         });
+
 
         if (result.error) {
             alert(result.error.message);
@@ -37,7 +46,8 @@ function CheckoutForm() {
 
         setLoading(false);
     };
-
+    console.log("Stripe object:", stripe);
+    console.log("Elements object:", elements);
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <PaymentElement />
@@ -56,8 +66,11 @@ export default function PurchaseTokens() {
     const { data: session } = useSession();
     const [amount, setAmount] = useState(500);
     const [clientSecret, setClientSecret] = useState<string | null>(null);
+    const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null); // ✅ Moved here
 
     useEffect(() => {
+        console.log("🧩 CheckoutForm mounted");
+
         const fetchIntent = async () => {
             if (!session?.user?.id) return;
 
@@ -69,10 +82,16 @@ export default function PurchaseTokens() {
 
             const data = await res.json();
             setClientSecret(data.clientSecret);
+            setPaymentIntentId(data.intentId); // ✅ Set from server response
         };
 
         fetchIntent();
     }, [amount, session]);
+
+
+    console.log("💡 Rendering PurchaseTokens with:");
+    console.log("clientSecret:", clientSecret);
+    console.log("paymentIntentId:", paymentIntentId);
 
     return (
         <div className="max-w-md mx-auto py-10 px-4 space-y-6">
@@ -88,11 +107,14 @@ export default function PurchaseTokens() {
                 <option value={2000}>300 Tokens – $20.00</option>
             </select>
 
-            {clientSecret && (
-                <Elements options={{ clientSecret }} stripe={stripePromise}>
-                    <CheckoutForm />
+            {clientSecret && paymentIntentId ? (
+                <Elements stripe={stripePromise} options={{ clientSecret }}>
+                    <CheckoutForm paymentIntentId={paymentIntentId} />
                 </Elements>
+            ) : (
+                <p>Loading Stripe…</p>
             )}
+
         </div>
     );
 }

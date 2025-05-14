@@ -17,12 +17,18 @@ export default function PurchaseSuccess() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const intentId = searchParams.get("payment_intent");
+    const [intentId, setIntentId] = useState<string | null>(null);
+    const rawIntentId = searchParams.get("payment_intent");
+    console.log("🚦 Immediately read from URL: payment_intent =", rawIntentId);
     const [statusMessage, setStatusMessage] = useState("Processing your purchase...");
 
     useEffect(() => {
-        if (!intentId || !session?.user?.id) return;
+        const id = searchParams.get("payment_intent");
+        setIntentId(id);
+    }, [searchParams]);
 
+    useEffect(() => {
+        if (!intentId || !session?.user?.id) return;
 
         const processPayment = async () => {
             try {
@@ -32,7 +38,6 @@ export default function PurchaseSuccess() {
                 console.log("📦 fetch result:", data);
 
                 const clientSecret = data.client_secret;
-
                 if (!clientSecret) throw new Error("No client_secret returned");
 
                 const stripe = await stripePromise;
@@ -40,7 +45,6 @@ export default function PurchaseSuccess() {
 
                 const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
                 const metadata = (paymentIntent as PaymentIntentWithMetadata)?.metadata;
-
                 const tokenAmount = Number(metadata?.tokens || 0);
 
                 if (paymentIntent?.status === "succeeded" && tokenAmount > 0) {
@@ -57,7 +61,7 @@ export default function PurchaseSuccess() {
                     setStatusMessage("❌ Payment failed or token data missing.");
                 }
             } catch (err) {
-                console.error("Error:", err);
+                console.error("❌ Error processing payment:", err);
                 setStatusMessage("❌ Could not verify payment. Please contact support.");
             }
         };
