@@ -8,9 +8,12 @@
     "account": "Account",
     "save": "Save",
     "cancel": "Cancel",
-    "welcomeTitle": "Welcome to the AI Chatbot",
-    "welcomeSubtitle": "Sign in with Google to start chatting",
-    "signInButton": "Sign in with Google",
+    "signin": {
+        "title": "Welcome to MiniMind",
+        "subtitle": "A growing collection of quick, intelligent tools to simplify your work and ideas.",
+        "button": "Sign in with Google",
+        "note": "We use your Google account only to store your preferences and history."
+    },
     "modeChat": "Chat",
     "modeImprove": "Improve",
     "modeTranslate": "Translate",
@@ -93,5 +96,27 @@
         "processing": "Processing your purchase...",
         "confirmed": "✅ Payment received. Tokens will be added to your account shortly.",
         "back": "Back to App"
+    },
+    "landing": {
+        "title": "Your All-in-One AI Toolkit",
+        "subtitle": "MiniMind helps you write, translate, fix, create, and process — instantly. Designed for those who want smart results without complexity.",
+        "cta": "Get Started Free",
+        "launchApp": "Launch App",
+        "featuresTitle": "What You Can Do with MiniMind",
+        "feature1Title": "Chat & Ask",
+        "feature1Desc": "Quick answers, brainstorming, or assistant-style conversations.",
+        "feature2Title": "Improve Writing",
+        "feature2Desc": "Polish your text — emails, essays, content, and more — in seconds.",
+        "feature3Title": "Translate Instantly",
+        "feature3Desc": "Switch between English, Traditional and Simplified Chinese easily.",
+        "feature4Title": "Smart Email Replies",
+        "feature4Desc": "Reply professionally using tone presets like formal, friendly, or concise.",
+        "feature5Title": "Image Tools",
+        "feature5Desc": "Background removal, upscaling, cartoon filters and more.",
+        "feature6Title": "New Tools Coming",
+        "feature6Desc": "MiniMind is always expanding with practical, fast tools built for real use.",
+        "callToAction": "Ready to simplify your day?",
+        "callToActionDesc": "Join free and get access to all tools — only use tokens when needed.",
+        "launchNow": "Launch MiniMind Now"
     }
 }

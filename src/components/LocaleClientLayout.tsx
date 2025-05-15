@@ -22,26 +22,48 @@ function LanguageSync({ locale }: { locale: string }) {
     const pathname = usePathname();
     const router = useRouter();
 
+    const locales = ["en", "zh-Hant", "zh-Hans"];
+    const currentPathLocale = pathname.split("/")[1];
+
     useEffect(() => {
         async function syncUserLanguage() {
-            if (!session?.user?.id) return;
+            // ✅ Handle logged-in user: sync from Firestore
+            if (session?.user?.id) {
+                const settings = await loadUserSettingsFromFirestore(session.user.id);
+                if (!settings) return;
 
-            const settings = await loadUserSettingsFromFirestore(session.user.id);
-            if (!settings) return;
+                localStorage.setItem("theme", settings.theme);
+                localStorage.setItem("preferredLanguage", settings.language);
+                document.cookie = `preferredLanguage=${settings.language}; path=/; max-age=31536000`;
+                document.documentElement.className = settings.theme;
 
-            // Save to localStorage & cookie
-            localStorage.setItem("theme", settings.theme);
-            localStorage.setItem("preferredLanguage", settings.language);
-            document.cookie = `preferredLanguage=${settings.language}; path=/; max-age=31536000`;
+                // Reset override since user is authenticated now
+                localStorage.removeItem("manualLanguageSwitch");
 
-            // Apply theme
-            document.documentElement.className = settings.theme;
+                if (currentPathLocale !== settings.language && locales.includes(settings.language)) {
+                    const newPath = pathname.replace(`/${currentPathLocale}`, `/${settings.language}`);
+                    if (newPath !== pathname) {
+                        router.replace(newPath);
+                    }
+                }
 
-            // Redirect to correct locale if needed
-            const currentPathLocale = pathname.split("/")[1];
-            if (currentPathLocale !== settings.language) {
-                const newPath = pathname.replace(`/${currentPathLocale}`, `/${settings.language}`);
-                router.replace(newPath);
+                return;
+            }
+
+            // ✅ For guests — use stored preference
+            const preferred =
+                localStorage.getItem("preferredLanguage") ||
+                getCookie("preferredLanguage") ||
+                "en";
+
+            const manuallyChosen = localStorage.getItem("manualLanguageSwitch") === "true";
+
+            // ✅ Only override if NOT manually switched
+            if (!manuallyChosen && currentPathLocale !== preferred && locales.includes(preferred)) {
+                const newPath = pathname.replace(`/${currentPathLocale}`, `/${preferred}`);
+                if (newPath !== pathname) {
+                    router.replace(newPath);
+                }
             }
         }
 
@@ -50,6 +72,12 @@ function LanguageSync({ locale }: { locale: string }) {
 
     return null;
 }
+
+function getCookie(name: string) {
+    const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+    return match ? match[2] : null;
+}
+
 
 export default function LocaleClientLayout({
     children,

@@ -1,20 +1,11 @@
-// app/layout.tsx
-import { ReactNode } from "react";
-import "./globals.css";
+// src/app/layout.tsx
+import "../app/globals.css"; // Adjust path as needed
+import type { ReactNode } from "react";
 
-// This is the TRUE Root Layout - it MUST have <html> and <body>
 export default function RootLayout({ children }: { children: ReactNode }) {
-  return (
-    // Add <html> and <body> tags HERE
-    // You might set a default lang or fetch it differently if needed at this root level
-    <html lang="en">
-      <head>
-        <script
-          src="https://checkout.airwallex.com/assets/elements.bundle.min.js"
-          async
-        ></script>
-      </head>
-      <body>{children}</body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body>{children}</body>
+        </html>
+    );
 }

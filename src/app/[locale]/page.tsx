@@ -90,21 +90,43 @@ export default function Home() {
   if (!session) {
     return (
 
-      <main className="h-screen flex flex-col items-center justify-center bg-gray-100 text-center px-4">
-        <h1 className="text-2xl font-semibold mb-4">
-          {t("welcomeTitle")}
-        </h1>
-        <p className="mb-6 text-gray-600">
-          {t("welcomeSubtitle")}
-        </p>
-        <button
-          onClick={() => signIn("google")}
-          className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
-        >
-          {t("signInButton")}
-        </button>
+      <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 px-4">
+        <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-10 text-center space-y-8">
 
+          {/* Logo and Title - Combined */}
+          <div className="flex flex-col items-center space-y-3">
+            <img src="/minimindLogo-noText.png" alt="MiniMind Logo" className="h-16 w-auto" />
+            <h1 className="text-2xl font-bold text-gray-900">{t("signin.title")}</h1>
+          </div>
+
+          {/* Subtitle */}
+          <p className="text-gray-500 text-sm leading-relaxed">
+            {t("signin.subtitle")}
+          </p>
+
+          {/* Sign In Button */}
+          <div className="mt-6">
+            <button
+              onClick={() => signIn("google")}
+              className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700 transition shadow"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#FFC107" d="M43.6 20.5h-1.9V20H24v8h11.3c-1.6 4.5-5.9 7.7-11.3 7.7-6.5 0-11.8-5.3-11.8-11.8S17.5 12 24 12c3 0 5.8 1.1 7.9 3l6-6C34.2 5.1 29.3 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.5 0 19.3-7.7 20.7-18 0.1-0.9 0.1-1.5 0.1-2.5 0-1-0.1-1.7-0.2-2.5z" />
+                <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C15.1 15.3 19.3 12 24 12c3 0 5.8 1.1 7.9 3l6-6C34.2 5.1 29.3 3 24 3c-7.3 0-13.7 3.1-18 8z" />
+                <path fill="#4CAF50" d="M24 45c5.2 0 10-1.8 13.7-4.9l-6.4-5.3C29.6 36.7 26.9 38 24 38c-5.4 0-9.9-3.4-11.5-8.1l-6.6 5C10.3 41 16.7 45 24 45z" />
+                <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-0.7 2-1.9 3.8-3.5 5.1l0 0 6.4 5.3C40.9 34.7 43 29.8 43.6 24c0.1-0.9 0.1-1.5 0.1-2.5 0-1-0.1-1.7-0.2-2.5z" />
+              </svg>
+              <span>{t("signin.button")}</span>
+            </button>
+          </div>
+
+          {/* Footnote */}
+          <p className="text-xs text-gray-400 mt-4">{t("signin.note")}</p>
+        </div>
       </main>
+
+
+
     );
   }
 

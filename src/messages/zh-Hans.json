@@ -8,9 +8,12 @@
     "account": "账户",
     "save": "保存",
     "cancel": "取消",
-    "welcomeTitle": "欢迎来到 AI 聊天机器人",
-    "welcomeSubtitle": "使用 Google 登录开始聊天",
-    "signInButton": "用 Google 登录",
+    "signin": {
+        "title": "欢迎使用 MiniMind",
+        "subtitle": "一个集合多种快捷实用智能工具的平台，助你简化工作与创意流程。",
+        "button": "使用 Google 登录",
+        "note": "我们仅使用你的 Google 账号来保存偏好设置和历史记录。"
+    },
     "modeChat": "聊天",
     "modeImprove": "改进",
     "modeTranslate": "翻译",
@@ -93,5 +96,27 @@
         "processing": "正在处理您的付款...",
         "confirmed": "✅ 付款已收到，代币将很快添加到您的账户中。",
         "back": "返回应用"
+    },
+    "landing": {
+        "title": "您的全能 AI 工具箱",
+        "subtitle": "MiniMind 帮助您快速写作、翻译、修改、创建和处理任务，高效简洁。",
+        "cta": "立即开始使用",
+        "launchApp": "启动应用",
+        "featuresTitle": "MiniMind 能帮你做什么",
+        "feature1Title": "对话与提问",
+        "feature1Desc": "快速回答、头脑风暴，或像助手一样交流。",
+        "feature2Title": "优化写作",
+        "feature2Desc": "一键提升邮件、文章和各种内容。",
+        "feature3Title": "即时翻译",
+        "feature3Desc": "轻松切换英文、简体中文与繁体中文。",
+        "feature4Title": "智能邮件回复",
+        "feature4Desc": "使用预设语气生成专业回复。",
+        "feature5Title": "图像工具",
+        "feature5Desc": "去背景、放大、卡通风格等功能。",
+        "feature6Title": "更多工具即将上线",
+        "feature6Desc": "MiniMind 持续推出实用且高效的 AI 工具。",
+        "callToAction": "准备好简化你的日常了吗？",
+        "callToActionDesc": "免费加入并使用所有工具，按需消耗代币。",
+        "launchNow": "立即启动 MiniMind"
     }
 }
