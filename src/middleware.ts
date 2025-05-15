@@ -1,34 +1,48 @@
+// src/middleware.ts
 import { NextRequest, NextResponse } from "next/server";
 
-const PUBLIC_FILE = /\.(.*)$/;
 const locales = ["en", "zh-Hant", "zh-Hans"];
+const PUBLIC_FILE = /\.(.*)$/;
 
 export function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
-    // ✅ Allow root and /landing (non-locale routes)
-    if (pathname === "/" || pathname.startsWith("/landing")) {
+    // ✅ Allow static files and API
+    if (
+        PUBLIC_FILE.test(pathname) ||
+        pathname.startsWith("/api") ||
+        pathname.startsWith("/_next")
+    ) {
         return NextResponse.next();
     }
 
-    // ✅ Skip static assets and API calls
-    if (PUBLIC_FILE.test(pathname) || pathname.startsWith("/api")) {
+    // ✅ Redirect `/` to preferred locale landing
+    if (pathname === "/") {
+        const preferredLanguage =
+            req.cookies.get("preferredLanguage")?.value || "en";
+        const locale = locales.includes(preferredLanguage)
+            ? preferredLanguage
+            : "en";
+
+        return NextResponse.redirect(new URL(`/${locale}/landing`, req.url));
+    }
+
+    // ✅ If the path already starts with a valid locale, allow it
+    const firstSegment = pathname.split("/")[1];
+    if (locales.includes(firstSegment)) {
         return NextResponse.next();
     }
 
-    // ✅ Short-circuit if the path already contains a supported locale
-    const hasLocale = locales.some((locale) => pathname.startsWith(`/${locale}`));
-    if (hasLocale) {
-        return NextResponse.next();
-    }
-
-    // ✅ If no locale in path, redirect to preferred or fallback
-    const preferredLanguage = req.cookies.get("preferredLanguage")?.value;
-    const locale = locales.includes(preferredLanguage || "") ? preferredLanguage : "zh-Hant";
+    // ✅ Redirect any other path missing a locale
+    const preferredLanguage =
+        req.cookies.get("preferredLanguage")?.value || "en";
+    const locale = locales.includes(preferredLanguage)
+        ? preferredLanguage
+        : "en";
 
     return NextResponse.redirect(new URL(`/${locale}${pathname}`, req.url));
 }
 
 export const config = {
-    matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+    matcher: ["/((?!_next|favicon.ico).*)"],
 };

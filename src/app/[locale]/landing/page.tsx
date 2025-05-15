@@ -66,18 +66,32 @@ export default function LandingPage() {
             </header>
 
             {/* Hero Section */}
-            <section className="px-6 py-24 text-center bg-gradient-to-br from-[#e4f8f6] to-white">
-                <div className="max-w-3xl mx-auto">
-                    <h1 className="text-4xl sm:text-5xl font-bold mb-6">{t("title")}</h1>
-                    <p className="text-lg text-[#065f46] mb-8">{t("subtitle")}</p>
-                    <a
-                        href={`/${locale}/app`}
-                        className="inline-block px-8 py-3 bg-[#065f46] text-white text-lg font-semibold rounded hover:bg-[#047857] transition"
-                    >
-                        {t("cta")}
-                    </a>
+            <section className="px-6 py-24 bg-gradient-to-br from-[#e4f8f6] to-white">
+                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-12">
+
+                    {/* Left: Image */}
+                    <div className="flex justify-center">
+                        <img
+                            src="/heroimage01.png"
+                            alt="AI Toolkit Hero"
+                            className="w-full max-w-sm  object-cover"
+                        />
+                    </div>
+
+                    {/* Right: Text Content */}
+                    <div className="text-center md:text-left">
+                        <h1 className="text-4xl sm:text-5xl font-bold mb-6">{t("title")}</h1>
+                        <p className="text-lg text-[#065f46] mb-8">{t("subtitle")}</p>
+                        <a
+                            href={`/${locale}`}
+                            className="inline-block px-8 py-3 bg-[#065f46] text-white text-lg font-semibold rounded hover:bg-[#047857] transition"
+                        >
+                            {t("cta")}
+                        </a>
+                    </div>
                 </div>
             </section>
+
 
             {/* Features */}
             <section className="bg-white py-20 px-6">
@@ -118,7 +132,7 @@ export default function LandingPage() {
                     <h2 className="text-3xl font-bold mb-4">{t("callToAction")}</h2>
                     <p className="text-[#065f46] mb-8">{t("callToActionDesc")}</p>
                     <a
-                        href={`/${locale}/app`}
+                        href={`/${locale}`}
                         className="px-6 py-3 rounded-md bg-[#065f46] text-white font-medium text-lg hover:bg-[#047857] transition"
                     >
                         {t("launchNow")}
