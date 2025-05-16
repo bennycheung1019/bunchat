@@ -12,28 +12,10 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #f0f0f0;
-    /* Brighter foreground for readability */
-  }
-}
+
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
-}
-
-html.light {
-  background-color: #ffffff;
-  color: #111111;
-  /* Darker text for contrast */
-}
-
-html.dark {
-  background-color: #0a0a0a;
-  color: #f0f0f0;
-  /* Brighter text for visibility */
 }

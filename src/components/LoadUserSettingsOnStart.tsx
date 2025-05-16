@@ -34,7 +34,7 @@ export function LoadUserSettingsOnStart() {
 
                 // ✅ Sync theme from Firestore to DOM and storage
                 localStorage.setItem("theme", settings.theme);
-                document.documentElement.className = settings.theme;
+                document.documentElement.className = "light";  //ALWAYS LIGHT MODE NOW!!!
 
                 if (storedLanguage !== settings.language) {
                     console.log("📝 Overwriting Firestore with guest language:", storedLanguage);

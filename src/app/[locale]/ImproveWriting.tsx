@@ -141,8 +141,8 @@ export default function ImproveWriting() {
           onClick={handleImprove}
           disabled={loading || !input.trim()}
           className={`flex-1 px-4 py-2 text-sm rounded transition ${loading || !input.trim()
-              ? "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
-              : "bg-green-600 text-white hover:bg-green-700"
+            ? "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
+            : "bg-green-600 text-white hover:bg-green-700"
             }`}
         >
           {loading ? t("improve.loading") : t("improve.button")}
@@ -150,7 +150,7 @@ export default function ImproveWriting() {
 
         {/* 💎 Token Cost */}
         <div className="flex items-center gap-1 text-xs text-gray-500 pr-1">
-          <DiamondIcon className="w-4 h-4 text-green-500" />
+          <DiamondIcon />
           <span>1</span>
         </div>
       </div>
