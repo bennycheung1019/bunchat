@@ -7,6 +7,8 @@ import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { getUserTokens, deductTokens } from "@/lib/tokenUtils";
 import { useTokenContext } from "@/context/TokenContext";
+import DiamondIcon from "@/components/icons/DiamondIcon";
+
 
 interface Message {
   role: "user" | "ai";
@@ -138,7 +140,7 @@ export default function ChatConversation({
       });
 
       if (data.reply) {
-        await deductTokens(userId, 5);         // ✅ Only deduct if reply is good
+        await deductTokens(userId, 1);         // ✅ Only deduct if reply is good
         await refreshTokenBalance();           // ✅ Then update the balance
       }
     } catch (err) {
@@ -226,15 +228,23 @@ export default function ChatConversation({
             placeholder={t("placeholder")}
             className="flex-1 resize-none min-h-[3rem] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
           />
-          <button
-            onClick={handleSend}
-            disabled={!input.trim()}
-            className={`ml-3 px-4 py-2 rounded-md text-sm font-semibold text-white transition-all duration-200 shadow-md ${input.trim()
-              ? "bg-blue-600 hover:bg-blue-700"
-              : "bg-blue-300 cursor-not-allowed"}`}
-          >
-            {t("send")}
-          </button>
+          <div className="flex flex-col items-center ml-3">
+            <button
+              onClick={handleSend}
+              disabled={!input.trim()}
+              className={`px-4 py-2 rounded-md text-sm font-semibold text-white transition-all duration-200 shadow-md ${input.trim() ? "bg-blue-600 hover:bg-blue-700" : "bg-blue-300 cursor-not-allowed"
+                }`}
+            >
+              {t("send")}
+            </button>
+
+            {/* 💎 Diamond Cost */}
+            <div className="flex items-center gap-1 text-xs text-gray-500 mt-2">
+              <DiamondIcon className="w-4 h-4 text-blue-500" />
+              <span>1</span>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

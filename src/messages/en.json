@@ -69,8 +69,8 @@
     },
     "sidebar": {
         "navigation": "Navigation",
-        "work": "Work",
-        "imageTool": "Image Tool"
+        "work": "Text Tools",
+        "imageTool": "Image Tools"
     },
     "topbar": {
         "settings": "Settings",

@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useTokenContext } from "@/context/TokenContext";
+import DiamondIcon from "@/components/icons/DiamondIcon";
 
 
 interface TopbarProps {
@@ -57,19 +58,10 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
             className="flex items-center gap-2 px-3 py-1 rounded-full border border-blue-200 bg-blue-50 text-blue-700 text-sm font-medium hover:bg-blue-100 hover:shadow transition duration-200"
             title="Click to buy more tokens"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4 text-blue-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path d="M6 3L3 9l9 12 9-12-3-6H6z" />
-            </svg>
-
+            <DiamondIcon className="w-4 h-4 text-blue-500" />
             {tokenBalance}
           </button>
+
 
 
 
