@@ -2,6 +2,9 @@
 
 import React from "react";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
+import Image from "next/image";
+
 
 interface SidebarProps {
     isSidebarOpen: boolean;
@@ -90,20 +93,22 @@ const Sidebar: React.FC<SidebarProps> = ({
                 className="flex flex-col flex-1 mt-auto w-full pt-2 md:pt-6 md:pb-34 bg-white overflow-y-auto"
             >
                 <div
-                    className="fixed bottom-20 left-1/2 transform -translate-x-1/2 flex items-center gap-0 opacity-70 text-sm"
+                    className="fixed bottom-20 left-1/2 transform -translate-x-1/2 flex items-center gap-2 opacity-70 text-sm"
                     style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
                 >
-                    {/* Clickable logo */}
-                    <a href="/landing" className="block w-28">
-                        <img
+                    {/* Clickable logo using Link */}
+                    <Link href="/landing" className="block w-28">
+                        <Image
                             src="/minimindLogo-en.png"
                             alt="minimind logo"
-                            className="w-full h-auto"
+                            width={112} // equivalent to w-28 (28 * 4 = 112)
+                            height={40}
+                            className="h-auto"
                         />
-                    </a>
+                    </Link>
 
                     {/* Version number */}
-                    <span className="text-gray-400">v0.0.3</span>
+                    <span className="text-gray-400">v1.0.3</span>
                 </div>
 
 
