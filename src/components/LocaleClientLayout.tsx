@@ -1,9 +1,10 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { SessionProvider, useSession } from "next-auth/react";
 import { IntlProvider } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
+import ToastOnTokenAdded from "./modals/ToastOnTokenAdded";
 
 import en from "@/messages/en.json";
 import zhHant from "@/messages/zh-Hant.json";
@@ -21,6 +22,8 @@ function LanguageSync({ locale }: { locale: string }) {
     const { data: session } = useSession();
     const pathname = usePathname();
     const router = useRouter();
+
+
 
     const locales = ["en", "zh-Hant", "zh-Hans"];
     const currentPathLocale = pathname.split("/")[1];
@@ -78,7 +81,6 @@ function getCookie(name: string) {
     return match ? match[2] : null;
 }
 
-
 export default function LocaleClientLayout({
     children,
     locale,
@@ -87,11 +89,29 @@ export default function LocaleClientLayout({
     locale: string;
 }) {
     const messages = messagesMap[locale as keyof typeof messagesMap] || messagesMap.en;
+    const pathname = usePathname();
+    const [showToast, setShowToast] = useState(false);
+
+    useEffect(() => {
+        const flag = localStorage.getItem("showTokenToast");
+        const isRootPath = [`/${locale}`].includes(pathname);
+
+        if (flag === "true" && isRootPath) {
+            console.log("✅ Toast Triggered at app root");
+            localStorage.removeItem("showTokenToast");
+
+            setShowToast(true);
+            setTimeout(() => {
+                setShowToast(false);
+            }, 6000);
+        }
+    }, [pathname, locale]);
 
     return (
         <SessionProvider>
             <IntlProvider locale={locale} messages={messages}>
                 <LanguageSync locale={locale} />
+                <ToastOnTokenAdded />
                 {children}
             </IntlProvider>
         </SessionProvider>

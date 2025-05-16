@@ -124,5 +124,8 @@
         "description": "To continue using this feature, please purchase more tokens.",
         "cancel": "Cancel",
         "buy": "Buy Tokens"
+    },
+    "toast": {
+        "tokensAdded": "💎 Tokens successfully added! 💎"
     }
 }

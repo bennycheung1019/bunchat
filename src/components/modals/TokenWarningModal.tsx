@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 export default function TokenWarningModal({ onClose }: { onClose: () => void }) {
     const router = useRouter();
     const t = useTranslations("tokenModal");
+    console.log("Toast flag:", localStorage.getItem("showTokenToast"));
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm">

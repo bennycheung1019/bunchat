@@ -21,8 +21,13 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const t = useTranslations();
 
+
   const { tokenBalance } = useTokenContext();
   console.log("🔵 Topbar received tokenBalance:", tokenBalance);
+
+
+
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
