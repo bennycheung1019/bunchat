@@ -85,6 +85,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                     {t("sidebar.imageTool") || "Image Tool"}
                 </button>
             </div>
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-24 opacity-70">
+                <img
+                    src="/minimindLogo-en.png"
+                    alt="minimind logo"
+                    className="w-full h-auto"
+                />
+            </div>
+
         </div>
     );
 };
