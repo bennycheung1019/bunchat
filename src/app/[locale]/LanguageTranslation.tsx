@@ -7,6 +7,8 @@ import { useTokenContext } from "@/context/TokenContext";
 import { deductTokens } from "@/lib/tokenUtils";
 import DiamondIcon from "@/components/icons/DiamondIcon";
 import TokenWarningModal from "@/components/modals/TokenWarningModal";
+import PasteIcon from "@/components/icons/PasteIcon";
+import DeleteIcon from "@/components/icons/DeleteIcon";
 
 
 export default function LanguageTranslation() {
@@ -97,20 +99,7 @@ export default function LanguageTranslation() {
             className="text-gray-500 hover:text-blue-600 transition"
           >
             {/* Clipboard Paste Icon */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 sm:w-7 sm:h-7 text-gray-500 hover:text-blue-600 transition-colors"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 104 0M9 5a2 2 0 014 0m-4 6h4m-4 4h4"
-              />
-            </svg>
+            <PasteIcon></PasteIcon>
           </button>
 
           {/* Clear */}
@@ -124,23 +113,7 @@ export default function LanguageTranslation() {
               }`}
           >
             {/* trash can Icon */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className={`w-6 h-6 sm:w-7 sm:h-7 transition-colors ${input.trim()
-                ? "text-gray-500 hover:text-red-600"
-                : "text-gray-300"
-                }`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m-9 0h10"
-              />
-            </svg>
+            <DeleteIcon></DeleteIcon>
           </button>
         </div>
       </div>
