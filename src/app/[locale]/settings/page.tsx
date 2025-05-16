@@ -40,7 +40,9 @@ export default function SettingsPage() {
 
     const handleLanguageChange = async (selectedLanguage: "en" | "zh-Hant" | "zh-Hans") => {
         setCurrentLanguage(selectedLanguage);
-        localStorage.setItem("preferredLanguage", selectedLanguage);
+        localStorage.setItem("preferredLanguage", selectedLanguage); // ✅ ensure updated
+        document.cookie = `preferredLanguage=${selectedLanguage}; path=/; max-age=31536000`; // ✅ overwrite cookie
+        localStorage.removeItem("manualLanguageSwitch"); // ✅ optional: prevent guest override from re-applying
 
         if (!session || !session.user?.id) {
             console.warn("⚠️ Cannot save settings: session is null or user ID missing.");
@@ -54,6 +56,7 @@ export default function SettingsPage() {
         segments[1] = selectedLanguage;
         router.push(segments.join("/"));
     };
+
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-zinc-900">
@@ -81,8 +84,8 @@ export default function SettingsPage() {
                         <button
                             onClick={() => handleThemeChange("light")}
                             className={`px-5 py-2 rounded-full font-medium transition border ${currentTheme === "light"
-                                    ? "bg-blue-600 text-white border-blue-600"
-                                    : "bg-white text-gray-700 dark:bg-zinc-700 dark:text-gray-200 border-gray-300 dark:border-zinc-600 hover:bg-gray-100 dark:hover:bg-zinc-600"
+                                ? "bg-blue-600 text-white border-blue-600"
+                                : "bg-white text-gray-700 dark:bg-zinc-700 dark:text-gray-200 border-gray-300 dark:border-zinc-600 hover:bg-gray-100 dark:hover:bg-zinc-600"
                                 }`}
                         >
                             {t("light")}
@@ -90,8 +93,8 @@ export default function SettingsPage() {
                         <button
                             onClick={() => handleThemeChange("dark")}
                             className={`px-5 py-2 rounded-full font-medium transition border ${currentTheme === "dark"
-                                    ? "bg-blue-600 text-white border-blue-600"
-                                    : "bg-white text-gray-700 dark:bg-zinc-700 dark:text-gray-200 border-gray-300 dark:border-zinc-600 hover:bg-gray-100 dark:hover:bg-zinc-600"
+                                ? "bg-blue-600 text-white border-blue-600"
+                                : "bg-white text-gray-700 dark:bg-zinc-700 dark:text-gray-200 border-gray-300 dark:border-zinc-600 hover:bg-gray-100 dark:hover:bg-zinc-600"
                                 }`}
                         >
                             {t("dark")}
@@ -106,8 +109,8 @@ export default function SettingsPage() {
                         <button
                             onClick={() => handleLanguageChange("en")}
                             className={`px-5 py-2 rounded-full font-medium transition border ${currentLanguage === "en"
-                                    ? "bg-blue-600 text-white border-blue-600"
-                                    : "bg-white text-gray-700 dark:bg-zinc-700 dark:text-gray-200 border-gray-300 dark:border-zinc-600 hover:bg-gray-100 dark:hover:bg-zinc-600"
+                                ? "bg-blue-600 text-white border-blue-600"
+                                : "bg-white text-gray-700 dark:bg-zinc-700 dark:text-gray-200 border-gray-300 dark:border-zinc-600 hover:bg-gray-100 dark:hover:bg-zinc-600"
                                 }`}
                         >
                             English
@@ -115,8 +118,8 @@ export default function SettingsPage() {
                         <button
                             onClick={() => handleLanguageChange("zh-Hant")}
                             className={`px-5 py-2 rounded-full font-medium transition border ${currentLanguage === "zh-Hant"
-                                    ? "bg-blue-600 text-white border-blue-600"
-                                    : "bg-white text-gray-700 dark:bg-zinc-700 dark:text-gray-200 border-gray-300 dark:border-zinc-600 hover:bg-gray-100 dark:hover:bg-zinc-600"
+                                ? "bg-blue-600 text-white border-blue-600"
+                                : "bg-white text-gray-700 dark:bg-zinc-700 dark:text-gray-200 border-gray-300 dark:border-zinc-600 hover:bg-gray-100 dark:hover:bg-zinc-600"
                                 }`}
                         >
                             繁體中文
@@ -124,8 +127,8 @@ export default function SettingsPage() {
                         <button
                             onClick={() => handleLanguageChange("zh-Hans")}
                             className={`px-5 py-2 rounded-full font-medium transition border ${currentLanguage === "zh-Hans"
-                                    ? "bg-blue-600 text-white border-blue-600"
-                                    : "bg-white text-gray-700 dark:bg-zinc-700 dark:text-gray-200 border-gray-300 dark:border-zinc-600 hover:bg-gray-100 dark:hover:bg-zinc-600"
+                                ? "bg-blue-600 text-white border-blue-600"
+                                : "bg-white text-gray-700 dark:bg-zinc-700 dark:text-gray-200 border-gray-300 dark:border-zinc-600 hover:bg-gray-100 dark:hover:bg-zinc-600"
                                 }`}
                         >
                             简体中文

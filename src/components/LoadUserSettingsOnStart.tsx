@@ -28,41 +28,22 @@ export function LoadUserSettingsOnStart() {
             console.log("preferredLanguage1", storedLanguage);
 
             if (settings) {
-                console.log("inside settings");
-
-                console.log("oldLanguage", settings.language);
-
-                // ✅ Sync theme from Firestore to DOM and storage
+                // Apply theme from Firestore
                 localStorage.setItem("theme", settings.theme);
-                document.documentElement.className = "light";  //ALWAYS LIGHT MODE NOW!!!
+                document.documentElement.className = settings.theme;
 
-                if (storedLanguage !== settings.language) {
-                    console.log("📝 Overwriting Firestore with guest language:", storedLanguage);
-
-                    // ✅ Firestore is outdated — update it with guest choice
-                    await saveUserSettingsToFirestore(
-                        session.user.id,
-                        settings.theme,
-                        storedLanguage as "en" | "zh-Hant" | "zh-Hans"
-                    );
-
-                    // ✅ Also update localStorage and cookie with guest language
-                    localStorage.setItem("preferredLanguage", storedLanguage);
-                    document.cookie = `preferredLanguage=${storedLanguage}; path=/; max-age=31536000`;
-                } else {
-                    // ✅ Everything matches — apply as normal
-                    localStorage.setItem("preferredLanguage", settings.language);
-                    document.cookie = `preferredLanguage=${settings.language}; path=/; max-age=31536000`;
-                }
+                // Always use Firestore language when logged in
+                localStorage.setItem("preferredLanguage", settings.language);
+                document.cookie = `preferredLanguage=${settings.language}; path=/; max-age=31536000`;
             } else {
-                // ✅ If no settings yet (new user), use guest language/theme
+                // New user — use guest preference to create initial settings
                 await saveUserSettingsToFirestore(
                     session.user.id,
                     storedTheme as "light" | "dark",
                     storedLanguage as "en" | "zh-Hant" | "zh-Hans"
                 );
-                console.log("✅ Saved initial guest settings to Firestore.");
             }
+
         }
 
         loadSettings();

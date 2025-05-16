@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { useTokenContext } from "@/context/TokenContext";
 import { deductTokens } from "@/lib/tokenUtils";
+import DiamondIcon from "@/components/icons/DiamondIcon";
 
 
 export default function LanguageTranslation() {
@@ -141,14 +142,15 @@ export default function LanguageTranslation() {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-wrap justify-between items-center gap-4">
-        <div className="flex gap-2">
+      <div className="flex items-center justify-between w-full mt-2 gap-4">
+        {/* Translate Buttons */}
+        <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => handleTranslate("en")}
             disabled={loading || !input.trim()}
             className={`px-4 py-2 text-sm rounded transition ${input.trim()
-              ? "bg-blue-600 text-white hover:bg-blue-700"
-              : "bg-blue-100 text-blue-400 cursor-not-allowed opacity-50"
+                ? "bg-blue-600 text-white hover:bg-blue-700"
+                : "bg-blue-100 text-blue-400 cursor-not-allowed opacity-50"
               }`}
           >
             {t("toEnglish")}
@@ -158,8 +160,8 @@ export default function LanguageTranslation() {
             onClick={() => handleTranslate("zh-tw")}
             disabled={loading || !input.trim()}
             className={`px-4 py-2 text-sm rounded transition ${input.trim()
-              ? "bg-green-600 text-white hover:bg-green-700"
-              : "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
+                ? "bg-green-600 text-white hover:bg-green-700"
+                : "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
               }`}
           >
             {t("toTraditional")}
@@ -169,14 +171,21 @@ export default function LanguageTranslation() {
             onClick={() => handleTranslate("zh-cn")}
             disabled={loading || !input.trim()}
             className={`px-4 py-2 text-sm rounded transition ${input.trim()
-              ? "bg-yellow-500 text-white hover:bg-yellow-600"
-              : "bg-yellow-100 text-yellow-400 cursor-not-allowed opacity-50"
+                ? "bg-yellow-500 text-white hover:bg-yellow-600"
+                : "bg-yellow-100 text-yellow-400 cursor-not-allowed opacity-50"
               }`}
           >
             {t("toSimplified")}
           </button>
         </div>
+
+        {/* 💎 Token Cost */}
+        <div className="flex items-center gap-1 text-xs text-gray-500 pr-1">
+          <DiamondIcon className="w-4 h-4 text-blue-500" />
+          <span>1</span>
+        </div>
       </div>
+
 
       {/* Translated Output */}
       <div
