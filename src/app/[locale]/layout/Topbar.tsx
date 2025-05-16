@@ -63,7 +63,8 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
             }}
             title="Click to buy more tokens"
           >
-            <DiamondIcon className="w-4 h-4" style={{ color: "var(--primary-color)" }} />
+            <DiamondIcon className="w-4 h-4 text-[var(--primary-color)]" />
+
             {tokenBalance}
           </button>
 
