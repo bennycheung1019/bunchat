@@ -26,10 +26,10 @@ export default function ToastOnTokenAdded() {
 
     return (
         <div className="fixed top-16 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md px-4">
-            <div className="bg-[rgba(6,95,70,1)] text-white px-5 py-3 rounded-lg shadow-md flex items-center gap-3 justify-center text-sm sm:text-base">
-                <span className="text-lg">💎</span>
+            <div className="bg-green-600 text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-3 justify-center text-sm sm:text-base">
                 <span>{t("tokensAdded")}</span>
             </div>
         </div>
     );
+
 }

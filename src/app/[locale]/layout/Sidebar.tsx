@@ -30,6 +30,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         shadow-md z-40 transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-64"}
       `}
+            style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
             <h2 className="text-lg font-semibold text-zinc-800 mb-6 text-center tracking-wide">
                 {t("sidebar.navigation")}
@@ -69,8 +70,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                         ? "bg-primary-light text-primary"
                         : "text-gray-700 hover:bg-gray-100"
                         }`}
-
-
                 >
                     <svg
                         className="w-5 h-5"
@@ -85,6 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     {t("sidebar.imageTool") || "Image Tool"}
                 </button>
             </div>
+
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-24 opacity-70">
                 <img
                     src="/minimindLogo-en.png"
@@ -92,7 +92,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                     className="w-full h-auto"
                 />
             </div>
-
         </div>
     );
 };
