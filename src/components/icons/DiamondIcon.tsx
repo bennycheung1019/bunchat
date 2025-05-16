@@ -1,9 +1,13 @@
 // components/icons/DiamondIcon.tsx
-export default function DiamondIcon({ className = "w-4 h-4" }) {
+interface DiamondIconProps {
+    className?: string;
+}
+
+export default function DiamondIcon({ className = "w-4 h-4 text-blue-500" }: DiamondIconProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4 text-blue-500"
+            className={className}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

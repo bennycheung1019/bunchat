@@ -15,7 +15,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #f0f0f0;
+    /* Brighter foreground for readability */
   }
 }
 
@@ -26,11 +27,13 @@ body {
 }
 
 html.light {
-  background: white;
-  color: black;
+  background-color: #ffffff;
+  color: #111111;
+  /* Darker text for contrast */
 }
 
 html.dark {
-  background: #121212;
-  color: white;
+  background-color: #0a0a0a;
+  color: #f0f0f0;
+  /* Brighter text for visibility */
 }
