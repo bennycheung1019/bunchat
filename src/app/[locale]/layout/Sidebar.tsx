@@ -25,16 +25,16 @@ const Sidebar: React.FC<SidebarProps> = ({
             id="chat-library"
             ref={sidebarRef}
             className={`
-    fixed left-0 top-[56px] w-64 h-[calc(100vh-56px)]
-    bg-white border-r border-zinc-200 px-4 py-6
-    shadow-md z-40 transition-transform duration-300 ease-in-out
-    flex flex-col justify-between
-    ${isSidebarOpen ? "translate-x-0" : "-translate-x-64"}
-  `}
+                fixed left-0 top-[56px] w-64 h-[calc(100vh-56px)]
+                bg-white border-r border-zinc-200
+                shadow-md z-40 transition-transform duration-300 ease-in-out
+                flex flex-col justify-between
+                ${isSidebarOpen ? "translate-x-0" : "-translate-x-64"}
+            `}
             style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
             {/* Top content */}
-            <div className="flex-1 overflow-auto">
+            <div className="px-4 py-6">
                 <h2 className="text-lg font-semibold text-zinc-800 mb-6 text-center tracking-wide">
                     {t("sidebar.navigation")}
                 </h2>
@@ -89,8 +89,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                 </div>
             </div>
 
-            {/* Bottom sticky logo section */}
-            <div className="w-full pt-6 pb-4">
+            {/* Bottom logo section */}
+            <div className="w-full px-4 pb-6">
                 <div className="w-24 mx-auto opacity-70">
                     <img
                         src="/minimindLogo-en.png"
@@ -99,9 +99,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     />
                 </div>
             </div>
-
         </div>
-
     );
 };
 
