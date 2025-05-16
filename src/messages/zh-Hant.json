@@ -118,5 +118,11 @@
         "callToAction": "準備好簡化你的生活了嗎？",
         "callToActionDesc": "免費加入並使用所有工具，僅在需要時消耗代幣。",
         "launchNow": "立即啟動 MiniMind"
+    },
+    "tokenModal": {
+        "title": "您的代幣不足",
+        "description": "請購買更多代幣以繼續使用此功能。",
+        "cancel": "稍後再說",
+        "buy": "立即購買"
     }
 }

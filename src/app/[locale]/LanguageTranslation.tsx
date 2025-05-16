@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useTokenContext } from "@/context/TokenContext";
 import { deductTokens } from "@/lib/tokenUtils";
 import DiamondIcon from "@/components/icons/DiamondIcon";
+import TokenWarningModal from "@/components/modals/TokenWarningModal";
 
 
 export default function LanguageTranslation() {
@@ -16,15 +17,18 @@ export default function LanguageTranslation() {
   const [showCopied, setShowCopied] = useState(false);
   const { data: session } = useSession();
   const { tokenBalance, refreshTokenBalance } = useTokenContext();
+  const [showTokenModal, setShowTokenModal] = useState(false);
+
 
 
   const handleTranslate = async (target: "en" | "zh-tw" | "zh-cn") => {
     if (!input.trim()) return;
 
-    if (tokenBalance < 2) {
-      alert("Not enough tokens. Please purchase more to use this feature.");
+    if (tokenBalance < 1) { // Adjust the required amount if needed
+      setShowTokenModal(true);
       return;
     }
+
 
     setLoading(true);
 
@@ -53,7 +57,7 @@ export default function LanguageTranslation() {
       setOutput(data.reply || t("error"));
 
       if (data.reply && session?.user?.id) {
-        await deductTokens(session.user.id, 2); // ✅ TOKEN AMOUNT HERE
+        await deductTokens(session.user.id, 1); // ✅ TOKEN AMOUNT HERE
         await refreshTokenBalance();
       }
 
@@ -78,7 +82,7 @@ export default function LanguageTranslation() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={t("placeholder")}
-          className="w-full p-4 pr-20 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[140px]"
+          className="w-full p-4 pr-20 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-700 focus:border-green-700 min-h-[140px]"
         />
 
         {/* Paste & Clear Icons */}
@@ -145,39 +149,43 @@ export default function LanguageTranslation() {
       <div className="flex items-center justify-between w-full mt-2 gap-4">
         {/* Translate Buttons */}
         <div className="flex gap-2 flex-wrap">
+          {/* To English */}
           <button
             onClick={() => handleTranslate("en")}
             disabled={loading || !input.trim()}
-            className={`px-4 py-2 text-sm rounded transition ${input.trim()
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-blue-100 text-blue-400 cursor-not-allowed opacity-50"
+            className={`px-4 py-2 text-sm rounded-md font-medium transition shadow-sm ${loading || !input.trim()
+              ? "bg-[#d1e1db] text-white cursor-not-allowed"
+              : "bg-blue-700 text-white hover:bg-blue-800"
               }`}
           >
             {t("toEnglish")}
           </button>
 
+          {/* To Traditional Chinese */}
           <button
             onClick={() => handleTranslate("zh-tw")}
             disabled={loading || !input.trim()}
-            className={`px-4 py-2 text-sm rounded transition ${input.trim()
-                ? "bg-green-600 text-white hover:bg-green-700"
-                : "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
+            className={`px-4 py-2 text-sm rounded-md font-medium transition shadow-sm ${loading || !input.trim()
+              ? "bg-[#d1e1db] text-white cursor-not-allowed"
+              : "bg-green-700 text-white hover:bg-green-800"
               }`}
           >
             {t("toTraditional")}
           </button>
 
+          {/* To Simplified Chinese */}
           <button
             onClick={() => handleTranslate("zh-cn")}
             disabled={loading || !input.trim()}
-            className={`px-4 py-2 text-sm rounded transition ${input.trim()
-                ? "bg-yellow-500 text-white hover:bg-yellow-600"
-                : "bg-yellow-100 text-yellow-400 cursor-not-allowed opacity-50"
+            className={`px-4 py-2 text-sm rounded-md font-medium transition shadow-sm ${loading || !input.trim()
+              ? "bg-[#d1e1db] text-white cursor-not-allowed"
+              : "bg-yellow-500 text-white hover:bg-yellow-600"
               }`}
           >
             {t("toSimplified")}
           </button>
         </div>
+
 
         {/* 💎 Token Cost */}
         <div className="flex items-center gap-1 text-xs text-gray-500 pr-1">
@@ -201,6 +209,8 @@ export default function LanguageTranslation() {
           {t("copied")}
         </div>
       )}
+      {showTokenModal && <TokenWarningModal onClose={() => setShowTokenModal(false)} />}
+
     </div>
   );
 }

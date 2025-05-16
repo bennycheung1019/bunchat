@@ -174,7 +174,8 @@ export function PurchaseTokensClient({ locale }: { locale: string }) {
             <div className="text-center">
                 <button
                     type="button"
-                    onClick={() => router.push("/")}
+                    onClick={() => router.back()}
+
                     className="w-full py-3 text-gray-700 font-semibold text-lg rounded-lg bg-white border border-gray-300 hover:bg-gray-100 transition duration-150"
                 >
                     {t("back")}

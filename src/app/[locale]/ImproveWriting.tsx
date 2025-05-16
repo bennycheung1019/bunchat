@@ -6,6 +6,7 @@ import { deductTokens } from "@/lib/tokenUtils";
 import { useSession } from "next-auth/react";
 import { useTokenContext } from "@/context/TokenContext";
 import DiamondIcon from "@/components/icons/DiamondIcon";
+import TokenWarningModal from "@/components/modals/TokenWarningModal";
 
 export default function ImproveWriting() {
   const t = useTranslations();
@@ -15,6 +16,8 @@ export default function ImproveWriting() {
   const [showCopied, setShowCopied] = useState(false);
   const { data: session } = useSession();
   const { tokenBalance, refreshTokenBalance } = useTokenContext();
+  const [showTokenModal, setShowTokenModal] = useState(false);
+
 
   const handleImprove = async () => {
     if (!session?.user?.id) {
@@ -24,8 +27,8 @@ export default function ImproveWriting() {
 
     if (!input.trim()) return;
 
-    if (tokenBalance < 3) {
-      alert("Not enough tokens. Please purchase more to use this feature.");
+    if (tokenBalance < 1) { // Adjust cost if needed
+      setShowTokenModal(true);
       return;
     }
 
@@ -72,7 +75,7 @@ export default function ImproveWriting() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={t("improve.placeholder")}
-          className="w-full p-4 pr-20 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[140px]"
+          className="w-full p-4 pr-20 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-700 focus:border-green-700 min-h-[140px]"
         />
 
         {/* Action Icons */}
@@ -140,13 +143,15 @@ export default function ImproveWriting() {
         <button
           onClick={handleImprove}
           disabled={loading || !input.trim()}
-          className={`flex-1 px-4 py-2 text-sm rounded transition ${loading || !input.trim()
-            ? "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
-            : "bg-green-600 text-white hover:bg-green-700"
+          className={`flex-1 px-4 py-2 text-sm rounded-md font-medium transition shadow-sm ${loading || !input.trim()
+            ? "bg-[#d1e1db] text-white cursor-not-allowed"
+            : "bg-green-700 text-white hover:bg-green-800"
             }`}
         >
           {loading ? t("improve.loading") : t("improve.button")}
         </button>
+
+
 
         {/* 💎 Token Cost */}
         <div className="flex items-center gap-1 text-xs text-gray-500 pr-1">
@@ -171,6 +176,8 @@ export default function ImproveWriting() {
           {t("common.copied")}
         </div>
       )}
+      {showTokenModal && <TokenWarningModal onClose={() => setShowTokenModal(false)} />}
+
     </div>
   );
 }

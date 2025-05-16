@@ -55,12 +55,18 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
           {/* ✅ Token Balance Display */}
           <button
             onClick={() => router.push("/purchase-tokens")}
-            className="flex items-center gap-2 px-3 py-1 rounded-full border border-blue-200 bg-blue-50 text-blue-700 text-sm font-medium hover:bg-blue-100 hover:shadow transition duration-200"
+            className="flex items-center gap-2 px-3 py-1 rounded-full border text-sm font-medium transition duration-200 hover:shadow"
+            style={{
+              backgroundColor: "rgba(6, 95, 70, 0.1)", // soft green like bg-blue-50
+              borderColor: "rgba(6, 95, 70, 0.3)",
+              color: "var(--primary-color)",
+            }}
             title="Click to buy more tokens"
           >
-            <DiamondIcon className="w-4 h-4 text-blue-500" />
+            <DiamondIcon className="w-4 h-4" style={{ color: "var(--primary-color)" }} />
             {tokenBalance}
           </button>
+
 
 
 

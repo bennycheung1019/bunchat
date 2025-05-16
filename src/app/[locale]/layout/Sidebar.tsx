@@ -43,7 +43,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                         setIsSidebarOpen(false);
                     }}
                     className={`flex items-center gap-3 w-full px-4 py-2 rounded-md text-sm font-medium transition ${currentView === "work"
-                        ? "bg-blue-100 text-blue-600"
+                        ? "bg-primary-light text-primary"
                         : "text-gray-700 hover:bg-gray-100"
                         }`}
                 >
@@ -66,9 +66,11 @@ const Sidebar: React.FC<SidebarProps> = ({
                         setIsSidebarOpen(false);
                     }}
                     className={`flex items-center gap-3 w-full px-4 py-2 rounded-md text-sm font-medium transition ${currentView === "imageTool"
-                        ? "bg-blue-100 text-blue-600"
+                        ? "bg-primary-light text-primary"
                         : "text-gray-700 hover:bg-gray-100"
                         }`}
+
+
                 >
                     <svg
                         className="w-5 h-5"

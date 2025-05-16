@@ -5,7 +5,8 @@ import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { useTokenContext } from "@/context/TokenContext";
 import { deductTokens } from "@/lib/tokenUtils";
-
+import DiamondIcon from "@/components/icons/DiamondIcon";
+import TokenWarningModal from "@/components/modals/TokenWarningModal";
 
 export default function ReplyEmail() {
   const t = useTranslations("reply");
@@ -19,6 +20,8 @@ export default function ReplyEmail() {
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
   const { tokenBalance, refreshTokenBalance } = useTokenContext();
+  const [showTokenModal, setShowTokenModal] = useState(false);
+
 
 
   const tones = ["short", "formal", "friendly"];
@@ -30,10 +33,11 @@ export default function ReplyEmail() {
   };
 
   const handleGenerateReply = async () => {
-    if (tokenBalance < 4) {
-      alert("Not enough tokens. Please purchase more to use this feature.");
+    if (tokenBalance < 1) { // Adjust the required token amount if needed
+      setShowTokenModal(true);
       return;
     }
+
 
     setLoading(true);
 
@@ -52,7 +56,7 @@ export default function ReplyEmail() {
       setGeneratedReply(data.reply || t("error"));
 
       if (data.reply && session?.user?.id) {
-        await deductTokens(session.user.id, 4);  // ✅ TOKEN AMOUNT HERE
+        await deductTokens(session.user.id, 2);  // ✅ TOKEN AMOUNT HERE
         await refreshTokenBalance();
       }
 
@@ -65,14 +69,15 @@ export default function ReplyEmail() {
   };
 
   return (
-    <div className="bg-gray-50 px-4 sm:px-6 lg:px-8 py-6 max-w-4xl mx-auto w-full min-h-screen overflow-y-auto space-y-6">
+    <div className="bg-gray-50 px-4 sm:px-6 lg:px-8 py-6 max-w-4xl mx-auto w-full space-y-6">
+
       {/* Original Email Input */}
       <div className="relative">
         <textarea
           value={originalEmail}
           onChange={(e) => setOriginalEmail(e.target.value)}
           placeholder={t("placeholderEmail")}
-          className="w-full p-4 pr-20 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[140px]"
+          className="w-full p-4 pr-20 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-700 focus:border-green-700 min-h-[140px]"
         />
         {/* Paste & Clear Icons */}
         <div className="absolute bottom-3 right-4 flex gap-3">
@@ -134,7 +139,7 @@ export default function ReplyEmail() {
         value={replySummary}
         onChange={(e) => setReplySummary(e.target.value)}
         placeholder={t("placeholderSummary")}
-        className="w-full p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[120px]"
+        className="w-full p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-700 focus:border-green-700 min-h-[120px]"
       />
 
       {/* Tone Selector */}
@@ -145,7 +150,7 @@ export default function ReplyEmail() {
             type="button"
             onClick={() => setReplyTone(tone as typeof replyTone)}
             className={`px-4 py-2 text-sm rounded border font-medium transition ${replyTone === tone
-              ? "bg-blue-600 text-white border-blue-600"
+              ? "bg-green-700 text-white border-green-700"
               : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
               }`}
           >
@@ -155,16 +160,27 @@ export default function ReplyEmail() {
       </div>
 
       {/* Generate Button */}
-      <button
-        onClick={handleGenerateReply}
-        disabled={!originalEmail.trim() || !replySummary.trim()}
-        className={`px-4 py-2 text-sm rounded transition ml-auto ${originalEmail.trim() && replySummary.trim()
-          ? "bg-green-600 text-white hover:bg-green-700"
-          : "bg-green-100 text-green-400 cursor-not-allowed opacity-50"
-          }`}
-      >
-        {loading ? t("loading") : t("generate")}
-      </button>
+      <div className="flex items-center justify-between w-full gap-4">
+        {/* Generate Button */}
+        <button
+          onClick={handleGenerateReply}
+          disabled={!originalEmail.trim() || !replySummary.trim()}
+          className={`flex-1 px-4 py-2 text-sm rounded-md font-medium transition shadow-sm ${!originalEmail.trim() || !replySummary.trim()
+            ? "bg-[#d1e1db] text-white cursor-not-allowed"
+            : "bg-green-700 text-white hover:bg-green-800"
+            }`}
+        >
+          {loading ? t("loading") : t("generate")}
+        </button>
+
+
+        {/* 💎 Token Cost */}
+        <div className="flex items-center gap-1 text-xs text-gray-500 pr-1">
+          <DiamondIcon />
+          <span>1</span>
+        </div>
+      </div>
+
 
       {/* Output */}
       <div
@@ -180,6 +196,8 @@ export default function ReplyEmail() {
           {t("copied")}
         </div>
       )}
+      {showTokenModal && <TokenWarningModal onClose={() => setShowTokenModal(false)} />}
+
     </div>
   );
 }

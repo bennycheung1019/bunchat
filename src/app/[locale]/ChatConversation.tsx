@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { getUserTokens, deductTokens } from "@/lib/tokenUtils";
 import { useTokenContext } from "@/context/TokenContext";
 import DiamondIcon from "@/components/icons/DiamondIcon";
+import TokenWarningModal from "@/components/modals/TokenWarningModal";
 
 
 interface Message {
@@ -31,6 +32,7 @@ export default function ChatConversation({
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
   const { refreshTokenBalance } = useTokenContext();
+  const [showTokenModal, setShowTokenModal] = useState(false);
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -100,10 +102,11 @@ export default function ChatConversation({
 
     // 💥  Check and deduct tokens
     const tokens = await getUserTokens(session.user.id);
-    if (tokens < 5) {  // Example: Chat costs 5 tokens
-      alert("Not enough tokens. Please purchase more.");
+    if (tokens < 1) {
+      setShowTokenModal(true);
       return;
     }
+
 
     setMessages((prev) => [...prev, userMessage, placeholder]);
     setInput("");
@@ -168,12 +171,19 @@ export default function ChatConversation({
             <div
               onClick={() => handleCopy(msg.text)}
               className={`inline-block px-4 py-3 rounded-xl max-w-[80%] whitespace-pre-line shadow-md cursor-pointer ${msg.role === "user"
-                ? "bg-blue-100 text-blue-900 hover:ring-2 ring-blue-300"
-                : "bg-gray-100 text-gray-800 hover:ring-2 ring-gray-300"}`}
+                ? "hover:ring-2"
+                : "hover:ring-2 ring-gray-300"
+                }`}
+              style={{
+                backgroundColor: msg.role === "user" ? "rgba(6, 95, 70, 0.1)" : "#f3f4f6",
+                color: msg.role === "user" ? "var(--primary-color)" : "#1f2937",
+                borderRadius: "1rem",
+              }}
               title={t("clickToCopy")}
             >
               {msg.text}
             </div>
+
           </div>
         ))}
       </div>
@@ -226,20 +236,22 @@ export default function ChatConversation({
               }
             }}
             placeholder={t("placeholder")}
-            className="flex-1 resize-none min-h-[3rem] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+            className="flex-1 resize-none min-h-[3rem] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-green-700 focus:border-green-700"
+
           />
           <div className="flex flex-col items-center ml-3">
             <button
               onClick={handleSend}
               disabled={!input.trim()}
-              className={`px-4 py-2 rounded-md text-sm font-semibold text-white transition-all duration-200 shadow-md ${input.trim() ? "bg-blue-600 hover:bg-blue-700" : "bg-blue-300 cursor-not-allowed"
+              className={`px-4 py-2 rounded-md text-sm font-semibold text-white transition-all duration-200 shadow-md ${input.trim() ? "bg-green-700 hover:bg-green-800"
+                : "bg-[#d1e1db] text-gray-400 cursor-not-allowed"
                 }`}
             >
               {t("send")}
             </button>
 
             {/* 💎 Diamond Cost */}
-            <div className="flex items-center gap-1 text-xs text-gray-500 mt-2">
+            <div className="flex items-center gap-1 text-xs text-gray-500 mt-3">
               <DiamondIcon className="w-4 h-4 text-blue-500" />
               <span>1</span>
             </div>
@@ -247,6 +259,7 @@ export default function ChatConversation({
 
         </div>
       </div>
+      {showTokenModal && <TokenWarningModal onClose={() => setShowTokenModal(false)} />}
     </div>
   );
 }

@@ -247,9 +247,18 @@ export default function Home() {
                       key={mode.value}
                       onClick={() => setChatMode(mode.value as typeof chatMode)}
                       className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-md text-xs sm:text-sm transition ${chatMode === mode.value
-                        ? "bg-blue-50 text-blue-600 font-medium"
-                        : "text-gray-500 hover:bg-gray-100"
+                          ? "font-medium"
+                          : "text-gray-500 hover:bg-gray-100"
                         }`}
+                      style={
+                        chatMode === mode.value
+                          ? {
+                            backgroundColor: "rgba(6, 95, 70, 0.1)",
+                            color: "var(--primary-color)",
+                          }
+                          : {}
+                      }
+
                     >
                       {mode.icon}
                       <span>{t(mode.label)}</span>

@@ -118,5 +118,11 @@
         "callToAction": "Ready to simplify your day?",
         "callToActionDesc": "Join free and get access to all tools — only use tokens when needed.",
         "launchNow": "Launch MiniMind Now"
+    },
+    "tokenModal": {
+        "title": "You’re out of tokens",
+        "description": "To continue using this feature, please purchase more tokens.",
+        "cancel": "Cancel",
+        "buy": "Buy Tokens"
     }
 }

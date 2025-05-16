@@ -35,7 +35,7 @@
     "@types/stripe": "^8.0.416",
     "eslint": "^9",
     "eslint-config-next": "15.2.5",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.1.7",
     "typescript": "^5"
   }
 }
