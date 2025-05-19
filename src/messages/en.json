@@ -127,5 +127,14 @@
     },
     "toast": {
         "tokensAdded": "💎 Tokens successfully added! 💎"
+    },
+    "background": {
+        "uploadHint": "Click or drag image here to upload (max 10MB)",
+        "removeButton": "Remove Background",
+        "removeAnother": "Remove Another Image",
+        "download": "Download Result",
+        "processing": "Processing...",
+        "errorTooLarge": "File size exceeds 10MB limit.",
+        "errorApi": "Failed to remove background."
     }
 }

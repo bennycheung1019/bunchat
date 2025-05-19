@@ -101,14 +101,21 @@ export default function ImageTool() {
                         <button
                             key={tool.key}
                             onClick={() => setActiveTool(tool.key)}
-                            className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-md text-xs sm:text-sm transition ${activeTool === tool.key
-                                ? "bg-blue-50 text-blue-600 font-medium"
-                                : "text-gray-500 hover:bg-gray-100"
+                            className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-md text-xs sm:text-sm transition ${activeTool === tool.key ? "font-medium" : "text-gray-500 hover:bg-gray-100"
                                 }`}
+                            style={
+                                activeTool === tool.key
+                                    ? {
+                                        backgroundColor: "rgba(6, 95, 70, 0.1)",
+                                        color: "var(--primary-color)",
+                                    }
+                                    : {}
+                            }
                         >
                             {tool.icon}
                             <span>{tool.label}</span>
                         </button>
+
                     ))}
                 </div>
             </div>

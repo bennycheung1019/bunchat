@@ -2,8 +2,17 @@
 
 import { useState, useRef } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
+import DiamondIcon from "@/components/icons/DiamondIcon";
+import { useSession } from "next-auth/react";
+import { useTokenContext } from "@/context/TokenContext";
+import { deductTokens } from "@/lib/tokenUtils";
 
 export default function BackgroundRemoval() {
+    const t = useTranslations("background");
+    const { data: session } = useSession();
+    const { refreshTokenBalance } = useTokenContext();
+
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [resultUrl, setResultUrl] = useState<string | null>(null);
@@ -14,9 +23,8 @@ export default function BackgroundRemoval() {
 
     const handleUpload = (file: File) => {
         if (!file) return;
-
         if (file.size > 10 * 1024 * 1024) {
-            alert("File size exceeds 10MB limit.");
+            alert(t("errorTooLarge"));
             return;
         }
 
@@ -58,25 +66,27 @@ export default function BackgroundRemoval() {
             const data = await res.json();
             if (data.resultUrl) {
                 setProgress(100);
-
-                // ✨ Add a little delay (e.g., 800ms) so progress bar shows
-                setTimeout(() => {
+                setTimeout(async () => {
                     setResultUrl(data.resultUrl);
                     setLoading(false);
                     clearInterval(interval);
+
+                    if (data.resultUrl && session?.user?.id) {
+                        await deductTokens(session.user.id, 1); //TOKEN AMOUNT HERE
+                        await refreshTokenBalance();
+                    }
                 }, 800);
             } else {
                 throw new Error("API failed");
             }
         } catch (err) {
             console.error(err);
-            alert("Failed to remove background.");
+            alert(t("errorApi"));
             setProgress(0);
             clearInterval(interval);
             setLoading(false);
         }
     };
-
 
     const reset = () => {
         setUploadedImage(null);
@@ -92,13 +102,13 @@ export default function BackgroundRemoval() {
                 <>
                     <div className="text-center">
                         <Image src={resultUrl} alt="Result" width={400} height={400} className="object-contain rounded mx-auto" />
-                        <a href={resultUrl} download className="text-blue-500 underline block mt-2">Download Result</a>
+                        <a href={resultUrl} download className="text-green-600 underline block mt-2">{t("download")}</a>
                     </div>
                     <button
                         onClick={reset}
-                        className="mt-6 w-full py-2 rounded text-white font-semibold bg-blue-600 hover:bg-blue-700"
+                        className="mt-6 w-full py-2 rounded text-white font-semibold bg-green-600 hover:bg-green-700"
                     >
-                        Remove Another Image
+                        {t("removeAnother")}
                     </button>
                 </>
             ) : (
@@ -124,7 +134,7 @@ export default function BackgroundRemoval() {
                         <div
                             onDrop={handleDrop}
                             onDragOver={(e) => e.preventDefault()}
-                            className="border-2 border-dashed border-gray-300 p-6 rounded text-center hover:border-blue-400 cursor-pointer"
+                            className="border-2 border-dashed border-gray-300 p-6 rounded text-center hover:border-green-500 cursor-pointer"
                             onClick={() => fileInputRef.current?.click()}
                         >
                             <input
@@ -134,23 +144,35 @@ export default function BackgroundRemoval() {
                                 onChange={(e) => e.target.files && handleUpload(e.target.files[0])}
                                 className="hidden"
                             />
-                            <p className="text-blue-600">Click or drag image here to upload (max 10MB)</p>
+                            <p className="text-primary">{t("uploadHint")}</p>
                         </div>
                     )}
 
-                    <button
-                        onClick={handleRemoveBackground}
-                        disabled={!uploadedImage || loading}
-                        className={`w-full py-2 rounded text-white font-semibold transition ${uploadedImage ? "bg-green-600 hover:bg-green-700" : "bg-gray-300 cursor-not-allowed"}`}
-                    >
-                        {loading ? "Processing..." : "Remove Background"}
-                    </button>
+                    {/* Action Button with Cost */}
+                    <div className="flex items-center justify-between w-full gap-4">
+                        <button
+                            onClick={handleRemoveBackground}
+                            disabled={!uploadedImage || loading}
+                            className={`flex-1 px-4 py-2 text-sm rounded transition ${uploadedImage
+                                ? "bg-green-700 text-white hover:bg-green-800"
+                                : "bg-[#d1e1db] text-white cursor-not-allowed"
+                                }`}
+                        >
+                            {loading ? t("processing") : t("removeButton")}
+                        </button>
+
+                        {/* 💎 Token Cost */}
+                        <div className="flex items-center gap-1 text-xs text-gray-500 pr-1">
+                            <DiamondIcon />
+                            <span>1</span>
+                        </div>
+                    </div>
 
                     {/* Progress Bar */}
                     {loading && (
                         <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden mt-4">
                             <div
-                                className="bg-blue-500 h-3 transition-all duration-300"
+                                className="bg-green-600 h-3 transition-all duration-300"
                                 style={{ width: `${progress}%` }}
                             ></div>
                         </div>

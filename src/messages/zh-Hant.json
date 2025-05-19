@@ -127,5 +127,14 @@
     },
     "toast": {
         "tokensAdded": "💎 代幣已成功添加！💎"
+    },
+    "background": {
+        "uploadHint": "點擊或拖曳圖片上傳（最大10MB）",
+        "removeButton": "去除背景",
+        "removeAnother": "再處理一張圖片",
+        "download": "下載結果",
+        "processing": "處理中...",
+        "errorTooLarge": "檔案大小超過10MB限制。",
+        "errorApi": "去除背景失敗，請稍後再試。"
     }
 }
