@@ -70,7 +70,8 @@
     "sidebar": {
         "navigation": "导航",
         "work": "文字工具",
-        "imageTool": "图像工具"
+        "imageTool": "图像工具",
+        "videoTool": "视频工具"
     },
     "topbar": {
         "settings": "设置",

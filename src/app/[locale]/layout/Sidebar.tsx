@@ -10,9 +10,10 @@ interface SidebarProps {
     isSidebarOpen: boolean;
     sidebarRef: React.RefObject<HTMLDivElement | null>;
     setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setCurrentView: (view: "work" | "imageTool") => void;
-    currentView: "work" | "imageTool";
+    setCurrentView: (view: "work" | "imageTool" | "videoTool") => void;
+    currentView: "work" | "imageTool" | "videoTool";
 }
+
 
 const Sidebar: React.FC<SidebarProps> = ({
     isSidebarOpen,
@@ -51,13 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                         : "text-gray-700 hover:bg-gray-100"
                         }`}
                 >
-                    <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={1.8}
-                        viewBox="0 0 24 24"
-                    >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                     </svg>
                     {t("sidebar.work")}
@@ -74,19 +69,33 @@ const Sidebar: React.FC<SidebarProps> = ({
                         : "text-gray-700 hover:bg-gray-100"
                         }`}
                 >
-                    <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={1.8}
-                        viewBox="0 0 24 24"
-                    >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
                         <path d="M4 4h16v16H4z" stroke="none" />
                         <path d="M4 16l4-4 4 4 4-6 4 6" />
                     </svg>
-                    {t("sidebar.imageTool") || "Image Tool"}
+                    {t("sidebar.imageTool")}
+                </button>
+
+                {/* Video Tool Button */}
+                <button
+                    onClick={() => {
+                        setCurrentView("videoTool");
+                        setIsSidebarOpen(false);
+                    }}
+                    className={`flex items-center gap-3 w-full px-4 py-2 rounded-md text-sm font-medium transition ${currentView === "videoTool"
+                        ? "bg-primary-light text-primary"
+                        : "text-gray-700 hover:bg-gray-100"
+                        }`}
+                >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                        <path d="M4 4h16v16H4z" stroke="none" />
+                        <path d="M10 8v8l6-4-6-4z" />
+                    </svg>
+                    {t("sidebar.videoTool")}
                 </button>
             </div>
+
+
 
             {/* Bottom logo with env-safe padding like mode-selector */}
             <div

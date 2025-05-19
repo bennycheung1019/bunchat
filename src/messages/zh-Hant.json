@@ -70,7 +70,8 @@
     "sidebar": {
         "navigation": "選單",
         "work": "文字工具",
-        "imageTool": "圖片工具"
+        "imageTool": "圖片工具",
+        "videoTool": "影片工具"
     },
     "topbar": {
         "settings": "設定",

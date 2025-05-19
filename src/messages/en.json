@@ -70,7 +70,8 @@
     "sidebar": {
         "navigation": "Navigation",
         "work": "Text Tools",
-        "imageTool": "Image Tools"
+        "imageTool": "Image Tools",
+        "videoTool": "Video Tools"
     },
     "topbar": {
         "settings": "Settings",

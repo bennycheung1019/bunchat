@@ -16,6 +16,7 @@ import ImproveWriting from "@/app/[locale]/ImproveWriting";
 import LanguageTranslation from "@/app/[locale]/LanguageTranslation";
 import ReplyEmail from "@/app/[locale]/ReplyEmail";
 import ImageTool from "@/app/[locale]/ImageTool";
+import VideoTools from "@/app/[locale]/VideoTools";
 
 
 export default function Home() {
@@ -27,7 +28,8 @@ export default function Home() {
   //for sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // default: close
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const [currentView, setCurrentView] = useState<"work" | "imageTool">("work");
+  const [currentView, setCurrentView] = useState<"work" | "imageTool" | "videoTool">("work");
+
 
   //
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -247,8 +249,8 @@ export default function Home() {
                       key={mode.value}
                       onClick={() => setChatMode(mode.value as typeof chatMode)}
                       className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-md text-xs sm:text-sm transition ${chatMode === mode.value
-                          ? "font-medium"
-                          : "text-gray-500 hover:bg-gray-100"
+                        ? "font-medium"
+                        : "text-gray-500 hover:bg-gray-100"
                         }`}
                       style={
                         chatMode === mode.value
@@ -270,6 +272,7 @@ export default function Home() {
           )}
 
           {currentView === "imageTool" && <ImageTool />}
+          {currentView === "videoTool" && <VideoTools />}
 
 
 
