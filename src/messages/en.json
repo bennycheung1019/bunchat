@@ -149,5 +149,15 @@
         "errorApi": "Something went wrong during upscaling.",
         "exceedsLimit": "Output exceeds 8K resolution. Please reduce the scale to continue.",
         "upscaleTo": "Upscale to {width}×{height}px"
+    },
+    "ocr": {
+        "uploadHint": "Click or drag an image to extract text",
+        "extractButton": "Extract Text",
+        "extractAnother": "Extract from another image",
+        "processing": "Processing...",
+        "placeholderOutput": "Extracted text will appear here...",
+        "errorTooLarge": "Image is too large. Max file size is 10MB.",
+        "errorApi": "Something went wrong while extracting text. Please try again.",
+        "ocrEnglishOnly": "This tool currently only supports English text extraction."
     }
 }

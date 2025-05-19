@@ -149,5 +149,15 @@
         "errorApi": "放大過程中發生錯誤。",
         "exceedsLimit": "輸出超過 8K 解析度，請降低放大倍率以繼續。",
         "upscaleTo": "放大至 {width}×{height}px"
+    },
+    "ocr": {
+        "uploadHint": "點擊或拖曳圖片以上傳並提取文字",
+        "extractButton": "提取文字",
+        "extractAnother": "提取其他圖片",
+        "processing": "處理中...",
+        "placeholderOutput": "提取的文字將顯示在此處...",
+        "errorTooLarge": "圖片太大，最大限制為 10MB。",
+        "errorApi": "提取文字時發生錯誤，請稍後再試。",
+        "ocrEnglishOnly": "⚠️ 此工具目前僅支援英文文字擷取。"
     }
 }
