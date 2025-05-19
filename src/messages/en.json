@@ -136,5 +136,18 @@
         "processing": "Processing...",
         "errorTooLarge": "File size exceeds 10MB limit.",
         "errorApi": "Failed to remove background."
+    },
+    "upscale": {
+        "scale": "Scale",
+        "faceEnhance": "Improves quality of faces in selfies or portraits",
+        "uploadHint": "Click or drag an image to upload",
+        "upscaleButton": "Upscale Image",
+        "processing": "Processing...",
+        "upscaleAnother": "Upscale Another Image",
+        "download": "Download",
+        "errorTooLarge": "File size exceeds 10MB limit.",
+        "errorApi": "Something went wrong during upscaling.",
+        "exceedsLimit": "Output exceeds 8K resolution. Please reduce the scale to continue.",
+        "upscaleTo": "Upscale to {width}×{height}px"
     }
 }

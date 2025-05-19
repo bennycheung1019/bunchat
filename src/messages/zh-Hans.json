@@ -136,5 +136,18 @@
         "processing": "处理中...",
         "errorTooLarge": "文件大小超过10MB限制。",
         "errorApi": "去除背景失败，请稍后再试。"
+    },
+    "upscale": {
+        "scale": "放大倍率",
+        "faceEnhance": "提升自拍或人像中的面部清晰度",
+        "uploadHint": "点击或拖拽图片以上传",
+        "upscaleButton": "放大图片",
+        "processing": "处理中...",
+        "upscaleAnother": "再次放大图片",
+        "download": "下载",
+        "errorTooLarge": "文件大小超过 10MB 限制。",
+        "errorApi": "图片放大过程中发生错误。",
+        "exceedsLimit": "输出超过 8K 分辨率，请降低放大倍数以继续。",
+        "upscaleTo": "放大至 {width}×{height}px"
     }
 }

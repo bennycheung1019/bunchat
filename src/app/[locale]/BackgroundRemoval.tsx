@@ -49,6 +49,9 @@ export default function BackgroundRemoval() {
 
     const handleRemoveBackground = async () => {
         if (!uploadedImage || !previewUrl) return;
+
+        console.log("🟡 previewUrl being sent to API:", previewUrl); // 🔍 Check this!
+
         setLoading(true);
         setProgress(10);
 
