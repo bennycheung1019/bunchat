@@ -81,30 +81,35 @@ export default function GenerateImage() {
 
     return (
         <div className="px-4 py-6 max-w-2xl mx-auto space-y-6 overflow-y-auto" style={{ maxHeight: "calc(100vh - 100px)" }}>
-            <textarea
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder={t("placeholder")}
-                className="w-full p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-700 focus:border-green-700 min-h-[120px]"
-            />
+            {!imageUrl && (
+                <>
+                    <textarea
+                        value={prompt}
+                        onChange={(e) => setPrompt(e.target.value)}
+                        placeholder={t("placeholder")}
+                        className="w-full p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-700 focus:border-green-700 min-h-[120px]"
+                    />
 
-            <div className="flex items-center justify-between gap-4">
-                <button
-                    onClick={handleGenerate}
-                    disabled={loading || !prompt.trim()}
-                    className={`flex-1 px-4 py-2 text-sm rounded transition ${loading || !prompt.trim()
-                        ? "bg-[#d1e1db] text-white cursor-not-allowed"
-                        : "bg-green-700 text-white hover:bg-green-800"
-                        }`}
-                >
-                    {loading ? t("processing") : t("button")}
-                </button>
+                    <div className="flex items-center justify-between gap-4">
+                        <button
+                            onClick={handleGenerate}
+                            disabled={loading || !prompt.trim()}
+                            className={`flex-1 px-4 py-2 text-sm rounded transition ${loading || !prompt.trim()
+                                ? "bg-[#d1e1db] text-white cursor-not-allowed"
+                                : "bg-green-700 text-white hover:bg-green-800"
+                                }`}
+                        >
+                            {loading ? t("processing") : t("button")}
+                        </button>
 
-                <div className="flex items-center gap-1 text-xs text-gray-500 pr-1">
-                    <DiamondIcon />
-                    <span>1</span>
-                </div>
-            </div>
+                        <div className="flex items-center gap-1 text-xs text-gray-500 pr-1">
+                            <DiamondIcon />
+                            <span>1</span>
+                        </div>
+                    </div>
+                </>
+            )}
+
 
             {loading && (
                 <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden mt-2">

@@ -120,7 +120,13 @@ export default function Home() {
 
           {/* Logo and Title - Combined */}
           <div className="flex flex-col items-center space-y-3">
-            <Image src="/minimindLogo-noText.png" alt="MiniMind Logo" className="h-16 w-auto" />
+            <Image
+              src="/minimindLogo-noText.png"
+              alt="MiniMind Logo"
+              width={40}
+              height={40}
+              className="h-9 w-auto"
+            />
             <h1 className="text-2xl font-bold text-gray-900">{t("signin.title")}</h1>
           </div>
 
