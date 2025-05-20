@@ -80,11 +80,11 @@ export default function SettingsPage() {
                 {/* Language Section */}
                 <div className="bg-white rounded-2xl shadow-md p-6 space-y-4">
                     <h2 className="text-lg font-semibold">{t("language")}</h2>
-                    <div className="flex flex-wrap gap-4">
+                    <div className="flex gap-4 flex-nowrap">
                         <button
                             onClick={() => handleLanguageChange("en")}
                             className={`px-5 py-2 rounded-full font-medium transition border ${currentLanguage === "en"
-                                ? "bg-blue-600 text-white border-blue-600"
+                                ? "bg-[var(--primary-color)] text-white border-[var(--primary-color)]"
                                 : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
                                 }`}
                         >
@@ -93,7 +93,7 @@ export default function SettingsPage() {
                         <button
                             onClick={() => handleLanguageChange("zh-Hant")}
                             className={`px-5 py-2 rounded-full font-medium transition border ${currentLanguage === "zh-Hant"
-                                ? "bg-blue-600 text-white border-blue-600"
+                                ? "bg-[var(--primary-color)] text-white border-[var(--primary-color)]"
                                 : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
                                 }`}
                         >
@@ -102,7 +102,7 @@ export default function SettingsPage() {
                         <button
                             onClick={() => handleLanguageChange("zh-Hans")}
                             className={`px-5 py-2 rounded-full font-medium transition border ${currentLanguage === "zh-Hans"
-                                ? "bg-blue-600 text-white border-blue-600"
+                                ? "bg-[var(--primary-color)] text-white border-[var(--primary-color)]"
                                 : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
                                 }`}
                         >
@@ -111,6 +111,7 @@ export default function SettingsPage() {
                     </div>
                 </div>
             </div>
+
         </div>
     );
 }
