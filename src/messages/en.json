@@ -81,7 +81,7 @@
         "backgroundRemoval": "Remove BG",
         "upscaling": "Upscale",
         "ocr": "OCR",
-        "generate": "Draw"
+        "generate": "Create"
     },
     "purchase": {
         "title": "Buy Tokens",
@@ -160,5 +160,14 @@
         "errorTooLarge": "Image is too large. Max file size is 10MB.",
         "errorApi": "Something went wrong while extracting text. Please try again.",
         "ocrEnglishOnly": "This tool currently only supports English text extraction."
+    },
+    "create": {
+        "placeholder": "Describe the image you want to create...",
+        "button": "Generate Image",
+        "processing": "Generating...",
+        "download": "Download Image",
+        "generateAnother": "Create Another Image",
+        "error": "Something went wrong. Please try again.",
+        "copied": "Copied!"
     }
 }

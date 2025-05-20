@@ -28,67 +28,33 @@ function LanguageSync({ locale }: { locale: string }) {
 
     useEffect(() => {
         async function syncUserLanguage() {
-            if (session?.user?.id) {
-                const settings = await loadUserSettingsFromFirestore(session.user.id);
-                if (!settings) return;
-
-                //localStorage.setItem("theme", settings.theme);
-                localStorage.setItem("preferredLanguage", settings.language);
-                document.cookie = `preferredLanguage=${settings.language}; path=/; max-age=31536000`;
-                //document.documentElement.className = settings.theme;
-
+            if (typeof window === "undefined") return;
+            if (localStorage.getItem("manualLanguageSwitch") === "true") {
                 localStorage.removeItem("manualLanguageSwitch");
-
-                if (
-                    currentPathLocale !== settings.language &&
-                    locales.includes(settings.language)
-                ) {
-                    const newPath = pathname.replace(
-                        `/${currentPathLocale}`,
-                        `/${settings.language}`
-                    );
-                    if (newPath !== pathname) {
-                        router.replace(newPath);
-                    }
-                }
-
-                return;
+                return; // 🛑 Skip auto redirect
             }
 
-            const preferred =
-                localStorage.getItem("preferredLanguage") ||
-                getCookie("preferredLanguage") ||
-                "en";
+            if (!session?.user?.id) return;
 
-            const manuallyChosen =
-                localStorage.getItem("manualLanguageSwitch") === "true";
+            const settings = await loadUserSettingsFromFirestore(session.user.id);
+            if (!settings) return;
 
-            if (
-                !manuallyChosen &&
-                currentPathLocale !== preferred &&
-                locales.includes(preferred)
-            ) {
-                const newPath = pathname.replace(
-                    `/${currentPathLocale}`,
-                    `/${preferred}`
-                );
-                if (newPath !== pathname) {
-                    router.replace(newPath);
-                }
+            localStorage.setItem("preferredLanguage", settings.language);
+            document.cookie = `preferredLanguage=${settings.language}; path=/; max-age=31536000`;
+            document.documentElement.className = settings.theme;
+
+            const currentPathLocale = pathname.split("/")[1];
+            if (currentPathLocale !== settings.language) {
+                const newPath = pathname.replace(`/${currentPathLocale}`, `/${settings.language}`);
+                router.replace(newPath);
             }
         }
 
         syncUserLanguage();
     }, [session, pathname, router, locale]);
 
-    return null;
-}
 
-function getCookie(name: string) {
-    const match = document.cookie.match(
-        new RegExp("(^| )" + name + "=([^;]+)")
-    );
-    return match ? match[2] : null;
+    return null;
 }
 
 export default function LocaleClientLayout({

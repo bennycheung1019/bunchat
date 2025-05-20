@@ -78,10 +78,10 @@
         "logout": "登出"
     },
     "imageTools": {
-        "backgroundRemoval": "去背景",
+        "backgroundRemoval": "移除背景",
         "upscaling": "升級解析度",
         "ocr": "文字辨識",
-        "generate": "產生圖片"
+        "generate": "生成圖片"
     },
     "purchase": {
         "title": "購買代幣",
@@ -160,5 +160,14 @@
         "errorTooLarge": "圖片太大，最大限制為 10MB。",
         "errorApi": "提取文字時發生錯誤，請稍後再試。",
         "ocrEnglishOnly": "⚠️ 此工具目前僅支援英文文字擷取。"
+    },
+    "create": {
+        "placeholder": "描述你想要創建的圖像...",
+        "button": "生成圖像",
+        "processing": "正在生成...",
+        "download": "下載圖像",
+        "generateAnother": "再創建一張圖像",
+        "error": "發生錯誤，請再試一次。",
+        "copied": "已複製！"
     }
 }

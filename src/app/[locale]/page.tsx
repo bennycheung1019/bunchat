@@ -18,23 +18,46 @@ import ReplyEmail from "@/app/[locale]/ReplyEmail";
 import ImageTool from "@/app/[locale]/ImageTool";
 import VideoTools from "@/app/[locale]/VideoTools";
 
-
 export default function Home() {
   const { data: session } = useSession();
-  const [chatMode, setChatMode] = useState<
-    "chat" | "improve" | "translate" | "replyEmail"
-  >("chat");
+
 
   //for sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // default: close
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const [currentView, setCurrentView] = useState<"work" | "imageTool" | "videoTool">("work");
 
+  const [currentView, setCurrentView] = useState<"work" | "imageTool" | "videoTool">("work");
+  const [chatMode, setChatMode] = useState<"chat" | "improve" | "translate" | "replyEmail">("chat");
+  const [imageMode, setImageMode] = useState<"generate" | "backgroundRemoval" | "upscaling" | "ocr">("generate");
 
   //
   const messagesRef = useRef<HTMLDivElement>(null);
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
   const t = useTranslations();
+
+  useEffect(() => {
+    const raw = localStorage.getItem("previousView");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+
+      if (parsed.view) {
+        setCurrentView(parsed.view);
+      }
+
+      if (parsed.view === "work" && parsed.chatMode) {
+        setChatMode(parsed.chatMode);
+      }
+
+      if (parsed.view === "imageTool" && parsed.imageMode) {
+        setImageMode(parsed.imageMode);
+      }
+
+      localStorage.removeItem("previousView");
+    }
+  }, []);
+
+
+
 
   //Create Email and Tokens for the first login
 
@@ -138,7 +161,11 @@ export default function Home() {
       <Topbar
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         toggleButtonRef={toggleButtonRef}
+        currentView={currentView}
+        chatMode={chatMode}
+        imageMode={imageMode}
       />
+
 
       <Sidebar
         isSidebarOpen={isSidebarOpen}
@@ -271,7 +298,10 @@ export default function Home() {
             </>
           )}
 
-          {currentView === "imageTool" && <ImageTool />}
+          {currentView === "imageTool" && (
+            <ImageTool imageMode={imageMode} setImageMode={setImageMode} />
+          )}
+
           {currentView === "videoTool" && <VideoTools />}
 
 

@@ -78,7 +78,7 @@
         "logout": "登出"
     },
     "imageTools": {
-        "backgroundRemoval": "去背景",
+        "backgroundRemoval": "移除背景",
         "upscaling": "图像增强",
         "ocr": "文字识别",
         "generate": "生成图片"
@@ -160,5 +160,14 @@
         "errorTooLarge": "图片太大，最大限制为10MB。",
         "errorApi": "提取文字时发生错误，请稍后重试。",
         "ocrEnglishOnly": "⚠️ 本工具目前仅支持英文文字提取。"
+    },
+    "create": {
+        "placeholder": "描述你想生成的图像...",
+        "button": "生成图像",
+        "processing": "正在生成...",
+        "download": "下载图像",
+        "generateAnother": "再生成一张图",
+        "error": "出了点问题，请再试一次。",
+        "copied": "已复制！"
     }
 }

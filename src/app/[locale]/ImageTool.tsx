@@ -7,18 +7,41 @@ import Upscaling from "./Upscaling"; // Placeholder
 import OCR from "./OCR"; // Placeholder
 import GenerateImage from "./GenerateImage";
 
-export default function ImageTool() {
+type ImageMode = "generate" | "backgroundRemoval" | "upscaling" | "ocr";
+
+interface ImageToolProps {
+    imageMode: ImageMode;
+    setImageMode: React.Dispatch<React.SetStateAction<ImageMode>>;
+}
+
+export default function ImageTool({ imageMode, setImageMode }: ImageToolProps) {
     const t = useTranslations("imageTools");
-    const [activeTool, setActiveTool] = useState<"backgroundRemoval" | "upscaling" | "ocr" | "generate">("backgroundRemoval");
 
     const toolComponents = {
+        generate: <GenerateImage />,
         backgroundRemoval: <BackgroundRemoval />,
         upscaling: <Upscaling />,
         ocr: <OCR />,
-        generate: <GenerateImage />,
+
     };
 
     const tools = [
+        {
+            key: "generate",
+            label: t("generate"),
+            icon: (
+                <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.8}
+                    viewBox="0 0 24 24"
+                >
+                    <path d="M4 4h16v16H4z" stroke="none" />
+                    <path d="M4 16l4-4 4 4 4-6 4 6" />
+                </svg>
+            ),
+        },
         {
             key: "backgroundRemoval",
             label: t("backgroundRemoval"),
@@ -66,30 +89,13 @@ export default function ImageTool() {
                 </svg>
             ),
         },
-        {
-            key: "generate",
-            label: t("generate"),
-            icon: (
-                <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={1.8}
-                    viewBox="0 0 24 24"
-                >
-                    <path d="M4 4h16v16H4z" stroke="none" />
-                    <path d="M4 16l4-4 4 4 4-6 4 6" />
-                </svg>
-            ),
-        },
+
     ] as const;
 
     return (
         <div className="flex flex-col h-full">
             {/* Active Tool UI */}
-            <div className="flex-1 overflow-y-auto">
-                {toolComponents[activeTool]}
-            </div>
+            <div className="flex-1 overflow-y-auto">{toolComponents[imageMode]}</div>
 
             {/* Bottom Tool Selector */}
             <div
@@ -100,11 +106,13 @@ export default function ImageTool() {
                     {tools.map((tool) => (
                         <button
                             key={tool.key}
-                            onClick={() => setActiveTool(tool.key)}
-                            className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-md text-xs sm:text-sm transition ${activeTool === tool.key ? "font-medium" : "text-gray-500 hover:bg-gray-100"
+                            onClick={() => setImageMode(tool.key)}
+                            className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-md text-xs sm:text-sm transition ${imageMode === tool.key
+                                    ? "font-medium"
+                                    : "text-gray-500 hover:bg-gray-100"
                                 }`}
                             style={
-                                activeTool === tool.key
+                                imageMode === tool.key
                                     ? {
                                         backgroundColor: "rgba(6, 95, 70, 0.1)",
                                         color: "var(--primary-color)",
@@ -115,6 +123,7 @@ export default function ImageTool() {
                             {tool.icon}
                             <span>{tool.label}</span>
                         </button>
+
 
                     ))}
                 </div>

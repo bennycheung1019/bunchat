@@ -11,6 +11,7 @@ export default function SettingsPage() {
     const { data: session } = useSession();
     const router = useRouter();
     const pathname = usePathname();
+    const locale = pathname.split("/")[1] || "en";
 
     const [currentLanguage, setCurrentLanguage] = useState<"en" | "zh-Hant" | "zh-Hans">("en");
 
@@ -20,10 +21,10 @@ export default function SettingsPage() {
     }, [pathname]);
 
     const handleLanguageChange = async (selectedLanguage: "en" | "zh-Hant" | "zh-Hans") => {
-        setCurrentLanguage(selectedLanguage);
+        // ✅ Fix 1: Set flag before redirecting
         localStorage.setItem("preferredLanguage", selectedLanguage);
         document.cookie = `preferredLanguage=${selectedLanguage}; path=/; max-age=31536000`;
-        localStorage.removeItem("manualLanguageSwitch");
+        localStorage.setItem("manualLanguageSwitch", "true"); // 🟢 important line
 
         if (!session?.user?.id) {
             console.warn("⚠️ Cannot save settings: session is null or user ID missing.");
@@ -32,10 +33,12 @@ export default function SettingsPage() {
 
         await saveUserSettingsToFirestore(session.user.id, "light", selectedLanguage);
 
+        // Redirect to selected locale
         const segments = pathname.split("/");
         segments[1] = selectedLanguage;
         router.push(segments.join("/"));
     };
+
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50">
@@ -43,14 +46,32 @@ export default function SettingsPage() {
             <div className="sticky top-0 z-20 flex items-center bg-white shadow-sm h-14 px-4">
                 <button
                     onClick={() => {
-                        const segments = pathname.split("/");
-                        const currentLocale = segments[1] || "en";
-                        router.push(`/${currentLocale}`);
+                        const raw = localStorage.getItem("previousView");
+                        if (!raw) {
+                            router.push(`/${locale}`);
+                            return;
+                        }
+
+                        try {
+                            const parsed = JSON.parse(raw);
+                            if (parsed?.path && typeof parsed.path === "string") {
+                                router.push(parsed.path);
+                            } else {
+                                router.push(`/${locale}`);
+                            }
+                        } catch (err) {
+                            console.error("❌ Failed to parse previousView:", err);
+                            router.push(`/${locale}`);
+                        }
                     }}
-                    className="mr-4 p-2 rounded-full hover:bg-gray-200 transition"
+
+
+                    className="mr-4 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-zinc-700 transition"
                 >
                     <span className="text-xl">←</span>
                 </button>
+
+
                 <h1 className="text-lg font-semibold">{t("settings")}</h1>
             </div>
 

@@ -8,26 +8,30 @@ import { useTranslations } from "next-intl";
 import { useTokenContext } from "@/context/TokenContext";
 import DiamondIcon from "@/components/icons/DiamondIcon";
 
-
 interface TopbarProps {
   onToggleSidebar: () => void;
   toggleButtonRef: React.RefObject<HTMLButtonElement | null>;
+  currentView: "work" | "imageTool" | "videoTool";
+  chatMode: "chat" | "improve" | "translate" | "replyEmail";
+  imageMode: "generate" | "backgroundRemoval" | "upscaling" | "ocr";
 }
 
-const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => {
+const Topbar: React.FC<TopbarProps> = ({
+  onToggleSidebar,
+  toggleButtonRef,
+  currentView,
+  chatMode,
+  imageMode,
+}) => {
+
   const { data: session } = useSession();
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const t = useTranslations();
 
-
   const { tokenBalance } = useTokenContext();
   console.log("🔵 Topbar received tokenBalance:", tokenBalance);
-
-
-
-
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -45,7 +49,6 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
   return (
     <div className="sticky top-0 z-30 w-full bg-white shadow-sm">
       <div className="h-14 flex items-center px-4 justify-between">
-
         {/* Sidebar toggle button */}
         <button
           ref={toggleButtonRef}
@@ -57,26 +60,20 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
 
         {/* Token balance and Avatar */}
         <div className="flex items-center gap-4">
-          {/* ✅ Token Balance Display */}
+          {/* Token Balance Button */}
           <button
             onClick={() => router.push("/purchase-tokens")}
             className="flex items-center gap-2 px-3 py-1 rounded-full border text-sm font-medium transition duration-200 hover:shadow"
             style={{
-              backgroundColor: "rgba(6, 95, 70, 0.1)", // soft green like bg-blue-50
+              backgroundColor: "rgba(6, 95, 70, 0.1)",
               borderColor: "rgba(6, 95, 70, 0.3)",
               color: "var(--primary-color)",
             }}
             title="Click to buy more tokens"
           >
             <DiamondIcon className="w-4 h-4 text-[var(--primary-color)]" />
-
             {tokenBalance}
           </button>
-
-
-
-
-
 
           {/* Avatar + Dropdown */}
           <div className="relative" ref={dropdownRef}>
@@ -101,15 +98,26 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, toggleButtonRef }) => 
 
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-2 text-sm z-40">
+                {/* Settings button */}
                 <button
                   onClick={() => {
                     setIsDropdownOpen(false);
+                    localStorage.setItem("previousView", JSON.stringify({
+                      view: currentView,
+                      chatMode,
+                      imageMode,
+                    }));
+                    console.log("view:", currentView);
+                    console.log("chatmode:", chatMode);
+                    console.log("imageMode:", imageMode);
                     router.push("/settings");
                   }}
                   className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
                 >
                   {t("settings")}
                 </button>
+
+                {/* Logout button */}
                 <button
                   onClick={() => signOut()}
                   className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
