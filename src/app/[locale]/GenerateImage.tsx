@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useTokenContext } from "@/context/TokenContext";
 import { deductTokens } from "@/lib/tokenUtils";
 import DiamondIcon from "@/components/icons/DiamondIcon";
+import Image from "next/image";
 
 export default function GenerateImage() {
     const t = useTranslations("create");
@@ -116,7 +117,7 @@ export default function GenerateImage() {
 
             {imageUrl && (
                 <div className="text-center space-y-4">
-                    <img
+                    <Image
                         src={imageUrl}
                         alt="Generated AI"
                         className="rounded-lg border mx-auto max-w-full h-auto"

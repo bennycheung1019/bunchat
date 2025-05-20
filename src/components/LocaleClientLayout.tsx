@@ -23,9 +23,6 @@ function LanguageSync({ locale }: { locale: string }) {
     const pathname = usePathname();
     const router = useRouter();
 
-    const locales = ["en", "zh-Hant", "zh-Hans"];
-    const currentPathLocale = pathname.split("/")[1];
-
     useEffect(() => {
         async function syncUserLanguage() {
             if (typeof window === "undefined") return;

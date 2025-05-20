@@ -1,12 +1,12 @@
 "use client";
 
-//google auth & firebase imports
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import "@/app/globals.css";
 import { useTranslations } from "next-intl";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
-import { app } from "@/lib/firebase"; // adjust if needed
+import { app } from "@/lib/firebase";
+import Image from "next/image";
 
 // componets imports
 import Topbar from "@/app/[locale]/layout/Topbar";
@@ -120,7 +120,7 @@ export default function Home() {
 
           {/* Logo and Title - Combined */}
           <div className="flex flex-col items-center space-y-3">
-            <img src="/minimindLogo-noText.png" alt="MiniMind Logo" className="h-16 w-auto" />
+            <Image src="/minimindLogo-noText.png" alt="MiniMind Logo" className="h-16 w-auto" />
             <h1 className="text-2xl font-bold text-gray-900">{t("signin.title")}</h1>
           </div>
 

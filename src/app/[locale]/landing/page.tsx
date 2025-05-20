@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export default function LandingPage() {
     const t = useTranslations("landing");
@@ -15,7 +16,7 @@ export default function LandingPage() {
             <header className="w-full border-b bg-white sticky top-0 z-50 shadow-sm">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <img src="/minimindLogo-noText.png" alt="MiniMind Logo" className="h-9 w-auto" />
+                        <Image src="/minimindLogo-noText.png" alt="MiniMind Logo" className="h-9 w-auto" />
                         <span className="text-xl font-semibold text-[#064e3b]">minimind</span>
                     </div>
                     <div className="flex items-center gap-4">
@@ -71,7 +72,7 @@ export default function LandingPage() {
 
                     {/* Left: Image */}
                     <div className="flex justify-center">
-                        <img
+                        <Image
                             src="/heroimage01.png"
                             alt="AI Toolkit Hero"
                             className="w-full max-w-sm  object-cover"
