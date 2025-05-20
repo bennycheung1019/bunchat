@@ -361,3 +361,14 @@ button:disabled {
     opacity: 0.7;
     /* Visual cue for disabled state */
 }
+
+.email-display {
+    all: unset;
+    pointer-events: none;
+    user-select: text;
+    font-size: 0.875rem;
+    color: #1f2937;
+    /* Tailwind's text-gray-800 */
+    cursor: default;
+    word-break: break-all;
+}
