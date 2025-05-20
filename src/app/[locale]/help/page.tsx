@@ -1,13 +1,12 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function HelpPage() {
     const t = useTranslations("helpPage");
     const router = useRouter();
-    const pathname = usePathname();
-    const locale = pathname.split("/")[1] || "en";
+
 
 
     return (

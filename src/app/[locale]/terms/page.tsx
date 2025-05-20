@@ -1,13 +1,12 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function TermsPage() {
     const t = useTranslations("termsPage");
     const router = useRouter();
-    const pathname = usePathname();
-    const locale = pathname.split("/")[1] || "en";
+
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50">
