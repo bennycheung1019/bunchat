@@ -11,7 +11,6 @@ interface FAQItem {
 
 export default function HelpPage() {
     const router = useRouter();
-    const pathname = usePathname();
     const t = useTranslations("helpPage");
 
     const [openIndex, setOpenIndex] = useState<number | null>(null);
