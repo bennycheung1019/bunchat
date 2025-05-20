@@ -36,39 +36,54 @@ function TokenSelector({
     amount: number | null;
     onSelect: (val: number) => void;
 }) {
+    const t = useTranslations("purchase");
+
     const packages = [
-        { value: 500, label: 50, price: "$5.00" },
-        { value: 1000, label: 120, price: "$10.00" },
-        { value: 2000, label: 300, price: "$20.00" },
+        { value: 500, label: 50, price: "USD$ 5.00", saveKey: null },
+        { value: 1000, label: 120, price: "USD$ 10.00", saveKey: "save17" },
+        { value: 2000, label: 300, price: "USD$ 20.00", saveKey: "save33" },
     ];
 
     return (
         <div className="space-y-3">
-            <div className="grid gap-2">
+            <div className="grid gap-4">
                 {packages.map((pkg) => {
                     const isSelected = amount === pkg.value;
 
                     return (
-                        <button
-                            key={pkg.value}
-                            onClick={() => onSelect(pkg.value)}
-                            className={`flex items-center justify-between w-full px-4 py-2 rounded-md border transition font-medium ${isSelected
-                                ? "bg-blue-600 text-white border-blue-600"
-                                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
-                                }`}
-                        >
-                            <span className={`flex items-center gap-1 ${isSelected ? "text-white" : "text-gray-800"}`}>
-                                {pkg.label}
-                                <DiamondIcon className="w-4 h-4 text-blue-500" />
-                            </span>
-                            <span className={`text-sm ${isSelected ? "text-white" : "text-gray-500"}`}>{pkg.price}</span>
-                        </button>
+                        <div key={pkg.value} className="relative">
+                            <button
+                                onClick={() => onSelect(pkg.value)}
+                                className={`flex items-center justify-between w-full px-5 py-4 rounded-xl border transition font-medium text-left ${isSelected
+                                    ? "bg-blue-600 text-white border-blue-600"
+                                    : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
+                                    }`}
+                            >
+                                <div className="flex items-center gap-2 text-base">
+                                    {pkg.label}
+                                    <DiamondIcon className="w-5 h-5 text-blue-500" />
+                                </div>
+                                <div className="text-sm">{pkg.price}</div>
+                            </button>
+
+                            {pkg.saveKey && (
+                                <span
+                                    className={`absolute -top-3 right-2 text-[11px] font-semibold px-2 py-0.5 rounded-full ${isSelected ? "bg-yellow-300 text-black" : "bg-yellow-100 text-yellow-700"
+                                        }`}
+                                >
+                                    {t(pkg.saveKey)}
+                                </span>
+
+                            )}
+                        </div>
                     );
                 })}
             </div>
         </div>
     );
 }
+
+
 
 function CheckoutForm() {
     const stripe = useStripe();

@@ -94,7 +94,9 @@
         "processing": "Processing...",
         "payNow": "Pay Now",
         "back": "Back",
-        "selectPrompt": "Please select a token package."
+        "selectPrompt": "Please select a token package.",
+        "save17": "Save 17%",
+        "save33": "Save 33%"
     },
     "success": {
         "title": "Purchase Successful",

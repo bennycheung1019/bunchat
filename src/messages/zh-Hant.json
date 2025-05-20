@@ -94,7 +94,9 @@
         "processing": "處理中...",
         "payNow": "立即付款",
         "back": "返回",
-        "selectPrompt": "請選擇一個代幣方案。"
+        "selectPrompt": "請選擇一個代幣方案。",
+        "save17": "節省 17%",
+        "save33": "節省 33%"
     },
     "success": {
         "title": "購買成功",
