@@ -62,6 +62,13 @@ const Topbar: React.FC<TopbarProps> = ({
         <div className="flex items-center gap-4">
           {/* Token Balance Button */}
           <button
+            onMouseDown={() => {
+              localStorage.setItem("previousView", JSON.stringify({
+                view: currentView,
+                chatMode,
+                imageMode,
+              }));
+            }}
             onClick={() => router.push("/purchase-tokens")}
             className="flex items-center gap-2 px-3 py-1 rounded-full border text-sm font-medium transition duration-200 hover:shadow"
             style={{
@@ -78,9 +85,17 @@ const Topbar: React.FC<TopbarProps> = ({
           {/* Avatar + Dropdown */}
           <div className="relative" ref={dropdownRef}>
             <button
+              onMouseDown={() => {
+                localStorage.setItem("previousView", JSON.stringify({
+                  view: currentView,
+                  chatMode,
+                  imageMode,
+                }));
+              }}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-blue-400 transition"
             >
+
               {session?.user?.image ? (
                 <Image
                   src={session.user.image}
@@ -139,11 +154,6 @@ const Topbar: React.FC<TopbarProps> = ({
                   <button
                     onClick={() => {
                       setIsDropdownOpen(false);
-                      localStorage.setItem("previousView", JSON.stringify({
-                        view: currentView,
-                        chatMode,
-                        imageMode,
-                      }));
                       router.push("/settings");
                     }}
                     className="flex items-center gap-3 w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
