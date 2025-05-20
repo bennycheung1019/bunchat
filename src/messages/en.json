@@ -74,6 +74,7 @@
         "videoTool": "Video Tools"
     },
     "topbar": {
+        "signedInAs": "Signed in as",
         "settings": "Settings",
         "logout": "Logout",
         "purchaseTokens": "Purchase Tokens",

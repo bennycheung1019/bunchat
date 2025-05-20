@@ -74,6 +74,7 @@
         "videoTool": "视频工具"
     },
     "topbar": {
+        "signedInAs": "登录账号",
         "settings": "设置",
         "logout": "登出",
         "purchaseTokens": "购买代币",

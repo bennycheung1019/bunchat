@@ -100,10 +100,26 @@ const Topbar: React.FC<TopbarProps> = ({
               <div className="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg text-sm z-40">
                 {/* Email Header (non-scrollable) */}
                 {session?.user?.email && (
-                  <div className="px-4 py-2 text-gray-800 font-medium truncate border-b">
-                    {session.user.email}
+                  <div className="px-4 py-2 text-xs text-gray-500 border-b select-none cursor-default">
+                    <div className="uppercase tracking-wide text-[10px] font-semibold mb-1 text-gray-400">
+                      {t("topbar.signedInAs")}
+                    </div>
+                    <div
+                      className="text-sm text-gray-800 truncate"
+                      style={{
+                        pointerEvents: "none",
+                        userSelect: "text",
+                        cursor: "default",
+                        WebkitTouchCallout: "none",
+                        WebkitUserSelect: "text",
+                        msUserSelect: "text",
+                      }}
+                    >
+                      {session.user.email}
+                    </div>
                   </div>
                 )}
+
 
                 {/* Scrollable Options */}
                 <div className="py-2 max-h-[360px] overflow-y-auto">
