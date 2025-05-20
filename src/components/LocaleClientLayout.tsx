@@ -32,10 +32,10 @@ function LanguageSync({ locale }: { locale: string }) {
                 const settings = await loadUserSettingsFromFirestore(session.user.id);
                 if (!settings) return;
 
-                localStorage.setItem("theme", settings.theme);
+                //localStorage.setItem("theme", settings.theme);
                 localStorage.setItem("preferredLanguage", settings.language);
                 document.cookie = `preferredLanguage=${settings.language}; path=/; max-age=31536000`;
-                document.documentElement.className = settings.theme;
+                //document.documentElement.className = settings.theme;
 
                 localStorage.removeItem("manualLanguageSwitch");
 

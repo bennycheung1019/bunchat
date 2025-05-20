@@ -29,8 +29,8 @@ export function LoadUserSettingsOnStart() {
 
             if (settings) {
                 // Apply theme from Firestore
-                localStorage.setItem("theme", settings.theme);
-                document.documentElement.className = settings.theme;
+                //localStorage.setItem("theme", settings.theme);
+                //document.documentElement.className = settings.theme;
 
                 // Always use Firestore language when logged in
                 localStorage.setItem("preferredLanguage", settings.language);
