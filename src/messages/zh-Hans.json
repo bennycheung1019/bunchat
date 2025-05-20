@@ -75,7 +75,10 @@
     },
     "topbar": {
         "settings": "设置",
-        "logout": "登出"
+        "logout": "登出",
+        "purchaseTokens": "购买代币",
+        "helpFaq": "帮助与常见问题",
+        "termsPolicies": "条款与政策"
     },
     "imageTools": {
         "backgroundRemoval": "移除背景",
@@ -169,5 +172,35 @@
         "generateAnother": "再生成一张图",
         "error": "出了点问题，请再试一次。",
         "copied": "已复制！"
+    },
+    "helpPage": {
+        "title": "帮助与常见问题",
+        "section": {
+            "general": "常见问题",
+            "billing": "账单相关"
+        },
+        "q1": {
+            "title": "这个应用是做什么的？",
+            "answer": "这个应用帮助你使用 AI 工具进行写作、翻译和内容生成，包括聊天、邮件回复和图像编辑等功能。"
+        },
+        "q2": {
+            "title": "我需要账号吗？",
+            "answer": "是的，请使用 Google 登录以使用全部功能，并追踪你的代币使用情况。"
+        },
+        "q3": {
+            "title": "如何购买代币？",
+            "answer": "点击顶部工具栏的钻石图标，或从头像菜单中选择“购买代币”。"
+        }
+    },
+    "termsPage": {
+        "title": "使用条款与政策",
+        "section": {
+            "terms": "使用条款",
+            "privacy": "隐私政策",
+            "tokens": "代币使用"
+        },
+        "termsText": "使用本应用即表示您同意遵守所有使用规范，不得将 AI 服务用于任何有害或非法行为。",
+        "privacyText": "我们重视您的隐私。仅储存必要信息，如账号 ID、偏好设置和代币余额。我们不会分享您的数据。",
+        "tokenText": "本应用的各项功能需使用代币，购买后不予退款。请在使用前确认代币消耗规则。"
     }
 }

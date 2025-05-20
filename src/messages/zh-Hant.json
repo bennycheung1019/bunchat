@@ -75,7 +75,10 @@
     },
     "topbar": {
         "settings": "設定",
-        "logout": "登出"
+        "logout": "登出",
+        "purchaseTokens": "購買代幣",
+        "helpFaq": "幫助與常見問題",
+        "termsPolicies": "條款與政策"
     },
     "imageTools": {
         "backgroundRemoval": "移除背景",
@@ -169,5 +172,35 @@
         "generateAnother": "再創建一張圖像",
         "error": "發生錯誤，請再試一次。",
         "copied": "已複製！"
+    },
+    "helpPage": {
+        "title": "幫助與常見問題",
+        "section": {
+            "general": "一般問題",
+            "billing": "帳單相關"
+        },
+        "q1": {
+            "title": "這個應用程式是做什麼的？",
+            "answer": "這個應用程式能幫助你使用 AI 工具撰寫、翻譯與生成內容，包括聊天、回覆電子郵件和圖片編輯等功能。"
+        },
+        "q2": {
+            "title": "我需要註冊帳號嗎？",
+            "answer": "是的，請使用 Google 帳號登入，以存取所有功能並追蹤你的代幣使用情況。"
+        },
+        "q3": {
+            "title": "我要怎麼購買代幣？",
+            "answer": "請點擊上方工具列的鑽石圖示，或從頭像選單中選擇「購買代幣」。"
+        }
+    },
+    "termsPage": {
+        "title": "使用條款與政策",
+        "section": {
+            "terms": "使用條款",
+            "privacy": "隱私政策",
+            "tokens": "代幣使用"
+        },
+        "termsText": "使用本應用即表示你同意遵守所有使用準則，不得濫用 AI 服務於任何有害或非法目的。",
+        "privacyText": "我們重視你的隱私。僅儲存帳號 ID、偏好設定與代幣餘額等必要資訊，不會將你的資料分享給第三方。",
+        "tokenText": "使用本應用的各項功能需使用代幣，購買後不設退款。請在使用前確認代幣消耗規則。"
     }
 }
