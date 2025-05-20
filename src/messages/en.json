@@ -176,32 +176,50 @@
     },
     "helpPage": {
         "title": "Help & FAQ",
-        "section": {
-            "general": "General Questions",
-            "billing": "Billing"
-        },
-        "q1": {
-            "title": "What is this app used for?",
-            "answer": "This app helps you write, translate, and generate content using AI tools like chat, email reply, and image editing."
-        },
-        "q2": {
-            "title": "Do I need an account?",
-            "answer": "Yes, please sign in with Google to access all features and track your token usage."
-        },
-        "q3": {
-            "title": "How can I purchase tokens?",
-            "answer": "Click the diamond icon at the top bar or choose 'Purchase Tokens' from the avatar menu."
-        }
+        "faqs": [
+            {
+                "q": "What is Minimind?",
+                "a": "Minimind is your all-in-one AI assistant for writing, translating, improving content, replying to emails, and editing images using powerful AI models."
+            },
+            {
+                "q": "Do I need an account to use Minimind?",
+                "a": "Yes. You must sign in with your Google account to access all features and track your token usage securely."
+            },
+            {
+                "q": "What are tokens and how do they work?",
+                "a": "Tokens are digital credits used to access premium features in Minimind. Each AI action costs a certain number of tokens. The exact cost is shown before use."
+            },
+            {
+                "q": "How can I purchase more tokens?",
+                "a": "Click the diamond icon in the top bar or go to the “Purchase Tokens” section. You can pay using secure Stripe checkout."
+            },
+            {
+                "q": "Are token purchases refundable?",
+                "a": "No. All token purchases are final and non-refundable unless required by law."
+            },
+            {
+                "q": "Why did the AI output something incorrect or strange?",
+                "a": "AI results are based on probability and patterns. Minimind cannot guarantee accuracy. Please review results before using them in professional or sensitive contexts."
+            },
+            {
+                "q": "Can Minimind translate between any languages?",
+                "a": "Minimind supports English, Simplified Chinese, and Traditional Chinese. More languages may be added in the future."
+            },
+            {
+                "q": "Does Minimind store my content or chat history?",
+                "a": "Only chat history is stored for signed-in users. Your content is never used to train models or shared with third parties."
+            },
+            {
+                "q": "What should I do if I encounter a bug or issue?",
+                "a": "Try refreshing your browser and ensuring you're signed in. If the issue continues, contact support at inquiry@minimind.pro."
+            },
+            {
+                "q": "Can I use Minimind-generated content for commercial purposes?",
+                "a": "Yes, but you do so at your own risk. Review AI-generated content before using it in public or commercial settings."
+            }
+        ]
     },
     "termsPage": {
-        "title": "Terms & Policies",
-        "section": {
-            "terms": "Terms of Use",
-            "privacy": "Privacy Policy",
-            "tokens": "Token Usage"
-        },
-        "termsText": "By using this app, you agree to follow all usage guidelines and not misuse AI services for harmful or illegal purposes.",
-        "privacyText": "We respect your privacy. We only store necessary information such as your account ID, preferences, and token balance. We do not share your data.",
-        "tokenText": "Tokens are required to use various features in the app. Token purchases are non-refundable. Please review usage costs before proceeding."
+        "title": "Terms & Policies"
     }
 }
