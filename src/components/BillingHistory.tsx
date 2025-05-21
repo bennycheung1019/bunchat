@@ -18,10 +18,12 @@ export default function BillingHistory() {
             try {
                 const res = await fetch("/api/billing-history");
                 if (!res.ok) throw new Error(`API error ${res.status}`);
-                const data = await res.json();
+                const data: BillingItem[] = await res.json();
                 setHistory(data);
-            } catch (err: any) {
-                console.error("Billing fetch error:", err);
+            } catch (err) {
+                const message =
+                    err instanceof Error ? err.message : "Unexpected error occurred.";
+                console.error("Billing fetch error:", message);
                 setError("Failed to load billing history.");
             }
         };
