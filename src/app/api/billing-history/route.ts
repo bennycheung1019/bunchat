@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
 import { db } from "@/lib/firebase-admin";
 import { Timestamp } from "firebase-admin/firestore";
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
     const session = await getServerSession(authConfig);
 
     if (!session?.user?.id) {
