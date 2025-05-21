@@ -224,5 +224,14 @@
     },
     "termsPage": {
         "title": "Terms & Policies"
+    },
+    "billing": {
+        "title": "Billing History",
+        "loading": "Loading billing records...",
+        "error": "Failed to load billing history.",
+        "empty": "No billing records found.",
+        "date": "Date",
+        "tokens": "Tokens",
+        "amount": "Amount"
     }
 }

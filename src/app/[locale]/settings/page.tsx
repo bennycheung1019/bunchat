@@ -80,60 +80,53 @@ export default function SettingsPage() {
             </div>
 
             {/* Tabs */}
-            <div className="flex justify-center border-b border-gray-200 bg-white">
-                <button
-                    className={`px-6 py-3 text-sm font-medium transition border-b-2 ${activeTab === "general"
-                        ? "border-blue-600 text-blue-600"
-                        : "border-transparent text-gray-500 hover:text-gray-700"
-                        }`}
-                    onClick={() => handleTabChange("general")}
-                >
-                    {t("settings.general")}
-                </button>
-                <button
-                    className={`px-6 py-3 text-sm font-medium transition border-b-2 ${activeTab === "billing"
-                        ? "border-blue-600 text-blue-600"
-                        : "border-transparent text-gray-500 hover:text-gray-700"
-                        }`}
-                    onClick={() => handleTabChange("billing")}
-                >
-                    {t("settings.billing")}
-                </button>
+            <div className="bg-gray-50 border-b border-gray-200 px-4 sm:px-8 pt-4 pb-2">
+                <div className="flex justify-center gap-4 max-w-2xl mx-auto">
+                    {[
+                        { key: "general", label: t("settings.general") },
+                        { key: "billing", label: t("settings.billing") },
+                    ].map(({ key, label }) => (
+                        <button
+                            key={key}
+                            onClick={() => handleTabChange(key as "general" | "billing")}
+                            className={`px-5 py-2 rounded-full text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-offset-2
+          ${activeTab === key
+                                    ? "bg-[var(--primary-color)] text-white shadow border border-[var(--primary-color)] -mb-px z-10"
+                                    : "text-gray-600 hover:bg-gray-100"
+                                }`}
+                        >
+                            {label}
+                        </button>
+                    ))}
+                </div>
             </div>
 
+
+
             {/* Tab Content */}
-            <div className="flex-1 p-6 max-w-2xl mx-auto w-full space-y-8">
+            <div className="flex-1 px-4 sm:px-8 mt-4 py-6 max-w-2xl mx-auto w-full space-y-8">
+
                 {activeTab === "general" && (
                     <div className="bg-white rounded-2xl shadow-md p-6 space-y-4">
                         <h2 className="text-lg font-semibold">{t("language")}</h2>
                         <div className="flex gap-4 flex-nowrap">
-                            <button
-                                onClick={() => handleLanguageChange("en")}
-                                className={`px-5 py-2 rounded-full font-medium transition border ${currentLanguage === "en"
-                                    ? "bg-[var(--primary-color)] text-white border-[var(--primary-color)]"
-                                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
-                                    }`}
-                            >
-                                English
-                            </button>
-                            <button
-                                onClick={() => handleLanguageChange("zh-Hant")}
-                                className={`px-5 py-2 rounded-full font-medium transition border ${currentLanguage === "zh-Hant"
-                                    ? "bg-[var(--primary-color)] text-white border-[var(--primary-color)]"
-                                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
-                                    }`}
-                            >
-                                繁體中文
-                            </button>
-                            <button
-                                onClick={() => handleLanguageChange("zh-Hans")}
-                                className={`px-5 py-2 rounded-full font-medium transition border ${currentLanguage === "zh-Hans"
-                                    ? "bg-[var(--primary-color)] text-white border-[var(--primary-color)]"
-                                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
-                                    }`}
-                            >
-                                简体中文
-                            </button>
+                            {["en", "zh-Hant", "zh-Hans"].map((lang) => (
+                                <button
+                                    key={lang}
+                                    onClick={() => handleLanguageChange(lang as "en" | "zh-Hant" | "zh-Hans")}
+                                    className={`px-5 py-2 rounded-full font-medium transition border 
+              ${currentLanguage === lang
+                                            ? "bg-[var(--primary-color)] text-white border-[var(--primary-color)]"
+                                            : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                                        }`}
+                                >
+                                    {{
+                                        en: "English",
+                                        "zh-Hant": "繁體中文",
+                                        "zh-Hans": "简体中文",
+                                    }[lang]}
+                                </button>
+                            ))}
                         </div>
                     </div>
                 )}
@@ -144,6 +137,7 @@ export default function SettingsPage() {
                     </div>
                 )}
             </div>
+
         </div>
     );
 }

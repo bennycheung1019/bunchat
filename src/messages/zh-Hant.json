@@ -225,5 +225,14 @@
     },
     "termsPage": {
         "title": "使用條款與政策"
+    },
+    "billing": {
+        "title": "帳單紀錄",
+        "loading": "正在載入帳單紀錄...",
+        "error": "無法載入帳單紀錄。",
+        "empty": "尚未有任何帳單紀錄。",
+        "date": "日期",
+        "tokens": "代幣",
+        "amount": "金額"
     }
 }

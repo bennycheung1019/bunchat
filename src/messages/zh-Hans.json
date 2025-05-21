@@ -225,5 +225,14 @@
     },
     "termsPage": {
         "title": "使用条款与政策"
+    },
+    "billing": {
+        "title": "账单记录",
+        "loading": "正在加载账单记录...",
+        "error": "无法加载账单记录。",
+        "empty": "暂无账单记录。",
+        "date": "日期",
+        "tokens": "代币",
+        "amount": "金额"
     }
 }
