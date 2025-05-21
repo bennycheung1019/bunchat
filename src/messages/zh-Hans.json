@@ -1,23 +1,25 @@
 {
-    "settings": "设置",
     "logout": "登出",
-    "theme": "主题",
     "language": "语言",
-    "light": "亮色",
-    "dark": "暗色",
     "account": "账户",
     "save": "保存",
     "cancel": "取消",
+    "modeChat": "聊天",
+    "modeImprove": "改进",
+    "modeTranslate": "翻译",
+    "modeReply": "回复",
     "signin": {
         "title": "欢迎使用 MiniMind",
         "subtitle": "一个集合多种快捷实用智能工具的平台，助你简化工作与创意流程。",
         "button": "使用 Google 登录",
         "note": "我们仅使用你的 Google 账号来保存偏好设置和历史记录。"
     },
-    "modeChat": "聊天",
-    "modeImprove": "改进",
-    "modeTranslate": "翻译",
-    "modeReply": "回复",
+    "settings": {
+        "settings": "设置",
+        "general": "通用",
+        "billing": "账单记录",
+        "language": "语言"
+    },
     "improve": {
         "button": "优化写作",
         "loading": "正在优化...",

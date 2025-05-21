@@ -16,7 +16,13 @@ export default function LandingPage() {
             <header className="w-full border-b bg-white sticky top-0 z-50 shadow-sm">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <Image src="/minimindLogo-noText.png" alt="MiniMind Logo" className="h-9 w-auto" />
+                        <Image
+                            src="/minimindLogo-noText.png"
+                            alt="MiniMind Logo"
+                            width={36} // or whatever pixel width you prefer
+                            height={36}
+                            className="h-9 w-auto"
+                        />
                         <span className="text-xl font-semibold text-[#064e3b]">minimind</span>
                     </div>
                     <div className="flex items-center gap-4">
@@ -71,13 +77,15 @@ export default function LandingPage() {
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-12">
 
                     {/* Left: Image */}
-                    <div className="flex justify-center">
+                    <div className="relative w-full h-[300px] sm:h-[400px]">
                         <Image
                             src="/heroimage01.png"
-                            alt="AI Toolkit Hero"
-                            className="w-full max-w-sm  object-cover"
+                            alt="Hero"
+                            fill
+                            className="object-contain"
                         />
                     </div>
+
 
                     {/* Right: Text Content */}
                     <div className="text-center md:text-left">

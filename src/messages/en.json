@@ -1,23 +1,24 @@
 {
-    "settings": "Settings",
     "logout": "Logout",
-    "theme": "Theme",
-    "language": "Language",
-    "light": "Light",
-    "dark": "Dark",
     "account": "Account",
     "save": "Save",
     "cancel": "Cancel",
+    "modeChat": "Chat",
+    "modeImprove": "Improve",
+    "modeTranslate": "Translate",
+    "modeReply": "Reply",
     "signin": {
         "title": "Welcome to MiniMind",
         "subtitle": "A growing collection of quick, intelligent tools to simplify your work and ideas.",
         "button": "Sign in with Google",
         "note": "We use your Google account only to store your preferences and history."
     },
-    "modeChat": "Chat",
-    "modeImprove": "Improve",
-    "modeTranslate": "Translate",
-    "modeReply": "Reply",
+    "settings": {
+        "settings": "Settings",
+        "general": "General",
+        "billing": "Billing",
+        "language": "Language"
+    },
     "improve": {
         "button": "Improve Writing",
         "loading": "Improving...",

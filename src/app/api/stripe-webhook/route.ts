@@ -38,8 +38,14 @@ export async function POST(req: NextRequest) {
         const customerId = intent.metadata?.customerId;
         const tokens = parseInt(intent.metadata?.tokens || "0");
 
+        console.log("📦 Webhook received:", {
+            customerId,
+            tokens,
+            amount: intent.amount,
+        });
+
         if (!customerId || !tokens) {
-            console.warn("⚠️ Missing metadata");
+            console.warn("⚠️ Missing metadata in webhook.");
             return NextResponse.json({ received: true });
         }
 
@@ -49,12 +55,21 @@ export async function POST(req: NextRequest) {
             const current = userSnap.exists ? userSnap.data()?.tokens || 0 : 0;
 
             await userRef.set({ tokens: current + tokens }, { merge: true });
+            console.log("✅ User token balance updated.");
 
-            console.log(`✅ Tokens updated: ${current} → ${current + tokens} for user ${customerId}`);
+            await db.collection("billingHistory").add({
+                userId: customerId,
+                tokens,
+                amount: `USD$${(intent.amount / 100).toFixed(2)}`,
+                date: new Date(),
+            });
+
+            console.log("✅ Billing history written to Firestore.");
         } catch (err) {
-            console.error("❌ Firestore write failed:", err);
+            console.error("❌ Error writing to Firestore:", err);
         }
     }
+
 
     return NextResponse.json({ received: true });
 }
